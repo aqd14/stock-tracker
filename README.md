@@ -1,2 +1,3 @@
 # Stock-Tracker
-Simple java application that assists users keeping track of stock trends to make decision
+
+This is a stock tracking desktop-based application developed by members from CSE-4124, MSU. This app allows users to manage the trends of stocks from big companies such as Google or Apple. Users can buy or sell stocks to earn money.
