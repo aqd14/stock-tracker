@@ -1,6 +1,7 @@
 package main.java.model;
 // Generated Feb 5, 2017 10:51:59 PM by Hibernate Tools 5.2.0.CR1
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,17 +15,25 @@ public class User implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int userId;
+	private String firstName;
+	private String lastName;
 	private String username;
 	private String password;
+	private String email;
+	private Date dateOfBirth;
 	private Set<Stock> stocks = new HashSet<Stock>(0);
 
 	public User() {
 	}
 
-	public User(int userId, String username, String password) {
+	public User(int userId, String firstName, String lastName, String username, String password, String email, Date dateOfBirth) {
 		this.userId = userId;
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
 		this.username = username;
 		this.password = password;
+		this.setEmail(email);
+		this.setDateOfBirth(dateOfBirth);
 	}
 
 	public User(int userId, String username, String password, Set<Stock> stocks) {
@@ -64,6 +73,38 @@ public class User implements java.io.Serializable {
 
 	public void setStocks(Set<Stock> stocks) {
 		this.stocks = stocks;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 }

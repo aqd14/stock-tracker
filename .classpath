@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/hibernate-core-5.2.7.Final.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.40-bin.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/aqd14/Downloads/jfoenix.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

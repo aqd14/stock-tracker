@@ -30,42 +30,35 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.label {
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #333333;
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
-}
 
-#welcome-text {
-   -fx-font-size: 32px;
-   -fx-font-family: "Arial Black";
-   -fx-fill: #818181;
-   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
-}
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import main.java.control.RegistrationViewController;
 
-#actiontarget {
-  -fx-fill: FIREBRICK;
-  -fx-font-weight: bold;
-  -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );  
-}
-
-/*.button {
-    -fx-text-fill: white;
-    -fx-font-family: "Arial Narrow";
-    -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-}*/
-
-.button{
-    -fx-padding: 0.7em 0.57em;
-    -fx-font-size: 14px;
-    -fx-button-type: RAISED;
-    -fx-background-color: rgb(77,102,204);
-    -fx-text-fill: WHITE;
-}
-
-.button:hover {
-    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+public class MainApp extends Application {
+    private RegistrationViewController registrationController;
+    private Stage curStage;
+    
+    public MainApp() {
+    	registrationController = new RegistrationViewController();
+    }
+    
+    public static void main(String[] args) {
+        Application.launch(MainApp.class, args);
+    }
+    
+    @Override
+    public void start(Stage stage) throws Exception {
+    	// Initialize current stage
+    	curStage = stage;
+    	// User login is the first page appears when user runs the app
+        Parent root = FXMLLoader.load(getClass().getResource("main/java/view/user_registration.fxml"));
+        stage.setTitle("Stock Tracker");
+        stage.setScene(new Scene(root, 400, 650));
+        stage.setResizable(false);
+        stage.show();
+    }
 }

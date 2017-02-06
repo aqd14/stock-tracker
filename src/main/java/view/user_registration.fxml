@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<GridPane alignment="center" hgap="10.0" prefHeight="605.0" prefWidth="456.0" styleClass="root" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.RegistrationViewController">
+<GridPane alignment="center" hgap="10.0" prefHeight="605.0" prefWidth="456.0" styleClass="root" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.RegistrationViewController">
   <padding><Insets bottom="10.0" left="25.0" right="25.0" top="25.0" /></padding>
    <children>
      
@@ -18,31 +23,84 @@
          </GridPane.margin></Text>
      
      <Label text="First Name" GridPane.rowIndex="1" />
+     <JFXTextField fx:id="firstName" GridPane.columnIndex="1" GridPane.rowIndex="1">
+     	<font>
+     		<Font name="Arial" size="14.0"/>
+     	</font>
+     </JFXTextField>
+	<Text fx:id="firstNameError" fill="RED" strokeType="OUTSIDE"
+		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
+		GridPane.columnIndex="1" GridPane.rowIndex="2">
+		<font>
+			<Font name="Arial" size="14.0" />
+		</font>
+	</Text>
      
-	  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label text="Last Name" GridPane.rowIndex="3" />
-      <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label text="Last Name" GridPane.rowIndex="4" />
+      <JFXTextField fx:id="lastName" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      	<Text fx:id="lastNameError" fill="RED" strokeType="OUTSIDE"
+		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
+		GridPane.columnIndex="1" GridPane.rowIndex="5">
+		<font>
+			<Font name="Arial" size="14.0" />
+		</font>
+	</Text>
       
-      <Label text="Username" GridPane.rowIndex="5" />
-      <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Label text="Username" GridPane.rowIndex="7" />
+      <JFXTextField fx:id="username" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      	<Text fx:id="usernameError" fill="RED" strokeType="OUTSIDE"
+		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
+		GridPane.columnIndex="1" GridPane.rowIndex="8">
+		<font>
+			<Font name="Arial" size="14.0" />
+		</font>
+	</Text>
       
-      <Label text="Password" GridPane.rowIndex="7" />
-      <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label text="Password" GridPane.rowIndex="10" />
+      <JFXPasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+      	<Text fx:id="passwordError" fill="RED" strokeType="OUTSIDE"
+		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
+		GridPane.columnIndex="1" GridPane.rowIndex="11">
+		<font>
+			<Font name="Arial" size="14.0" />
+		</font>
+	</Text>
       
-      <Label text="Confirm Password" GridPane.rowIndex="9" />
-      <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="9" />
+      <Label text="Confirm Password" GridPane.rowIndex="13" />
+      <JFXPasswordField fx:id="confirmPassword" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+     	<Text fx:id="confirmPasswordError" fill="RED" strokeType="OUTSIDE"
+		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
+		GridPane.columnIndex="1" GridPane.rowIndex="14">
+		<font>
+			<Font name="Arial" size="14.0" />
+		</font>
+	</Text>
       
-      <Label text="Email" GridPane.rowIndex="11" />
-      <TextField GridPane.columnIndex="1" GridPane.rowIndex="11" />
-      <HBox prefHeight="20.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="15">
-         <children>
-            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Register">
-               <HBox.margin>
-                  <Insets left="245.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-      </HBox>
+      <Label text="Email" GridPane.rowIndex="16" />
+      <JFXTextField fx:id="email" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+      	<Text fx:id="emailError" fill="RED" strokeType="OUTSIDE"
+		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
+		GridPane.columnIndex="1" GridPane.rowIndex="17">
+		<font>
+			<Font name="Arial" size="14.0" />
+		</font>
+	</Text>
+      
+      <Label text="Date of Birth" GridPane.rowIndex="19" />
+      <JFXDatePicker fx:id="dateOfBirth" prefHeight="28.0" prefWidth="215.0" GridPane.columnIndex="1" GridPane.rowIndex="19" />
+		<Text fx:id="dobError" fill="RED" strokeType="OUTSIDE"
+		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
+		GridPane.columnIndex="1" GridPane.rowIndex="20">
+		<font>
+			<Font name="Arial" size="14.0" />
+		</font>
+	</Text>	
+	
+	<JFXButton alignment="CENTER" buttonType="RAISED" onAction="#handleRegisterSubmit" prefHeight="40.0" prefWidth="79.0" ripplerFill="WHITE" text="Register" textFill="#4f3cb5" GridPane.columnIndex="1" GridPane.rowIndex="22">
+		<GridPane.margin>
+			<Insets left="137.0" />
+		</GridPane.margin>
+      </JFXButton>
    </children>
   
   <stylesheets>
@@ -53,6 +111,13 @@
       <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
       <RowConstraints />
       <RowConstraints />
       <RowConstraints />
