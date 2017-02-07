@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 import main.java.err.ErrorMessage;
 import main.java.utility.Utility;
 
-public class RegistrationViewController {
+public class RegistrationViewController extends ParentController{
 	@FXML private TextField firstName;
 	@FXML private TextField lastName;
 	@FXML private TextField username;
@@ -22,47 +22,87 @@ public class RegistrationViewController {
 	@FXML private Text lastNameError;
 	@FXML private Text usernameError;
 	@FXML private Text passwordError;
-	@FXML private Text emmailError;
-	@FXML private Text bodError;
+	@FXML private Text confirmPasswordError;
+	@FXML private Text emailError;
+	@FXML private Text dobError;
 	
 	public RegistrationViewController() {
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * Validate user input when user clicks on [Register] button
+	 * 
+	 * @param registerEvent
+	 */
 	@FXML public void handleRegisterSubmit(ActionEvent registerEvent) {
 //		System.out.println(password.getText());
 //		System.out.println(dateOfBirth.getValue());
+		validateUserInput();
+	}
+	
+	private void validateUserInput() {
+    	System.out.println(Utility.isNameValid("ABC"));
+    	System.out.println(Utility.isNameValid("ABC!"));
 		validateFirstName();
+		validateLastName();
+		validateUsername();
+		validatePassword();
+		validateEmail();
+		validateDoB();
 	}
 	
+	/**
+	 * Validate user's first name.
+	 * It shouldn't be empty. It shouldn't have special characters (!,@,#,$,%,&,*..)
+	 */
 	private void validateFirstName() {
-		// Validate first name
-		if (Utility.isEmptyTextField(firstName)) {
-			firstNameError.setText(ErrorMessage.EMPTY_FIELD_SMS);
-			firstNameError.setVisible(true);
-		} else {
-			firstNameError.setVisible(false);
+		// Validate first name's empty
+		if (Utility.isTextFieldEmpty(firstName)) {
+			displayErrorMessage(firstNameError, ErrorMessage.EMPTY_FIELD_ERR);
+			return;
+		} 
+		
+		if (!Utility.isNameValid(firstName.getText())) {
+			displayErrorMessage(firstNameError, ErrorMessage.INVALID_NAME_ERR);
+			return;
 		}
+		
+		hideErrorMessage(firstNameError);
+		// Validate first name contains special characters
 	}
 	
+	/**
+	 * Last name is validate through several phases.
+	 * If it fails in one phase, the error message corresponding to
+	 * that phase will be displayed. Function stops validating.
+	 */
 	private void validateLastName() {
 		// Validate first name
-		if (Utility.isEmptyTextField(lastName)) {
-			lastNameError.setText(ErrorMessage.EMPTY_FIELD_SMS);
-			lastNameError.setVisible(true);
-		} else {
-			lastNameError.setVisible(false);
+		if (Utility.isTextFieldEmpty(lastName)) {
+			displayErrorMessage(lastNameError, ErrorMessage.EMPTY_FIELD_ERR);
+			return;
+		} 
+		
+		if (!Utility.isNameValid(lastName.getText())) {
+			displayErrorMessage(lastNameError, ErrorMessage.INVALID_NAME_ERR);
+			return;
 		}
+		
+		// Passed all phases, set error text invisible
+		hideErrorMessage(lastNameError);
 	}
 	
 	private void validateUsername() {
 		// Validate first name
-		if (Utility.isEmptyTextField(username)) {
-			// Print warning message
+		if (Utility.isTextFieldEmpty(username)) {
+			displayErrorMessage(usernameError, ErrorMessage.EMPTY_FIELD_ERR);
+			return;
 		}
 		
 		boolean userAlreadyExisted = false;
 		if (userAlreadyExisted) {
+			// Search through all database to find if user already existed
 			// Print warning message
 		}
 		
@@ -76,41 +116,77 @@ public class RegistrationViewController {
 		if (isInvalidLength) { // Length should be from 8 - 12 (Eg)
 			// Print warning message
 		}
+		hideErrorMessage(usernameError);
 	}
 	
-	private void validatePassword() {
-		if (Utility.isEmptyTextField(password)) {
-			System.err.println("Passwords is empty!");
+	private void validateOriginalPassword() {
+		// Validate empty
+		if (Utility.isTextFieldEmpty(password)) {
+			passwordError.setText(ErrorMessage.EMPTY_FIELD_ERR);
+			passwordError.setVisible(true);
+			return;
+		}
+		
+		if(password.getText().length() < 8) {
+			displayErrorMessage(passwordError, ErrorMessage.PASSWORD_TOO_SHORT_ERR);
+			return;
+		}
+		hideErrorMessage(passwordError);
+	}
+	
+	private void validateConfirmedPassword() {
+		if (Utility.isTextFieldEmpty(confirmPassword)) {
+			displayErrorMessage(confirmPasswordError, ErrorMessage.EMPTY_FIELD_ERR);
+			return;
 		}
 		
 		if (!password.getText().equals(confirmPassword.getText())) {
 			System.err.println("Passwords not matching!");
+			displayErrorMessage(confirmPasswordError, ErrorMessage.PASSWORD_NOT_MATCHED_ERR);
+			return;
 		}
 		
-		boolean isPasswordWeak = false;
-		if (isPasswordWeak) {
-			System.err.println("Password should contains at least ... !");
-		}
+		hideErrorMessage(confirmPasswordError);
 	}
 	
+	private void validatePassword() {
+		validateOriginalPassword();
+		validateConfirmedPassword();
+	}
+	
+	/**
+	 * Validate email address:
+	 * <p><ul>
+	 * 	<li> Is email empty?
+	 *  <li> Is email valid (contains only alphabets, underscore, and period)
+	 *  <li> Is email already existing on database?
+	 *  <ul><p>
+	 */
 	private void validateEmail() {
-		if (Utility.isEmptyTextField(email)) {
-			System.err.println("Email is empty!");
+		if (Utility.isTextFieldEmpty(email)) {
+			displayErrorMessage(emailError, ErrorMessage.EMPTY_FIELD_ERR);
+			return;
 		}
 		
 		if (!Utility.isValidEmail(email.getText())) {
-			System.err.println("Email address is invalid: " + email.getText());
+			displayErrorMessage(emailError, ErrorMessage.INVALID_EMAIL_ERR);
+			return;
 		}
 		
 		boolean isEmailAlreadyExisted = true;
 		if (isEmailAlreadyExisted) {
 			// print warning message
+			// return;
 		}
+		// Passed all validations
+		hideErrorMessage(emailError);
 	}
 	
 	private void validateDoB() {
-		if (dateOfBirth.getValue().equals("")) {
-			System.err.println("Email is empty!");
+		if (null == dateOfBirth.getValue()) {
+			displayErrorMessage(dobError, ErrorMessage.EMPTY_FIELD_ERR);
+			return;
 		}
+		hideErrorMessage(dobError);
 	}
 }

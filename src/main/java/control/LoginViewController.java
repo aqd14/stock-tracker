@@ -36,7 +36,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
  
-public class LoginViewController {
+public class LoginViewController extends ParentController{
     @FXML private Text actiontarget;
     
     @FXML protected void handleSubmitButtonAction(ActionEvent event) {
