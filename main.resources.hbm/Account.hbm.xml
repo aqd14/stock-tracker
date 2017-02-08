@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 8, 2017 8:50:03 AM by Hibernate Tools 5.2.0.CR1 -->
+<hibernate-mapping>
+    <class name="Account" table="account" catalog="mydb" optimistic-lock="version">
+        <id name="accountId" type="int">
+            <column name="account_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="balance" type="java.lang.Double">
+            <column name="balance" precision="22" scale="0" />
+        </property>
+        <property name="accountName" type="string">
+            <column name="account_name" length="45" />
+        </property>
+        <set name="users" table="user" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="account_id" not-null="true" />
+            </key>
+            <one-to-many class="User" />
+        </set>
+    </class>
+</hibernate-mapping>

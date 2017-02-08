@@ -1,23 +1,23 @@
 package main.java.dao;
-// Generated Feb 5, 2017 10:32:11 PM by Hibernate Tools 5.2.0.CR1
-
+// default package
+// Generated Feb 8, 2017 8:50:03 AM by Hibernate Tools 5.2.0.CR1
+import main.java.model.Stock;
+import java.util.List;
 import javax.naming.InitialContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
-
-import main.java.model.Stock;
+import org.hibernate.criterion.Example;
 
 /**
  * Home object for domain model class Stock.
  * @see .Stock
  * @author Hibernate Tools
  */
-public class StockHome {
+public class StockManager {
 
-	private static final Log log = LogFactory.getLog(StockHome.class);
+	private static final Log log = LogFactory.getLog(StockManager.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -102,16 +102,16 @@ public class StockHome {
 		}
 	}
 
-//	public List<Stock> findByExample(Stock instance) {
-//		log.debug("finding Stock instance by example");
-//		try {
-//			List<Stock> results = sessionFactory.getCurrentSession().createCriteria("Stock")
-//			        .add(Example.create(instance)).list();
-//			log.debug("find by example successful, result size: " + results.size());
-//			return results;
-//		} catch (RuntimeException re) {
-//			log.error("find by example failed", re);
-//			throw re;
-//		}
-//	}
+	public List findByExample(Stock instance) {
+		log.debug("finding Stock instance by example");
+		try {
+			List results = sessionFactory.getCurrentSession().createCriteria("Stock").add(Example.create(instance))
+			        .list();
+			log.debug("find by example successful, result size: " + results.size());
+			return results;
+		} catch (RuntimeException re) {
+			log.error("find by example failed", re);
+			throw re;
+		}
+	}
 }

@@ -57,7 +57,7 @@ public class MainApp extends Application {
     	// User login is the first page appears when user runs the app
         Parent root = FXMLLoader.load(getClass().getResource("main/java/view/user_registration.fxml"));
         stage.setTitle("Stock Tracker");
-        stage.setScene(new Scene(root, 400, 650));
+        stage.setScene(new Scene(root, 400, 800));
         stage.setResizable(false);
         stage.show();
     }

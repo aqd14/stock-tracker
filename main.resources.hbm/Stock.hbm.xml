@@ -1,21 +1,27 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 5, 2017 10:32:09 PM by Hibernate Tools 5.2.0.CR1 -->
+<!-- Generated Feb 8, 2017 8:50:03 AM by Hibernate Tools 5.2.0.CR1 -->
 <hibernate-mapping>
     <class name="Stock" table="stock" catalog="mydb" optimistic-lock="version">
         <id name="stockId" type="int">
             <column name="stock_id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="user" class="User" fetch="select">
-            <column name="user_id" not-null="true" />
+        <many-to-one name="transaction" class="Transaction" fetch="select">
+            <column name="transaction_id" not-null="true" />
         </many-to-one>
         <property name="price" type="double">
             <column name="price" precision="22" scale="0" not-null="true" />
         </property>
         <property name="previousPrice" type="double">
             <column name="previous_price" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="priceValueThreshold" type="java.lang.Double">
+            <column name="price_value_threshold" precision="22" scale="0" />
+        </property>
+        <property name="pricePercentageThreshold" type="java.lang.Double">
+            <column name="price_percentage_threshold" precision="22" scale="0" />
         </property>
     </class>
 </hibernate-mapping>

@@ -1,6 +1,6 @@
+// default package
+// Generated Feb 8, 2017 8:50:02 AM by Hibernate Tools 5.2.0.CR1
 package main.java.model;
-// Generated Feb 5, 2017 10:51:59 PM by Hibernate Tools 5.2.0.CR1
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,32 +15,36 @@ public class User implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int userId;
-	private String firstName;
-	private String lastName;
+	private Account account;
 	private String username;
 	private String password;
+	private String firstName;
+	private String lastName;
 	private String email;
-	private Date dateOfBirth;
-	private Set<Stock> stocks = new HashSet<Stock>(0);
+	private Date birthday;
+	private Set<Transaction> transactions = new HashSet<Transaction>(0);
 
 	public User() {
 	}
 
-	public User(int userId, String firstName, String lastName, String username, String password, String email, Date dateOfBirth) {
+	public User(int userId, Account account, String username, String password) {
 		this.userId = userId;
-		this.setFirstName(firstName);
-		this.setLastName(lastName);
+		this.account = account;
 		this.username = username;
 		this.password = password;
-		this.setEmail(email);
-		this.setDateOfBirth(dateOfBirth);
 	}
 
-	public User(int userId, String username, String password, Set<Stock> stocks) {
+	public User(int userId, Account account, String username, String password, String firstName, String lastName,
+	        String email, Date birthday, Set<Transaction> transactions) {
 		this.userId = userId;
+		this.account = account;
 		this.username = username;
 		this.password = password;
-		this.stocks = stocks;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.birthday = birthday;
+		this.transactions = transactions;
 	}
 
 	public int getUserId() {
@@ -49,6 +53,14 @@ public class User implements java.io.Serializable {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public Account getAccount() {
+		return this.account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	public String getUsername() {
@@ -67,16 +79,8 @@ public class User implements java.io.Serializable {
 		this.password = password;
 	}
 
-	public Set<Stock> getStocks() {
-		return this.stocks;
-	}
-
-	public void setStocks(Set<Stock> stocks) {
-		this.stocks = stocks;
-	}
-
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 	public void setFirstName(String firstName) {
@@ -84,7 +88,7 @@ public class User implements java.io.Serializable {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
@@ -92,19 +96,27 @@ public class User implements java.io.Serializable {
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public Date getDateOfBirth() {
-		return dateOfBirth;
+	public Date getBirthday() {
+		return this.birthday;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public Set<Transaction> getTransactions() {
+		return this.transactions;
+	}
+
+	public void setTransactions(Set<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 
 }
