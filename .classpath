@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.40-bin.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
 	<classpathentry kind="lib" path="lib/jfoenix.jar"/>
+	<classpathentry kind="lib" path="lib/YahooFinanceAPI-3.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
