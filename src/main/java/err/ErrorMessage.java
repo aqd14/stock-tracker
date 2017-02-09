@@ -13,4 +13,6 @@ public class ErrorMessage {
 	public static final String INVALID_EMAIL_ERR = "Please use only letters (a-z), numbers, and periods.";
 	public static final String PASSWORD_NOT_MATCHED_ERR = "These passwords don't match. Please try again!";
 	public static final String PASSWORD_TOO_SHORT_ERR = "Password should include at least 8 characters.";
+	public static final String INVALID_USERNAME_LENGTH_ERR = "Please use between 6 and 15 characters.";
+	public static final String EMAIL_TAKEN_ERR = "This email is taken. Try another.";
 }

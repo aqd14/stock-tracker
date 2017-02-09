@@ -42,9 +42,9 @@ public class MainApp extends Application {
     private RegistrationViewController registrationController;
     private Stage curStage;
     
-    public MainApp() {
-    	registrationController = new RegistrationViewController();
-    }
+//    public MainApp() {
+//    	registrationController = new RegistrationViewController();
+//    }
     
     public static void main(String[] args) {
         Application.launch(MainApp.class, args);

@@ -3,12 +3,12 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Feb 8, 2017 8:50:03 AM by Hibernate Tools 5.2.0.CR1 -->
 <hibernate-mapping>
-    <class name="User" table="user" catalog="mydb" optimistic-lock="version">
+    <class name="main.java.model.User1" table="user" catalog="stock" optimistic-lock="version">
         <id name="userId" type="int">
             <column name="user_id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="account" class="Account" fetch="select">
+        <many-to-one name="account" class="main.java.model.Account" fetch="select">
             <column name="account_account_id" not-null="true" />
         </many-to-one>
         <property name="username" type="string">
@@ -33,7 +33,7 @@
             <key>
                 <column name="user_id" not-null="true" />
             </key>
-            <one-to-many class="Transaction" />
+            <one-to-many class="main.java.model.Transaction" />
         </set>
     </class>
 </hibernate-mapping>

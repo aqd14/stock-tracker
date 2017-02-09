@@ -1,37 +1,46 @@
 package main.java.dao;
-// default package
-// Generated Feb 8, 2017 8:50:03 AM by Hibernate Tools 5.2.0.CR1
 
 import java.util.List;
-import javax.naming.InitialContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
+import org.hibernate.query.Query;
 
 import main.java.model.User;
+import main.java.utility.HibernateUtil;
 
 /**
  * Home object for domain model class User.
  * @see .User
- * @author Hibernate Tools
+ * @author aqd14
  */
 public class UserManager {
-
+	
 	private static final Log log = LogFactory.getLog(UserManager.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
-
-	protected SessionFactory getSessionFactory() {
-		try {
-			return (SessionFactory) new InitialContext().lookup("SessionFactory");
-		} catch (Exception e) {
-			log.error("Could not locate SessionFactory in JNDI", e);
-			throw new IllegalStateException("Could not locate SessionFactory in JNDI");
-		}
+	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	
+	/**
+	 * Add new user to database
+	 * @param user
+	 * @return False if user already existed or something went wrong with transaction
+	 */
+	public boolean create(User user) {
+		// Check if user already existed in database by using email
+//		User existingUser = findByEmail(user.getEmail());
+//		if (null == existingUser) {
+//			return false;
+//		}
+		Session session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		session.save(user);
+		session.getTransaction().commit();
+		return true;
 	}
-
+	
 	public void persist(User transientInstance) {
 		log.debug("persisting User instance");
 		try {
@@ -103,16 +112,30 @@ public class UserManager {
 			throw re;
 		}
 	}
-
-	public List findByExample(User instance) {
-		log.debug("finding User instance by example");
+	
+	/**
+	 * Find user in database with given email
+	 * @param email
+	 * @return NULL if not found
+	 */
+	public User findByEmail(String email) {
+		log.debug("getting User instance with email: " + email);
 		try {
-			List results = sessionFactory.getCurrentSession().createCriteria("User").add(Example.create(instance))
-			        .list();
-			log.debug("find by example successful, result size: " + results.size());
-			return results;
+			Session session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
+			String searchEmailHQL = "FROM User WHERE email = '" + email + "'";
+			@SuppressWarnings("unchecked")
+			Query<User> query = session.createQuery(searchEmailHQL);//.setParameter("email", email);
+			List<User> users = query.getResultList();
+			if (users == null) {
+				log.debug("get successful, no instance found");
+			} else {
+				log.debug("get successful, instance found");
+			}
+			session.close();
+			return users.get(0);
 		} catch (RuntimeException re) {
-			log.error("find by example failed", re);
+			log.error("get failed", re);
 			throw re;
 		}
 	}

@@ -1,25 +1,24 @@
 package main.java.dao;
-// default package
-// Generated Feb 8, 2017 8:50:03 AM by Hibernate Tools 5.2.0.CR1
+
 import main.java.model.Transaction;
-import java.util.List;
+import main.java.utility.HibernateUtil;
+
 import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
 
 /**
  * Home object for domain model class Transaction.
  * @see .Transaction
- * @author Hibernate Tools
+ * @author aqd14
  */
 public class TransactionManager {
 
 	private static final Log log = LogFactory.getLog(TransactionManager.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
+	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
 	protected SessionFactory getSessionFactory() {
 		try {
@@ -98,19 +97,6 @@ public class TransactionManager {
 			return instance;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
-			throw re;
-		}
-	}
-
-	public List findByExample(Transaction instance) {
-		log.debug("finding Transaction instance by example");
-		try {
-			List results = sessionFactory.getCurrentSession().createCriteria("Transaction")
-			        .add(Example.create(instance)).list();
-			log.debug("find by example successful, result size: " + results.size());
-			return results;
-		} catch (RuntimeException re) {
-			log.error("find by example failed", re);
 			throw re;
 		}
 	}

@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Feb 8, 2017 8:50:03 AM by Hibernate Tools 5.2.0.CR1 -->
 <hibernate-mapping>
-    <class name="Stock" table="stock" catalog="mydb" optimistic-lock="version">
+    <class name="main.java.model.Stock" table="stock" catalog="stock" optimistic-lock="version">
         <id name="stockId" type="int">
             <column name="stock_id" />
             <generator class="assigned" />

@@ -1,23 +1,32 @@
 package main.java.control;
 
+import java.time.LocalDate;
+import java.util.Set;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import main.java.dao.AccountManager;
+import main.java.dao.UserManager;
 import main.java.err.ErrorMessage;
+import main.java.model.Account;
+import main.java.model.Transaction;
+import main.java.model.User;
 import main.java.utility.Utility;
 
 public class RegistrationViewController extends ParentController{
-	@FXML private TextField firstName;
-	@FXML private TextField lastName;
-	@FXML private TextField username;
-	@FXML private PasswordField password;
-	@FXML private PasswordField confirmPassword;
-	@FXML private TextField email;
-	@FXML private DatePicker dateOfBirth;
-	
+	// TextField objects for user information
+	@FXML private TextField firstNameTF;
+	@FXML private TextField lastNameTF;
+	@FXML private TextField usernameTF;
+	@FXML private PasswordField passwordPF;
+	@FXML private PasswordField confirmPasswordPF;
+	@FXML private TextField emailTF;
+	@FXML private DatePicker dateOfBirthDP;
+	// Text objects for displaying error message when user input is invalid
 	@FXML private Text firstNameError;
 	@FXML private Text lastNameError;
 	@FXML private Text usernameError;
@@ -26,9 +35,15 @@ public class RegistrationViewController extends ParentController{
 	@FXML private Text emailError;
 	@FXML private Text dobError;
 	
-	public RegistrationViewController() {
-		// TODO Auto-generated constructor stub
-	}
+	private UserManager userManager = new UserManager();
+	private AccountManager accountManager = new AccountManager();
+	private User user;
+	private Account account;
+	
+/*	public RegistrationViewController() {
+		userManager = new UserManager();
+		user = new User();
+	}*/
 	
 	/**
 	 * Validate user input when user clicks on [Register] button
@@ -38,38 +53,53 @@ public class RegistrationViewController extends ParentController{
 	@FXML public void handleRegisterSubmit(ActionEvent registerEvent) {
 //		System.out.println(password.getText());
 //		System.out.println(dateOfBirth.getValue());
-		validateUserInput();
+		boolean isAllInfoValid = true; //validateUserInput();
+		if (isAllInfoValid) {
+			// Extract user information to create new user
+//			Account account = null;
+//			String username = usernameTF.getText();
+//			String password = passwordPF.getText();
+//			String firstName = firstNameTF.getText();
+//			String lastName = lastNameTF.getText();
+//			String email = emailTF.getText();
+//			LocalDate birthday = dateOfBirthDP.getValue();
+//			Set<Transaction> transactions = null;
+//			user = new User(account, username, password, firstName, lastName, email, birthday, transactions);
+			LocalDate birthday = LocalDate.now();
+//			userManager.findByEmail("aqd14@msstate.edu");
+			user = new User(null, "aqd14msstate", "16052811", "Anh", "Do", "aqd14@msstate.edu", birthday, null);
+			account = new Account(1, 100.0, "Anh Do", null);
+			accountManager.create(account);
+			// userManager.create(user);
+			// Display successful message  
+			// Switch to Login page
+		}
 	}
 	
-	private void validateUserInput() {
-    	System.out.println(Utility.isNameValid("ABC"));
-    	System.out.println(Utility.isNameValid("ABC!"));
-		validateFirstName();
-		validateLastName();
-		validateUsername();
-		validatePassword();
-		validateEmail();
-		validateDoB();
+	private boolean validateUserInput() {
+		return validateFirstName() && validateLastName() && 
+				validateUsername() && validatePassword() && 
+				validateEmail() && validateDoB();
 	}
 	
 	/**
 	 * Validate user's first name.
 	 * It shouldn't be empty. It shouldn't have special characters (!,@,#,$,%,&,*..)
 	 */
-	private void validateFirstName() {
+	private boolean validateFirstName() {
 		// Validate first name's empty
-		if (Utility.isTextFieldEmpty(firstName)) {
+		if (Utility.isTextFieldEmpty(firstNameTF)) {
 			displayErrorMessage(firstNameError, ErrorMessage.EMPTY_FIELD_ERR);
-			return;
+			return false;
 		} 
 		
-		if (!Utility.isNameValid(firstName.getText())) {
+		if (!Utility.isNameValid(firstNameTF.getText())) {
 			displayErrorMessage(firstNameError, ErrorMessage.INVALID_NAME_ERR);
-			return;
+			return false;
 		}
-		
+		// Valid first name
 		hideErrorMessage(firstNameError);
-		// Validate first name contains special characters
+		return true;
 	}
 	
 	/**
@@ -77,81 +107,91 @@ public class RegistrationViewController extends ParentController{
 	 * If it fails in one phase, the error message corresponding to
 	 * that phase will be displayed. Function stops validating.
 	 */
-	private void validateLastName() {
+	private boolean validateLastName() {
 		// Validate first name
-		if (Utility.isTextFieldEmpty(lastName)) {
+		if (Utility.isTextFieldEmpty(lastNameTF)) {
 			displayErrorMessage(lastNameError, ErrorMessage.EMPTY_FIELD_ERR);
-			return;
+			return false;
 		} 
 		
-		if (!Utility.isNameValid(lastName.getText())) {
+		if (!Utility.isNameValid(lastNameTF.getText())) {
 			displayErrorMessage(lastNameError, ErrorMessage.INVALID_NAME_ERR);
-			return;
+			return false;
 		}
 		
 		// Passed all phases, set error text invisible
 		hideErrorMessage(lastNameError);
+		return true;
 	}
 	
-	private void validateUsername() {
+	private boolean validateUsername() {
 		// Validate first name
-		if (Utility.isTextFieldEmpty(username)) {
+		if (Utility.isTextFieldEmpty(usernameTF)) {
 			displayErrorMessage(usernameError, ErrorMessage.EMPTY_FIELD_ERR);
-			return;
+			return false;
 		}
 		
 		boolean userAlreadyExisted = false;
 		if (userAlreadyExisted) {
 			// Search through all database to find if user already existed
 			// Print warning message
+			return false;
 		}
 		
 		// Check if username contains invalid characters
 		boolean isContainedInvalidChar = false; 
 		if (isContainedInvalidChar) {
 			// Print warning message
+			return false;
 		}
 		
-		boolean isInvalidLength = false;
-		if (isInvalidLength) { // Length should be from 8 - 12 (Eg)
+		final int minLength = 6;
+		final int maxLength = 15;
+		if (usernameTF.getText().length() < minLength || usernameTF.getText().length() > maxLength) { // Length should be from 6 - 30 (Eg)
 			// Print warning message
+			displayErrorMessage(usernameError, ErrorMessage.INVALID_USERNAME_LENGTH_ERR);
+			return false;
 		}
 		hideErrorMessage(usernameError);
+		return true;
 	}
 	
-	private void validateOriginalPassword() {
+	private boolean validateOriginalPassword() {
 		// Validate empty
-		if (Utility.isTextFieldEmpty(password)) {
+		if (Utility.isTextFieldEmpty(passwordPF)) {
 			passwordError.setText(ErrorMessage.EMPTY_FIELD_ERR);
 			passwordError.setVisible(true);
-			return;
+			return false;
 		}
 		
-		if(password.getText().length() < 8) {
+		final int minLength = 8;
+		if(passwordPF.getText().length() < minLength) {
 			displayErrorMessage(passwordError, ErrorMessage.PASSWORD_TOO_SHORT_ERR);
-			return;
+			return false;
 		}
+		// Passed all validation
 		hideErrorMessage(passwordError);
+		return true;
 	}
 	
-	private void validateConfirmedPassword() {
-		if (Utility.isTextFieldEmpty(confirmPassword)) {
+	private boolean validateConfirmedPassword() {
+		if (Utility.isTextFieldEmpty(confirmPasswordPF)) {
 			displayErrorMessage(confirmPasswordError, ErrorMessage.EMPTY_FIELD_ERR);
-			return;
+			return false;
 		}
 		
-		if (!password.getText().equals(confirmPassword.getText())) {
+		if (!passwordPF.getText().equals(confirmPasswordPF.getText())) {
 			System.err.println("Passwords not matching!");
 			displayErrorMessage(confirmPasswordError, ErrorMessage.PASSWORD_NOT_MATCHED_ERR);
-			return;
+			return false;
 		}
-		
+		// Passed all validation
 		hideErrorMessage(confirmPasswordError);
+		return true;
 	}
 	
-	private void validatePassword() {
-		validateOriginalPassword();
-		validateConfirmedPassword();
+	private boolean validatePassword() {
+		return validateOriginalPassword() && validateConfirmedPassword();
 	}
 	
 	/**
@@ -162,31 +202,33 @@ public class RegistrationViewController extends ParentController{
 	 *  <li> Is email already existing on database?
 	 *  <ul><p>
 	 */
-	private void validateEmail() {
-		if (Utility.isTextFieldEmpty(email)) {
+	private boolean validateEmail() {
+		if (Utility.isTextFieldEmpty(emailTF)) {
 			displayErrorMessage(emailError, ErrorMessage.EMPTY_FIELD_ERR);
-			return;
+			return false;
 		}
 		
-		if (!Utility.isValidEmail(email.getText())) {
+		if (!Utility.isValidEmail(emailTF.getText())) {
 			displayErrorMessage(emailError, ErrorMessage.INVALID_EMAIL_ERR);
-			return;
+			return false;
 		}
 		
-		boolean isEmailAlreadyExisted = true;
-		if (isEmailAlreadyExisted) {
-			// print warning message
-			// return;
+		User user = userManager.findByEmail(emailTF.getText());
+		if (null != user) {
+			displayErrorMessage(emailError, ErrorMessage.EMAIL_TAKEN_ERR);
+			return false;
 		}
 		// Passed all validations
 		hideErrorMessage(emailError);
+		return true;
 	}
 	
-	private void validateDoB() {
-		if (null == dateOfBirth.getValue()) {
+	private boolean validateDoB() {
+		if (null == dateOfBirthDP.getValue()) {
 			displayErrorMessage(dobError, ErrorMessage.EMPTY_FIELD_ERR);
-			return;
+			return false;
 		}
 		hideErrorMessage(dobError);
+		return true;
 	}
 }

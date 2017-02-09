@@ -1,33 +1,36 @@
 package main.java.dao;
-// default package
-// Generated Feb 8, 2017 8:50:03 AM by Hibernate Tools 5.2.0.CR1
-import main.java.model.Account;
-import java.util.List;
-import javax.naming.InitialContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
+
+import main.java.model.Account;
+import main.java.utility.HibernateUtil;
 
 /**
  * Home object for domain model class Account.
  * @see .Account
- * @author Hibernate Tools
+ * @author aqd14
  */
 public class AccountManager {
 
 	private static final Log log = LogFactory.getLog(AccountManager.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
-
-	protected SessionFactory getSessionFactory() {
-		try {
-			return (SessionFactory) new InitialContext().lookup("SessionFactory");
-		} catch (Exception e) {
-			log.error("Could not locate SessionFactory in JNDI", e);
-			throw new IllegalStateException("Could not locate SessionFactory in JNDI");
-		}
+	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	
+	public boolean create(Account account) {
+		// Check if user already existed in database by using email
+//		User existingUser = findByEmail(user.getEmail());
+//		if (null == existingUser) {
+//			return false;
+//		}
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		session.save(account);
+		session.getTransaction().commit();
+		return true;
 	}
 
 	public void persist(Account transientInstance) {
@@ -98,19 +101,6 @@ public class AccountManager {
 			return instance;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
-			throw re;
-		}
-	}
-
-	public List findByExample(Account instance) {
-		log.debug("finding Account instance by example");
-		try {
-			List results = sessionFactory.getCurrentSession().createCriteria("Account").add(Example.create(instance))
-			        .list();
-			log.debug("find by example successful, result size: " + results.size());
-			return results;
-		} catch (RuntimeException re) {
-			log.error("find by example failed", re);
 			throw re;
 		}
 	}

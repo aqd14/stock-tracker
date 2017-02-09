@@ -14,6 +14,6 @@ public class ParentController {
 	}
 	
 	protected void hideErrorMessage(Text instance) {
-		instance.setVisible(false);
+		instance.setVisible(false);   
 	}
 }
