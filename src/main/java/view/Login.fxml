@@ -44,7 +44,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane alignment="center" hgap="10" styleClass="root" vgap="10" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.LoginViewController">
+<GridPane fx:id="loginGP" alignment="center" hgap="10" styleClass="root" vgap="10" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.LoginViewController">
   <padding><Insets bottom="10" left="25" right="25" top="25" /></padding>
   
   <Text id="welcome-text" text="Welcome" GridPane.columnSpan="2" />
@@ -60,7 +60,9 @@
   <HBox alignment="bottom_right" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
       <Button onAction="#handleSubmitButtonAction" text="Sign In" />
   </HBox>
-   <Label fx:id="registerLB" onMouseClicked="#createNewAccount" prefHeight="17.0" prefWidth="104.0" styleClass="labelLogin" text="Create an account" GridPane.columnIndex="1" GridPane.rowIndex="6">
+  
+  <Text fx:id="actiontarget" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+   <Label fx:id="registerLB" onMouseClicked="#createNewAccount" prefHeight="17.0" prefWidth="104.0" styleClass="labelLogin" text="Create an account" GridPane.columnIndex="1" GridPane.rowIndex="8">
       <opaqueInsets>
          <Insets />
       </opaqueInsets>
@@ -68,7 +70,7 @@
          <Insets left="45.0" />
       </GridPane.margin>
    </Label>
-   <Label fx:id="resetPasswordLB" onMouseClicked="#resetPassword" text="Forgot your password?" GridPane.rowIndex="6" />
+   <Label fx:id="resetPasswordLB" onMouseClicked="#resetPassword" styleClass="labelLogin" text="Forgot your password?" GridPane.rowIndex="8" />
   
   <stylesheets>
     <URL value="@../../resources/css/login.css" />

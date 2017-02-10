@@ -36,15 +36,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import main.java.control.RegistrationViewController;
-
+import main.java.utility.WindowSize;
+	
 public class MainApp extends Application {
-    private RegistrationViewController registrationController;
-    private Stage curStage;
-    
-//    public MainApp() {
-//    	registrationController = new RegistrationViewController();
-//    }
     
     public static void main(String[] args) {
         Application.launch(MainApp.class, args);
@@ -53,11 +47,11 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
     	// Initialize current stage
-    	curStage = stage;
     	// User login is the first page appears when user runs the app
-        Parent root = FXMLLoader.load(getClass().getResource("main/java/view/user_login.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("main/java/view/Login.fxml"));
+        Parent root = (Parent)loader.load();
         stage.setTitle("Stock Tracker");
-        stage.setScene(new Scene(root, 400, 800));
+        stage.setScene(new Scene(root, WindowSize.LOGIN_WIDTH, WindowSize.LOGIN_HEIGHT));
         stage.setResizable(false);
         stage.show();
     }

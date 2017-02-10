@@ -61,3 +61,11 @@
 .button:hover {
     -fx-background-color: linear-gradient(#2A5058, #61a2b1);
 }
+
+.labelLogin {
+	-fx-background-color:transparent;
+}
+
+.labelLogin:hover {
+	-fx-background-color:#dae7f3;
+}

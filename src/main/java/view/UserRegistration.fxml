@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane alignment="center" hgap="10.0" prefHeight="605.0" prefWidth="456.0" styleClass="root" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.RegistrationViewController">
+<GridPane fx:id="registerGP" alignment="center" hgap="10.0" prefHeight="605.0" prefWidth="456.0" styleClass="root" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.RegistrationViewController">
   <padding><Insets bottom="10.0" left="25.0" right="25.0" top="25.0" /></padding>
    <children>
      
@@ -37,7 +37,11 @@
 	</Text>
      
       <Label text="Last Name" GridPane.rowIndex="4" />
-      <JFXTextField fx:id="lastNameTF" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <JFXTextField fx:id="lastNameTF" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <font>
+     		<Font name="Arial" size="14.0"/>
+     	</font>
+      </JFXTextField>
       	<Text fx:id="lastNameError" fill="RED" strokeType="OUTSIDE"
 		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
 		GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -47,7 +51,11 @@
 	</Text>
       
       <Label text="Username" GridPane.rowIndex="7" />
-      <JFXTextField fx:id="usernameTF" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+	<JFXTextField fx:id="usernameTF" GridPane.columnIndex="1" GridPane.rowIndex="7">
+		<font>
+			<Font name="Arial" size="14.0" />
+		</font>
+	</JFXTextField>
       	<Text fx:id="usernameError" fill="RED" strokeType="OUTSIDE"
 		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
 		GridPane.columnIndex="1" GridPane.rowIndex="8">
@@ -77,7 +85,11 @@
 	</Text>
       
       <Label text="Email" GridPane.rowIndex="16" />
-      <JFXTextField fx:id="emailTF" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+      <JFXTextField fx:id="emailTF" GridPane.columnIndex="1" GridPane.rowIndex="16">
+		<font>
+			<Font name="Arial" size="14.0" />
+		</font>
+      </JFXTextField>
       	<Text fx:id="emailError" fill="RED" strokeType="OUTSIDE"
 		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
 		GridPane.columnIndex="1" GridPane.rowIndex="17">
@@ -93,7 +105,7 @@
 		GridPane.columnIndex="1" GridPane.rowIndex="20">
 		<font>
 			<Font name="Arial" size="14.0" />
-		</font>
+		</font> 
 	</Text>	
 	
 	<JFXButton alignment="CENTER" buttonType="RAISED" onAction="#handleRegisterSubmit" prefHeight="40.0" prefWidth="79.0" ripplerFill="WHITE" text="Register" textFill="#4f3cb5" GridPane.columnIndex="1" GridPane.rowIndex="22">

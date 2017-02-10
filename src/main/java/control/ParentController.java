@@ -6,6 +6,7 @@ import main.java.dao.UserManager;
 public class ParentController {
 	
 	protected UserManager userManager;
+//	protected Stage stage;
 
 	public ParentController() {
 		// TODO Auto-generated constructor stub
@@ -20,4 +21,8 @@ public class ParentController {
 	protected void hideErrorMessage(Text instance) {
 		instance.setVisible(false);   
 	}
+	
+//	public void setStage(Stage stage) {
+//		this.stage = stage;
+//	}
 }

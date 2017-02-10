@@ -1,17 +1,24 @@
 package main.java.control;
 
+import java.io.IOException;
 import java.sql.Date;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import main.java.err.ErrorMessage;
 import main.java.model.Account;
 import main.java.model.User;
 import main.java.utility.Utility;
+import main.java.utility.WindowSize;
 
 public class RegistrationViewController extends ParentController{
 	// TextField objects for user information
@@ -31,6 +38,8 @@ public class RegistrationViewController extends ParentController{
 	@FXML private Text emailError;
 	@FXML private Text dobError;
 	
+	@FXML private GridPane registerGP;
+	
 /*	public RegistrationViewController() {
 		userManager = new UserManager();
 		user = new User();
@@ -40,10 +49,9 @@ public class RegistrationViewController extends ParentController{
 	 * Validate user input when user clicks on [Register] button
 	 * 
 	 * @param registerEvent
+	 * @throws InterruptedException 
 	 */
-	@FXML public void handleRegisterSubmit(ActionEvent registerEvent) {
-//		System.out.println(password.getText());
-//		System.out.println(dateOfBirth.getValue());
+	@FXML public void handleRegisterSubmit(ActionEvent registerEvent) throws InterruptedException {
 		boolean isAllInfoValid = validateUserInput();
 		if (isAllInfoValid) {
 			// Extract user information to create new user
@@ -53,15 +61,15 @@ public class RegistrationViewController extends ParentController{
 			String lastName = lastNameTF.getText();
 			String email = emailTF.getText();
 			Date birthday = Date.valueOf(dateOfBirthDP.getValue());
-//			Set<Transaction> transactions = null;
 			User user = new User(username, password, firstName, lastName, email, birthday);
 			// Create account for new user
 			Account account = new Account(user, 0.0, user.getFirstName() + " " + user.getLastName(), null);
 			user.setAccount(account);
 			account.setUser(user);
 			userManager.create(user);
-			// Display successful message  0
-			// Switch to Login page
+			// Register successfully. Switch to Login page
+			Thread.sleep(2000);
+			switchRegisterToLogin();
 		}
 	}
 	
@@ -219,5 +227,23 @@ public class RegistrationViewController extends ParentController{
 		}
 		hideErrorMessage(dobError);
 		return true;
+	}
+	
+	/**
+	 * Switch from Registration page to Login page
+	 */
+	private void switchRegisterToLogin() {
+    	Stage curStage = (Stage)registerGP.getScene().getWindow();
+        Parent login;
+		try {
+			login = new FXMLLoader(getClass().getResource("../../../main/java/view/Login.fxml")).load();
+	        curStage.setTitle("User Registration");
+	        curStage.setScene(new Scene(login, WindowSize.LOGIN_WIDTH, WindowSize.LOGIN_HEIGHT));
+	        curStage.setResizable(false);
+	        curStage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
