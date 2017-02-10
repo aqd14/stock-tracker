@@ -50,13 +50,13 @@
   <Label text="Username:" 
       GridPane.columnIndex="0" GridPane.rowIndex="1" />
   
-  <TextField 
+  <TextField fx:id="usernameTF"
       GridPane.columnIndex="1" GridPane.rowIndex="1" />
   
   <Label text="Password:" 
       GridPane.columnIndex="0" GridPane.rowIndex="2" />
   
-  <PasswordField fx:id="passwordField" 
+  <PasswordField fx:id="passwordPF" 
       GridPane.columnIndex="1" GridPane.rowIndex="2" />
   
   <HBox spacing="10" alignment="bottom_right" 

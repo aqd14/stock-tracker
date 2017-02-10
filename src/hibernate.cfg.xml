@@ -18,8 +18,10 @@
         <property name="hibernate.current_session_context_class">thread</property>
         <!-- Mapping hbm file to connect Java Persistent Objects with Database -->
         <mapping resource="resources/Account.hbm.xml" />
-        <mapping resource="resources/Userqwewq.hbm.xml" />
+        <mapping resource="resources/User.hbm.xml" />
         <mapping resource="resources/Transaction.hbm.xml" />
         <mapping resource="resources/Stock.hbm.xml" />
+        <mapping resource="resources/StockDetail.hbm.xml" />
+        <mapping resource="resources/UserStock.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

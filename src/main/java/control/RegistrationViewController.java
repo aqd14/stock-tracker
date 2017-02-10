@@ -1,7 +1,6 @@
 package main.java.control;
 
-import java.time.LocalDate;
-import java.util.Set;
+import java.sql.Date;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,11 +8,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import main.java.dao.AccountManager;
-import main.java.dao.UserManager;
 import main.java.err.ErrorMessage;
 import main.java.model.Account;
-import main.java.model.Transaction;
 import main.java.model.User;
 import main.java.utility.Utility;
 
@@ -35,11 +31,6 @@ public class RegistrationViewController extends ParentController{
 	@FXML private Text emailError;
 	@FXML private Text dobError;
 	
-	private UserManager userManager = new UserManager();
-	private AccountManager accountManager = new AccountManager();
-	private User user;
-	private Account account;
-	
 /*	public RegistrationViewController() {
 		userManager = new UserManager();
 		user = new User();
@@ -53,25 +44,23 @@ public class RegistrationViewController extends ParentController{
 	@FXML public void handleRegisterSubmit(ActionEvent registerEvent) {
 //		System.out.println(password.getText());
 //		System.out.println(dateOfBirth.getValue());
-		boolean isAllInfoValid = true; //validateUserInput();
+		boolean isAllInfoValid = validateUserInput();
 		if (isAllInfoValid) {
 			// Extract user information to create new user
-//			Account account = null;
-//			String username = usernameTF.getText();
-//			String password = passwordPF.getText();
-//			String firstName = firstNameTF.getText();
-//			String lastName = lastNameTF.getText();
-//			String email = emailTF.getText();
-//			LocalDate birthday = dateOfBirthDP.getValue();
+			String username = usernameTF.getText();
+			String password = passwordPF.getText();
+			String firstName = firstNameTF.getText();
+			String lastName = lastNameTF.getText();
+			String email = emailTF.getText();
+			Date birthday = Date.valueOf(dateOfBirthDP.getValue());
 //			Set<Transaction> transactions = null;
-//			user = new User(account, username, password, firstName, lastName, email, birthday, transactions);
-			LocalDate birthday = LocalDate.now();
-//			userManager.findByEmail("aqd14@msstate.edu");
-			user = new User(null, "aqd14msstate", "16052811", "Anh", "Do", "aqd14@msstate.edu", birthday, null);
-			account = new Account(1, 100.0, "Anh Do", null);
-			accountManager.create(account);
-			// userManager.create(user);
-			// Display successful message  
+			User user = new User(username, password, firstName, lastName, email, birthday);
+			// Create account for new user
+			Account account = new Account(user, 0.0, user.getFirstName() + " " + user.getLastName(), null);
+			user.setAccount(account);
+			account.setUser(user);
+			userManager.create(user);
+			// Display successful message  0
 			// Switch to Login page
 		}
 	}

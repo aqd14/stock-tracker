@@ -120,23 +120,56 @@ public class UserManager {
 	 */
 	public User findByEmail(String email) {
 		log.debug("getting User instance with email: " + email);
+		Session session = null;
 		try {
-			Session session = sessionFactory.getCurrentSession();
+			session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
 			String searchEmailHQL = "FROM User WHERE email = '" + email + "'";
 			@SuppressWarnings("unchecked")
 			Query<User> query = session.createQuery(searchEmailHQL);//.setParameter("email", email);
 			List<User> users = query.getResultList();
-			if (users == null) {
+			if (users == null || users.size() == 0) {
 				log.debug("get successful, no instance found");
+				return null;
 			} else {
 				log.debug("get successful, instance found");
 			}
-			session.close();
 			return users.get(0);
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
 			throw re;
+		} finally {
+			if(session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+	}
+	
+	public User findByUsernameOrEmail(String usernameOrEmail, String password) {
+		log.debug("getting User instance with username or email: " + usernameOrEmail);
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
+			String searchUserHQL = "FROM User user WHERE user.username = '" + usernameOrEmail + "'" + " AND user.password  = '" + password
+			        + "'" + "OR email = '" + usernameOrEmail + "'" + " AND user.password = '" + password + "'";
+			@SuppressWarnings("unchecked")
+			Query<User> query = session.createQuery(searchUserHQL);//.setParameter("email", email);
+			List<User> users = query.getResultList();
+			if (users == null || users.size() == 0) {
+				log.debug("get successful, no instance found");
+				return null;
+			} else {
+				log.debug("get successful, instance found");
+			}
+			return users.get(0);
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			throw re;
+		} finally {
+			if(session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 	}
 }

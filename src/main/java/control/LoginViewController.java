@@ -34,12 +34,27 @@ package main.java.control;
  
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
  
 public class LoginViewController extends ParentController{
     @FXML private Text actiontarget;
+    @FXML private TextField usernameTF;
+    @FXML private PasswordField passwordPF;
     
     @FXML protected void handleSubmitButtonAction(ActionEvent event) {
-        actiontarget.setText("Sign in button pressed");
+    	boolean matchedUsernamePassword = verifyUserNameOrEmail();
+        if (matchedUsernamePassword) {
+        	System.out.println("Login successfully!");
+        	actiontarget.setVisible(false);
+        } else {
+        	actiontarget.setText("Incorrect username or password. Try again.");
+        }
+    }
+    
+    // User might enter email in 
+    private boolean verifyUserNameOrEmail() {
+    	return userManager.findByUsernameOrEmail(usernameTF.getText(), passwordPF.getText()) == null ? false : true;
     }
 }
