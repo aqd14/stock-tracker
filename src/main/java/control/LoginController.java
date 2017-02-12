@@ -32,8 +32,13 @@
 
 package main.java.control;
  
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -41,7 +46,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.java.utility.Screen;
  
-public class LoginController extends ParentController {
+public class LoginController extends ParentController implements Initializable {
     @FXML private Text loginError;
 	@FXML private TextField usernameTF;
     @FXML private PasswordField passwordPF;
@@ -50,11 +55,15 @@ public class LoginController extends ParentController {
 //    
     @FXML private AnchorPane loginAP;
     
-    @FXML protected void login(ActionEvent e) {
+    @FXML protected void login(ActionEvent e) throws IOException {
     	boolean matchedUsernamePassword = verifyUserNameOrEmail();
         if (matchedUsernamePassword) {
         	System.out.println("Login successfully!");
+        	switchScreen(loginAP, Screen.HOME);
         	loginError.setVisible(false);
+//        	FXMLLoader loader = new FXMLLoader(getClass().getResource("main/java/view/Home.fxml"));
+//            HomeController homeController = (HomeController) loader.getController();
+//            homeController.initTableView();
         } else {
         	loginError.setText("Incorrect username or password. Try again.");
         	loginError.setVisible(true);
@@ -77,4 +86,10 @@ public class LoginController extends ParentController {
     	// Switch to Reset Password View
     	switchScreen(loginAP, Screen.RESET_PASSWORD);
     }
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
+	}
 }

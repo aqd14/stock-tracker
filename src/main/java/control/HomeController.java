@@ -4,8 +4,10 @@
 package main.java.control;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
@@ -16,6 +18,7 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
@@ -28,7 +31,7 @@ import yahoofinance.quotes.stock.StockQuote;
  * @author doquocanh-macbook
  *
  */
-public class HomeController {
+public class HomeController implements Initializable {
 	@FXML private BorderPane homeBP;
 	@FXML private JFXTreeTableView<Stock> stockTableView;
 	
@@ -38,14 +41,17 @@ public class HomeController {
 	@FXML private TreeTableColumn<Stock, Double> lastPriceCol;
 	@FXML private TreeTableColumn<Stock, Double> changeCol;
 	@FXML private TreeTableColumn<Stock, Double> percentChangeCol;
-	/**
-	 * @throws IOException 
-	 * 
-	 */
 	
-	public void initTableView() throws IOException {
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 		String[] symbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO", "HPQ"};
-		ObservableList<Stock> stocks = getMultipleStockData(symbols);
+		ObservableList<Stock> stocks = null;
+		try {
+			stocks = getMultipleStockData(symbols);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
 		stockTableView.setRoot(root);
 		stockTableView.setShowRoot(false);
@@ -136,8 +142,7 @@ public class HomeController {
 	}
 	
 	private void setPriceFormatColumn(TreeTableColumn<Stock, Double> c) {
-		c.setCellFactory(col -> 
-	    new TreeTableCell<Stock, Double>() {
+		c.setCellFactory(col -> new TreeTableCell<Stock, Double>() {
 	        @Override 
 	        public void updateItem(Double price, boolean empty) {
 	            super.updateItem(price, empty);

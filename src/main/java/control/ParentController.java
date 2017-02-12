@@ -38,6 +38,9 @@ public class ParentController {
 				case LOGIN:
 					root = new FXMLLoader(getClass().getResource("../../../main/java/view/Login.fxml")).load();
 					break;
+				case HOME:
+					root = new FXMLLoader(getClass().getResource("../../../main/java/view/Home.fxml")).load();
+					break;
 				case REGISTER:
 					root = new FXMLLoader(getClass().getResource("../../../main/java/view/UserRegistration.fxml")).load();
 					break;
