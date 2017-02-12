@@ -32,39 +32,32 @@
 
 package main.java.control;
  
-import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import main.java.utility.WindowSize;
+import main.java.utility.Screen;
  
-public class LoginViewController extends ParentController{
-    @FXML private Text actiontarget;
-    @FXML private TextField usernameTF;
+public class LoginController extends ParentController {
+    @FXML private Text loginError;
+	@FXML private TextField usernameTF;
     @FXML private PasswordField passwordPF;
-    @FXML private Label registerLB;
-    @FXML private Label resetPasswordLB;
+//    @FXML private Label registerLB;
+//    @FXML private Label resetPasswordLB;
+//    
+    @FXML private AnchorPane loginAP;
     
-    @FXML private GridPane loginGP;
-    
-    @FXML protected void handleSubmitButtonAction(ActionEvent e) {
+    @FXML protected void login(ActionEvent e) {
     	boolean matchedUsernamePassword = verifyUserNameOrEmail();
         if (matchedUsernamePassword) {
         	System.out.println("Login successfully!");
-        	actiontarget.setVisible(false);
+        	loginError.setVisible(false);
         } else {
-        	actiontarget.setText("Incorrect username or password. Try again.");
-        	actiontarget.setVisible(true);
+        	loginError.setText("Incorrect username or password. Try again.");
+        	loginError.setVisible(true);
         }
     }
     
@@ -76,41 +69,12 @@ public class LoginViewController extends ParentController{
     @FXML protected void createNewAccount(MouseEvent e) {
     	System.out.println("Create new account.");
     	// Switch to Registration View
-    	switchLoginToRegister();
+    	switchScreen(loginAP, Screen.REGISTER);
     }
     
     @FXML protected void resetPassword(MouseEvent e) {
     	System.out.println("Reset password.");
     	// Switch to Reset Password View
+    	switchScreen(loginAP, Screen.RESET_PASSWORD);
     }
-    
-    @FXML protected void onMouseEntered(MouseEvent e) {
-//    	registerLB.setScaleX(1.5);
-//    	registerLB.setScaleY(1.5);
-    }
-    
-    @FXML protected void onMouseExited(MouseEvent e) {
-//    	registerLB.setScaleX(1);
-//    	registerLB.setScaleY(1);
-    }
-
-	public void setStageAndSetupListeners(Stage stage) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	private void switchLoginToRegister() {
-    	Stage curStage = (Stage)loginGP.getScene().getWindow();
-        Parent root;
-		try {
-			root = new FXMLLoader(getClass().getResource("../../../main/java/view/UserRegistration.fxml")).load();
-	        curStage.setTitle("User Registration");
-	        curStage.setScene(new Scene(root, WindowSize.REGISTRATION_WIDTH, WindowSize.REGISTRATION_HEIGHT));
-	        curStage.setResizable(false);
-	        curStage.show();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

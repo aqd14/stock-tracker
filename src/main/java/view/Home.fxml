@@ -32,6 +32,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.validation.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -44,48 +52,20 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane alignment="center" hgap="10" styleClass="root" vgap="10" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.LoginViewController">
-  <padding><Insets bottom="10" left="25" right="25" top="25" /></padding>
-  
-  <Text id="welcome-text" text="Welcome" GridPane.columnSpan="2" />
-  
-  <Label text="Username:" GridPane.rowIndex="1" />
-  
-  <TextField fx:id="usernameTF" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-  
-  <Label text="Password:" GridPane.rowIndex="2" />
-  
-  <PasswordField fx:id="passwordPF" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-  
-  <HBox alignment="bottom_right" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
-      <Button onAction="#handleSubmitButtonAction" text="Sign In" />
-  </HBox>
-   <Label fx:id="registerLB" onMouseClicked="#createNewAccount" prefHeight="17.0" prefWidth="104.0" styleClass="labelLogin" text="Create an account" GridPane.columnIndex="1" GridPane.rowIndex="6">
-      <opaqueInsets>
-         <Insets />
-      </opaqueInsets>
-      <GridPane.margin>
-         <Insets left="45.0" />
-      </GridPane.margin>
-   </Label>
-   <Label fx:id="resetPasswordLB" onMouseClicked="#resetPassword" text="Forgot your password?" GridPane.rowIndex="6" />
-  
-  <stylesheets>
-    <URL value="@../../resources/css/login.css" />
-  </stylesheets>
-   <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
-  
-</GridPane>
+<BorderPane fx:id="homeBP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="662.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.HomeController">
+   <center>
+      <JFXTreeTableView fx:id="stockTableView" BorderPane.alignment="CENTER">
+         <columns>
+            <TreeTableColumn fx:id="stockCodeCol" editable="false" prefWidth="88.0" text="Stock Code" />
+            <TreeTableColumn fx:id="companyCol" editable="false" prefWidth="191.0" text="Company" />
+            <TreeTableColumn fx:id="priceCol" editable="false" prefWidth="110.0" text="Price" />
+            <TreeTableColumn fx:id="lastPriceCol" editable="false" prefWidth="110.0" text="Last Price" />
+            <TreeTableColumn fx:id="changeCol" editable="false" text="Change" />
+            <TreeTableColumn fx:id="percentChangeCol" editable="false" text="\% Change" />
+         </columns>
+      </JFXTreeTableView>
+   </center>
+   <top>
+      <JFXToolbar prefHeight="55.0" prefWidth="690.0" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>

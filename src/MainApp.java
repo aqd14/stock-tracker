@@ -36,7 +36,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import main.java.utility.WindowSize;
 	
 public class MainApp extends Application {
     
@@ -51,8 +50,11 @@ public class MainApp extends Application {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("main/java/view/Login.fxml"));
         Parent root = (Parent)loader.load();
         stage.setTitle("Stock Tracker");
-        stage.setScene(new Scene(root, WindowSize.LOGIN_WIDTH, WindowSize.LOGIN_HEIGHT));
+        stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();
+        
+//        HomeController homeController = (HomeController) loader.getController();
+//        homeController.initTableView();
     }
 }

@@ -25,12 +25,10 @@
      <Label text="First Name" GridPane.rowIndex="1" />
      <JFXTextField fx:id="firstNameTF" GridPane.columnIndex="1" GridPane.rowIndex="1">
      	<font>
-     		<Font name="Arial" size="14.0"/>
+     		<Font name="Arial" size="14.0" />
      	</font>
      </JFXTextField>
-	<Text fx:id="firstNameError" fill="RED" strokeType="OUTSIDE"
-		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
-		GridPane.columnIndex="1" GridPane.rowIndex="2">
+	<Text fx:id="firstNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="2">
 		<font>
 			<Font name="Arial" size="14.0" />
 		</font>
@@ -39,12 +37,10 @@
       <Label text="Last Name" GridPane.rowIndex="4" />
       <JFXTextField fx:id="lastNameTF" GridPane.columnIndex="1" GridPane.rowIndex="4">
         <font>
-     		<Font name="Arial" size="14.0"/>
+     		<Font name="Arial" size="14.0" />
      	</font>
       </JFXTextField>
-      	<Text fx:id="lastNameError" fill="RED" strokeType="OUTSIDE"
-		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
-		GridPane.columnIndex="1" GridPane.rowIndex="5">
+      	<Text fx:id="lastNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="5">
 		<font>
 			<Font name="Arial" size="14.0" />
 		</font>
@@ -56,9 +52,7 @@
 			<Font name="Arial" size="14.0" />
 		</font>
 	</JFXTextField>
-      	<Text fx:id="usernameError" fill="RED" strokeType="OUTSIDE"
-		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
-		GridPane.columnIndex="1" GridPane.rowIndex="8">
+      	<Text fx:id="usernameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="8">
 		<font>
 			<Font name="Arial" size="14.0" />
 		</font>
@@ -66,9 +60,7 @@
       
       <Label text="Password" GridPane.rowIndex="10" />
       <JFXPasswordField fx:id="passwordPF" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-      	<Text fx:id="passwordError" fill="RED" strokeType="OUTSIDE"
-		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
-		GridPane.columnIndex="1" GridPane.rowIndex="11">
+      	<Text fx:id="passwordError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="11">
 		<font>
 			<Font name="Arial" size="14.0" />
 		</font>
@@ -76,9 +68,7 @@
       
       <Label text="Confirm Password" GridPane.rowIndex="13" />
       <JFXPasswordField fx:id="confirmPasswordPF" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-     	<Text fx:id="confirmPasswordError" fill="RED" strokeType="OUTSIDE"
-		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
-		GridPane.columnIndex="1" GridPane.rowIndex="14">
+     	<Text fx:id="confirmPasswordError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="14">
 		<font>
 			<Font name="Arial" size="14.0" />
 		</font>
@@ -90,9 +80,7 @@
 			<Font name="Arial" size="14.0" />
 		</font>
       </JFXTextField>
-      	<Text fx:id="emailError" fill="RED" strokeType="OUTSIDE"
-		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
-		GridPane.columnIndex="1" GridPane.rowIndex="17">
+      	<Text fx:id="emailError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="17">
 		<font>
 			<Font name="Arial" size="14.0" />
 		</font>
@@ -100,18 +88,23 @@
       
       <Label text="Date of Birth" GridPane.rowIndex="19" />
       <JFXDatePicker fx:id="dateOfBirthDP" prefHeight="28.0" prefWidth="215.0" GridPane.columnIndex="1" GridPane.rowIndex="19" />
-		<Text fx:id="dobError" fill="RED" strokeType="OUTSIDE"
-		strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875"
-		GridPane.columnIndex="1" GridPane.rowIndex="20">
+		<Text fx:id="dobError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="20">
 		<font>
 			<Font name="Arial" size="14.0" />
 		</font> 
-	</Text>	
-	
-	<JFXButton alignment="CENTER" buttonType="RAISED" onAction="#handleRegisterSubmit" prefHeight="40.0" prefWidth="79.0" ripplerFill="WHITE" text="Register" textFill="#4f3cb5" GridPane.columnIndex="1" GridPane.rowIndex="22">
-		<GridPane.margin>
-			<Insets left="137.0" />
-		</GridPane.margin>
+	</Text>
+      <JFXButton onMouseClicked="#back" buttonType="RAISED" prefHeight="27.0" prefWidth="72.0" ripplerFill="WHITE" style="-fx-background-color: #6e757a;" text="Back" textFill="WHITE" GridPane.rowIndex="20">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="30.0" top="20.0" />
+         </GridPane.margin>
+      </JFXButton>
+      <JFXButton onAction="#register" style="-fx-background-color: #1887cc;" text="Register" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="20">
+         <GridPane.margin>
+            <Insets left="120.0" top="20.0" />
+         </GridPane.margin>
       </JFXButton>
    </children>
   
@@ -144,8 +137,5 @@
       <RowConstraints />
       <RowConstraints />
       <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
    </rowConstraints>
-  
 </GridPane>

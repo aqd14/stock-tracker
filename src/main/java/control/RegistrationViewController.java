@@ -1,26 +1,22 @@
 package main.java.control;
 
-import java.io.IOException;
 import java.sql.Date;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import main.java.err.ErrorMessage;
 import main.java.model.Account;
 import main.java.model.User;
+import main.java.utility.Screen;
 import main.java.utility.Utility;
-import main.java.utility.WindowSize;
 
-public class RegistrationViewController extends ParentController{
+public class RegistrationViewController extends ParentController {
 	// TextField objects for user information
 	@FXML private TextField firstNameTF;
 	@FXML private TextField lastNameTF;
@@ -51,7 +47,7 @@ public class RegistrationViewController extends ParentController{
 	 * @param registerEvent
 	 * @throws InterruptedException 
 	 */
-	@FXML public void handleRegisterSubmit(ActionEvent registerEvent) throws InterruptedException {
+	@FXML private void register(ActionEvent registerEvent) throws InterruptedException {
 		boolean isAllInfoValid = validateUserInput();
 		if (isAllInfoValid) {
 			// Extract user information to create new user
@@ -69,8 +65,12 @@ public class RegistrationViewController extends ParentController{
 			userManager.create(user);
 			// Register successfully. Switch to Login page
 			Thread.sleep(2000);
-			switchRegisterToLogin();
+			switchScreen(registerGP, Screen.LOGIN);
 		}
+	}
+	
+	@FXML private void back(MouseEvent e) {
+		switchScreen(registerGP, Screen.LOGIN);
 	}
 	
 	private boolean validateUserInput() {
@@ -227,23 +227,5 @@ public class RegistrationViewController extends ParentController{
 		}
 		hideErrorMessage(dobError);
 		return true;
-	}
-	
-	/**
-	 * Switch from Registration page to Login page
-	 */
-	private void switchRegisterToLogin() {
-    	Stage curStage = (Stage)registerGP.getScene().getWindow();
-        Parent login;
-		try {
-			login = new FXMLLoader(getClass().getResource("../../../main/java/view/Login.fxml")).load();
-	        curStage.setTitle("User Registration");
-	        curStage.setScene(new Scene(login, WindowSize.LOGIN_WIDTH, WindowSize.LOGIN_HEIGHT));
-	        curStage.setResizable(false);
-	        curStage.show();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }
