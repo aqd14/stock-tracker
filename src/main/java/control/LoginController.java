@@ -61,9 +61,6 @@ public class LoginController extends ParentController implements Initializable {
         	System.out.println("Login successfully!");
         	switchScreen(loginAP, Screen.HOME);
         	loginError.setVisible(false);
-//        	FXMLLoader loader = new FXMLLoader(getClass().getResource("main/java/view/Home.fxml"));
-//            HomeController homeController = (HomeController) loader.getController();
-//            homeController.initTableView();
         } else {
         	loginError.setText("Incorrect username or password. Try again.");
         	loginError.setVisible(true);
@@ -86,10 +83,23 @@ public class LoginController extends ParentController implements Initializable {
     	// Switch to Reset Password View
     	switchScreen(loginAP, Screen.RESET_PASSWORD);
     }
+    
+//    @Override
+//    public void switchScreen() {
+//    	
+//    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
+//		// TODO Auto-generated method stub
+//		// List of stocks that will be displayed in Home page
+//		final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO", "HPQ"};
+//		ObservableList<Stock> stocks = null;
+//		try {
+//			stocks = Utility.getMultipleStockData(stockSymbols);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

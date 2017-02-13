@@ -6,7 +6,6 @@ package main.java.control;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTreeTableView;
@@ -14,25 +13,24 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import main.java.model.Stock;
-import yahoofinance.YahooFinance;
-import yahoofinance.quotes.stock.StockQuote;
+import main.java.utility.Utility;
 
 /**
  * @author doquocanh-macbook
  *
  */
 public class HomeController implements Initializable {
-	@FXML private BorderPane homeBP;
+	@FXML private AnchorPane homeAP;
 	@FXML private JFXTreeTableView<Stock> stockTableView;
 	
 	@FXML private TreeTableColumn<Stock, String> stockCodeCol;
@@ -41,13 +39,16 @@ public class HomeController implements Initializable {
 	@FXML private TreeTableColumn<Stock, Double> lastPriceCol;
 	@FXML private TreeTableColumn<Stock, Double> changeCol;
 	@FXML private TreeTableColumn<Stock, Double> percentChangeCol;
+	@FXML private TreeTableColumn<Stock, Integer> stockBuyCol;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		String[] symbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO", "HPQ"};
+		// TODO Auto-generated method stub
+		// List of stocks that will be displayed in Home page
+		final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO", "HPQ"};
 		ObservableList<Stock> stocks = null;
 		try {
-			stocks = getMultipleStockData(symbols);
+			stocks = Utility.getMultipleStockData(stockSymbols);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,42 +63,7 @@ public class HomeController implements Initializable {
 		setCellFactoryLastPrice();
 		setCellFactoryPriceChange();
 		setCellFactoryPercentageChange();
-	}
-	
-	/**
-	 * Get list of big stocks
-	 * @return stocks
-	 * @throws IOException 
-	 */
-	private ObservableList<Stock> getMultipleStockData(String[] symbols) throws IOException {
-		if (symbols == null || symbols.length <= 0) {
-			System.err.println("Stock list is incorrect!");
-			return null;
-		}
-		Map<String, yahoofinance.Stock> stocksMap = YahooFinance.get(symbols, true);
-		ObservableList<Stock> stocks = extractStockData(stocksMap);
-		return stocks;
-	}
-	
-	private ObservableList<Stock> extractStockData(Map<String, yahoofinance.Stock> stocksMap) throws IOException {
-		ObservableList<Stock> stocks = FXCollections.observableArrayList();
-		for (Map.Entry<String, yahoofinance.Stock> entry : stocksMap.entrySet()) {
-			Stock stock = new Stock();
-			stock.setStockCode(entry.getKey());
-			yahoofinance.Stock s = entry.getValue();
-			s.print();
-			// Extract stock information
-			stock.setStockName(s.getName());
-			StockQuote stockQuote = s.getQuote(true);
-			if (stockQuote != null) {
-				if (stockQuote.getPrice() != null)
-					stock.setPrice(stockQuote.getPrice().doubleValue());
-				if (stockQuote.getPreviousClose() != null)
-					stock.setPreviousPrice(stockQuote.getPreviousClose().doubleValue());
-			}
-			stocks.add(stock);
-		}
-		return stocks;
+		setCellFactoryStockBuy();
 	}
 	
 	private void setCellValueStockCode() {
@@ -141,14 +107,24 @@ public class HomeController implements Initializable {
 		setPriceFormatColumn(percentChangeCol);
 	}
 	
+	private void setCellFactoryStockBuy() {
+		stockBuyCol.setCellValueFactory(param -> new ReadOnlyIntegerWrapper(
+		        param.getValue().getValue().getStockBuy()).asObject());
+		
+//		stockBuyCol.setCellFactory((TreeTableColumn<Stock, Integer> param) -> new GenericEditableTreeTableCell<Stock, Integer>(new TextFieldEditorBuilder()));
+//		stockBuyCol.setOnEditCommit((CellEditEvent<Stock, Integer> t)->{
+//			((Stock) t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue()).setStockBuy(t.getNewValue());
+//		});
+	}
+	
 	private void setPriceFormatColumn(TreeTableColumn<Stock, Double> c) {
 		c.setCellFactory(col -> new TreeTableCell<Stock, Double>() {
 	        @Override 
 	        public void updateItem(Double price, boolean empty) {
 	            super.updateItem(price, empty);
 	            DecimalFormat doubleFormat = new DecimalFormat("+#,##0.00;-#");
-	            if (empty) {
-	                setText(null);
+	            if (empty || price <= 0.001) {
+	                setText("0.00");
 	            } else {
             		setText(doubleFormat.format(price));
 	            }

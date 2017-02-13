@@ -25,7 +25,7 @@
      <Label text="First Name" GridPane.rowIndex="1" />
      <JFXTextField fx:id="firstNameTF" GridPane.columnIndex="1" GridPane.rowIndex="1">
      	<font>
-     		<Font name="Arial" size="14.0" />
+     		<Font size="14.0" />
      	</font>
      </JFXTextField>
 	<Text fx:id="firstNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -37,7 +37,7 @@
       <Label text="Last Name" GridPane.rowIndex="4" />
       <JFXTextField fx:id="lastNameTF" GridPane.columnIndex="1" GridPane.rowIndex="4">
         <font>
-     		<Font name="Arial" size="14.0" />
+     		<Font size="14.0" />
      	</font>
       </JFXTextField>
       	<Text fx:id="lastNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -49,7 +49,7 @@
       <Label text="Username" GridPane.rowIndex="7" />
 	<JFXTextField fx:id="usernameTF" GridPane.columnIndex="1" GridPane.rowIndex="7">
 		<font>
-			<Font name="Arial" size="14.0" />
+			<Font size="14.0" />
 		</font>
 	</JFXTextField>
       	<Text fx:id="usernameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="8">
@@ -77,7 +77,7 @@
       <Label text="Email" GridPane.rowIndex="16" />
       <JFXTextField fx:id="emailTF" GridPane.columnIndex="1" GridPane.rowIndex="16">
 		<font>
-			<Font name="Arial" size="14.0" />
+			<Font size="14.0" />
 		</font>
       </JFXTextField>
       	<Text fx:id="emailError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="17">
@@ -93,7 +93,7 @@
 			<Font name="Arial" size="14.0" />
 		</font> 
 	</Text>
-      <JFXButton onMouseClicked="#back" buttonType="RAISED" prefHeight="27.0" prefWidth="72.0" ripplerFill="WHITE" style="-fx-background-color: #6e757a;" text="Back" textFill="WHITE" GridPane.rowIndex="20">
+      <JFXButton buttonType="RAISED" onMouseClicked="#back" prefHeight="27.0" prefWidth="72.0" ripplerFill="WHITE" style="-fx-background-color: #6e757a;" text="Back" textFill="WHITE" GridPane.rowIndex="20">
          <font>
             <Font size="14.0" />
          </font>

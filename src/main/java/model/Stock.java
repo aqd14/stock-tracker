@@ -24,7 +24,8 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	private double previousPrice;
 	private Set<UserStock> userStocks = new HashSet<UserStock>(0);
 	private StockDetail stockDetail;
-
+	
+	private int stockBuy;
 	public Stock() {
 	}
 
@@ -110,5 +111,12 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	public void setStockDetail(StockDetail stockDetail) {
 		this.stockDetail = stockDetail;
 	}
-
+	
+	public int getStockBuy() {
+		return this.stockBuy;
+	}
+	
+	public int setStockBuy(int stockBuy) {
+		return this.stockBuy = stockBuy;
+	}
 }
