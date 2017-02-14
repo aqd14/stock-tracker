@@ -23,5 +23,6 @@ public class ResetPasswordController extends ParentController {
 	
 	@FXML protected void reset(MouseEvent e) {
 		System.out.println("Reset password.");
+		
 	}
 }

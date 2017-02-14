@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.java.dao.UserManager;
 import main.java.utility.Screen;
@@ -21,15 +20,6 @@ public class ParentController {
 		 userManager = new UserManager();
 	}
 	
-	protected void displayErrorMessage(Text instance, String errMessage) {
-		instance.setText(errMessage);
-		instance.setVisible(true);
-	}
-	
-	protected void hideErrorMessage(Text instance) {
-		instance.setVisible(false);   
-	}
-    
     protected void switchScreen(Region region, Screen targetScreen) {
     	Stage curStage = (Stage)region.getScene().getWindow();
         Parent root = null;

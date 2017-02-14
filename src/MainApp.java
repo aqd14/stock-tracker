@@ -47,7 +47,6 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
     	// Initialize current stage
     	// User login is the first page appears when user runs the app
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("main/java/view/Home_1.fxml"));
         Parent root = (Parent)loader.load();
         stage.setTitle("Stock Tracker");
         stage.setScene(new Scene(root));
