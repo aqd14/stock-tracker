@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -14,7 +15,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import java.net.*?>
 
 <AnchorPane fx:id="homeAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="1034.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.HomeController">
    <children>
@@ -22,7 +22,7 @@
          <children>
             <HBox fx:id="menuItem" prefHeight="99.0" prefWidth="1061.0" VBox.vgrow="ALWAYS">
                <children>
-                  <MenuBar prefHeight="26.0" prefWidth="154.0">
+                  <MenuBar prefHeight="29.0" prefWidth="185.0">
                      <menus>
                         <Menu mnemonicParsing="false" text="File">
                            <items>
