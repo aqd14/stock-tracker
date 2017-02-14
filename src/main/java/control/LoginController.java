@@ -36,6 +36,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXCheckBox;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,15 +47,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.java.utility.Screen;
+import main.java.utility.Utility;
  
 public class LoginController extends ParentController implements Initializable {
     @FXML private Text loginError;
 	@FXML private TextField usernameTF;
     @FXML private PasswordField passwordPF;
+    
+    @FXML private JFXCheckBox rememberMeCB;
 //    @FXML private Label registerLB;
 //    @FXML private Label resetPasswordLB;
-//    
+    
     @FXML private AnchorPane loginAP;
+    
+    private boolean rememberMe = false;
     
     @FXML protected void login(ActionEvent e) throws IOException {
     	boolean matchedUsernamePassword = verifyUserNameOrEmail();
@@ -61,6 +68,10 @@ public class LoginController extends ParentController implements Initializable {
         	System.out.println("Login successfully!");
         	switchScreen(loginAP, Screen.HOME);
         	loginError.setVisible(false);
+        	// Set remember me if have
+        	if (rememberMe) {
+            	Utility.writeFile(usernameTF.getText());
+        	}
         } else {
         	loginError.setText("Incorrect username or password. Try again.");
         	loginError.setVisible(true);
@@ -84,22 +95,13 @@ public class LoginController extends ParentController implements Initializable {
     	switchScreen(loginAP, Screen.RESET_PASSWORD);
     }
     
-//    @Override
-//    public void switchScreen() {
-//    	
-//    }
-
+    @FXML protected void rememberMe(MouseEvent e) {
+    	rememberMe = !rememberMe;
+    }
+    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-//		// TODO Auto-generated method stub
-//		// List of stocks that will be displayed in Home page
-//		final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO", "HPQ"};
-//		ObservableList<Stock> stocks = null;
-//		try {
-//			stocks = Utility.getMultipleStockData(stockSymbols);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		// Set initial username based on last time saved
+		usernameTF.setText(Utility.readFile());
 	}
 }

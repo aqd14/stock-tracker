@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import main.java.model.User;
@@ -28,17 +29,28 @@ public class UserManager {
 	 * @param user
 	 * @return False if user already existed or something went wrong with transaction
 	 */
-	public boolean create(User user) {
+	public void create(User user) {
 		// Check if user already existed in database by using email
 //		User existingUser = findByEmail(user.getEmail());
 //		if (null == existingUser) {
 //			return false;
 //		}
 		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
+		Transaction tx = session.beginTransaction();
 		session.save(user);
-		session.getTransaction().commit();
-		return true;
+		tx.commit();
+//		return true;
+	}
+	
+	/**
+	 * Update given user
+	 * @param user
+	 */
+	public void update(User user) {
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		session.update(user);
+		tx.commit();
 	}
 	
 	public void persist(User transientInstance) {
@@ -145,14 +157,32 @@ public class UserManager {
 		}
 	}
 	
+	/**
+	 * Search database to find a specific user. Based on value of password, can search for login
+	 * or search only for update or reset password
+	 * @param usernameOrEmail Registered username or email 
+	 * @param password	Password
+	 * @return User instance if found, else return null
+	 */
 	public User findByUsernameOrEmail(String usernameOrEmail, String password) {
+		// Pre-condition check
+		if (usernameOrEmail == null) {
+			System.err.println("Username invalid!");
+		}
 		log.debug("getting User instance with username or email: " + usernameOrEmail);
 		Session session = null;
 		try {
 			session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
-			String searchUserHQL = "FROM User user WHERE user.username = '" + usernameOrEmail + "'" + " AND user.password  = '" + password
-			        + "'" + "OR email = '" + usernameOrEmail + "'" + " AND user.password = '" + password + "'";
+			String searchUserHQL = "";
+			// If given both username, email and password
+			if (password != null) {
+				searchUserHQL = "FROM User user WHERE user.username = '" + usernameOrEmail + "'" + " AND user.password  = '" + password
+				+ "'" + "OR email = '" + usernameOrEmail + "'" + " AND user.password = '" + password + "'";
+			} else { // Search by username or email only
+				searchUserHQL = "FROM User user WHERE user.username = '" + usernameOrEmail + "'" + "OR email = '" + usernameOrEmail + "'";
+			}
+			        
 			@SuppressWarnings("unchecked")
 			Query<User> query = session.createQuery(searchUserHQL);//.setParameter("email", email);
 			List<User> users = query.getResultList();

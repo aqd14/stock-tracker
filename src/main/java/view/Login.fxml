@@ -17,7 +17,7 @@
                <font>
                   <Font size="16.0" />
                </font></JFXButton>
-            <JFXCheckBox fx:id="rememberMeCB" layoutX="14.0" layoutY="158.0" prefHeight="37.0" prefWidth="144.0" text="Remember Me">
+            <JFXCheckBox fx:id="rememberMeCB" layoutX="14.0" layoutY="158.0" onMouseClicked="#rememberMe" prefHeight="37.0" prefWidth="144.0" text="Remember Me">
                <font>
                   <Font size="14.0" />
                </font>
@@ -32,7 +32,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Text fx:id="loginError" layoutX="22.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="login_error" wrappingWidth="303.0" />
+            <Text fx:id="loginError" layoutX="22.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_message" wrappingWidth="303.0" />
          </children>
       </Pane>
       <Label contentDisplay="CENTER" layoutX="71.0" layoutY="32.0" prefHeight="26.0" prefWidth="238.0" text="Secure Account Log In">

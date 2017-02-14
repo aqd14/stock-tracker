@@ -3,6 +3,12 @@
  */
 package main.java.utility;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -25,6 +31,14 @@ public class Utility {
 		    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 	
 	public static final Pattern VALID_CHARACTERS_REGEX = Pattern.compile("^[a-zA-Z]+$");
+	
+	/** Store username to avoid user from entering username or email whenever user:
+	 *  	+ selects [Remember Me]
+	 * 		+ finishes Registration
+	 * 		+ reset password
+	 */
+	public static final String REMEMBER_ME_FILE = System.getProperty("user.dir") + File.separator + "src"
+			+ File.separator + "main" + File.separator + "resources" + File.separator + "remember_me.txt";
 
 	/**
 	 * 
@@ -99,5 +113,49 @@ public class Utility {
 	public static boolean isNameValid(String instance) {
 		Matcher matcher = VALID_CHARACTERS_REGEX.matcher(instance);
 		return matcher.find();
+	}
+	
+	// ---------------  READ AND WRITE FILE -------------------//
+	
+	/**
+	 * Read first line in REMEMBER_ME file to get input username or email
+	 * @return
+	 */
+	public static String readFile() {
+		FileReader fileReader;
+		try {
+			fileReader = new FileReader(REMEMBER_ME_FILE);
+			BufferedReader reader = new BufferedReader(fileReader);
+		    String line = null;
+		    line = reader.readLine();
+	        System.out.println(line);
+	        reader.close();
+	        return line;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException x) {
+		    System.err.format("IOException: %s%n", x);
+		}
+		return "";
+	}
+	
+	/**
+	 * Write first line in REMEMBER_ME file to get input username or email
+	 * @param content Updated username
+	 */
+	public static void writeFile(String content) {
+		FileWriter fileWriter;
+		try {
+			fileWriter = new FileWriter(REMEMBER_ME_FILE);
+			BufferedWriter writer = new BufferedWriter(fileWriter);
+		    writer.write(content);
+	        writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException x) {
+		    System.err.format("IOException: %s%n", x);
+		}
 	}
 }

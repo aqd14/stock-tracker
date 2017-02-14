@@ -15,4 +15,5 @@ public class ErrorMessage {
 	public static final String PASSWORD_TOO_SHORT_ERR = "Password should include at least 8 characters.";
 	public static final String INVALID_USERNAME_LENGTH_ERR = "Please use between 6 and 15 characters.";
 	public static final String EMAIL_TAKEN_ERR = "This email is taken. Try another.";
+	public static final String USER_NOT_EXIST = "Given username or email is not exist. Try another.";
 }

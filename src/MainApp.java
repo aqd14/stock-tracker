@@ -53,8 +53,5 @@ public class MainApp extends Application {
         stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();
-        
-//        HomeController homeController = (HomeController) loader.getController();
-//        homeController.initTableView();
     }
 }
