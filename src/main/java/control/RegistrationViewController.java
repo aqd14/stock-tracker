@@ -63,7 +63,7 @@ public class RegistrationViewController extends ParentController {
 			Account account = new Account(user, 0.0, user.getFirstName() + " " + user.getLastName(), null);
 			user.setAccount(account);
 			account.setUser(user);
-			userManager.create(user);
+			userManager.add(user);
 			// Register successfully. Switch to Login page
 			Thread.sleep(2000);
 			switchScreen(registerGP, Screen.LOGIN);

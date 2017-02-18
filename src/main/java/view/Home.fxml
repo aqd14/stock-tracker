@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -60,7 +61,7 @@
                            <children>
                               <StackPane maxWidth="200.0" prefHeight="150.0" prefWidth="200.0" StackPane.alignment="CENTER_RIGHT">
                                  <children>
-                                    <JFXTextField promptText="Search..." />
+                                    <JFXTextField fx:id="searchTF" promptText="Search..." />
                                  </children>
                               </StackPane>
                            </children>
@@ -75,7 +76,7 @@
                         <TreeTableColumn fx:id="lastPriceCol" editable="false" prefWidth="140" resizable="false" text="Last Price" />
                         <TreeTableColumn fx:id="changeCol" editable="false" prefWidth="120" resizable="false" text="Change" />
                         <TreeTableColumn fx:id="percentChangeCol" editable="false" prefWidth="140" resizable="false" text="\% Change" />
-                        <TreeTableColumn fx:id="stockBuyCol" editable="false" prefWidth="120" resizable="false" text="Stock Buy" />
+                        <JFXTreeTableColumn fx:id="stockBuyCol" editable="true" prefWidth="120" resizable="false" text="Stock Buy" />
                      </columns>
                      <VBox.margin>
                         <Insets left="2.0" />

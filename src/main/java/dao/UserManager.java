@@ -18,7 +18,7 @@ import main.java.utility.HibernateUtil;
  * @see .User
  * @author aqd14
  */
-public class UserManager {
+public class UserManager implements IManager {
 	
 	private static final Log log = LogFactory.getLog(UserManager.class);
 
@@ -29,24 +29,29 @@ public class UserManager {
 	 * @param user
 	 * @return False if user already existed or something went wrong with transaction
 	 */
-	public void create(User user) {
-		// Check if user already existed in database by using email
-//		User existingUser = findByEmail(user.getEmail());
-//		if (null == existingUser) {
-//			return false;
-//		}
+	@Override
+	public void add(Object obj) {
+		User user = (User) obj;
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		session.save(user);
 		tx.commit();
-//		return true;
 	}
 	
-	/**
-	 * Update given user
-	 * @param user
-	 */
-	public void update(User user) {
+	@Override
+	public void remove(Object obj) {
+		// TODO Auto-generated method stub
+		User user = (User) obj;
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		session.delete(user);
+		tx.commit();
+	}
+
+	@Override
+	public void update(Object obj) {
+		// TODO Auto-generated method stub
+		User user = (User) obj;
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		session.update(user);
