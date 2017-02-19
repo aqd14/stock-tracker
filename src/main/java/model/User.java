@@ -120,5 +120,17 @@ public class User implements java.io.Serializable {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
+	
+	@Override
+	public String toString() {
+		String userToString = "User instance: \n" + 
+							"id: " + this.id + "\n" +
+							"username: " + this.username + "\n" +
+							"first name: " + this.firstName + "\n" +
+							"last name: " + this.lastName + "\n" +
+							"email: " + this.email + "\n" +
+							"dob: " + this.birthday + "\n";
+		return userToString;
+	}
 
 }

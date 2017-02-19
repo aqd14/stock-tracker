@@ -8,11 +8,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
-import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
-import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import javafx.beans.property.ReadOnlyDoubleWrapper;
@@ -22,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableColumn.CellEditEvent;
 import javafx.scene.layout.AnchorPane;
 import main.java.model.Stock;
 import main.java.utility.Utility;
@@ -41,7 +37,7 @@ public class HomeController implements Initializable {
 	@FXML private TreeTableColumn<Stock, Double> lastPriceCol;
 	@FXML private TreeTableColumn<Stock, Double> changeCol;
 	@FXML private TreeTableColumn<Stock, Double> percentChangeCol;
-	@FXML private JFXTreeTableColumn<Stock, String> stockBuyCol;
+//	@FXML private JFXTreeTableColumn<Integer, String> stockBuyCol;
 	
 	@FXML private JFXTextField searchTF;
 	
@@ -68,7 +64,7 @@ public class HomeController implements Initializable {
 		setCellFactoryLastPrice();
 		setCellFactoryPriceChange();
 		setCellFactoryPercentageChange();
-		setCellFactoryStockBuy();
+		// setCellFactoryStockBuy();
 		
 		// Add listener for search field
 		searchTF.textProperty().addListener((o,oldVal,newVal)->{
@@ -109,19 +105,19 @@ public class HomeController implements Initializable {
 		//setPriceFormatColumn(percentChangeCol);
 	}
 	
-	private void setCellFactoryStockBuy() {
-		stockBuyCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Stock, String> param) ->{
-			if(stockBuyCol.validateValue(param)) 
-				return param.getValue().getValue().getStockBuy();
-			else 
-				return stockBuyCol.getComputedValue(param);
-		});
-		
-		stockBuyCol.setCellFactory((TreeTableColumn<Stock, String> param) -> new GenericEditableTreeTableCell<Stock, String>(new TextFieldEditorBuilder()));
-		stockBuyCol.setOnEditCommit((CellEditEvent<Stock, String> t)->{
-			((Stock) t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue()).setStockBuy(t.getNewValue());
-		});
-	}
+//	private void setCellFactoryStockBuy() {
+//		stockBuyCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Stock, String> param) ->{
+//			if(stockBuyCol.validateValue(param)) 
+//				return param.getValue().getValue().getStockBuy();
+//			else 
+//				return stockBuyCol.getComputedValue(param);
+//		});
+//		
+//		stockBuyCol.setCellFactory((TreeTableColumn<Stock, String> param) -> new GenericEditableTreeTableCell<Stock, String>(new TextFieldEditorBuilder()));
+//		stockBuyCol.setOnEditCommit((CellEditEvent<Stock, String> t)->{
+//			((Stock) t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue()).setStockBuy(t.getNewValue());
+//		});
+//	}
 	
 	/**
 	 * Set format for stock price. Only two floating points displayed
