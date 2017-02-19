@@ -20,9 +20,9 @@
    <children>
       <VBox layoutX="7.0" layoutY="6.0" prefHeight="305.0" prefWidth="394.0">
          <children>
-            <Label prefHeight="26.0" prefWidth="74.0" text="Settings">
+            <Label prefHeight="26.0" prefWidth="95.0" text="Settings">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
             <Separator prefWidth="200.0">

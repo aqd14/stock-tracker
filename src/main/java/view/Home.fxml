@@ -61,9 +61,9 @@
                            </HBox.margin></Label>
                         <StackPane prefHeight="40.0" prefWidth="678.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <StackPane maxWidth="200.0" prefHeight="150.0" prefWidth="200.0" StackPane.alignment="CENTER_RIGHT">
+                              <StackPane maxWidth="277.0" prefHeight="48.0" prefWidth="277.0" StackPane.alignment="CENTER_RIGHT">
                                  <children>
-                                    <JFXTextField fx:id="searchTF" promptText="Search..." />
+                                    <JFXTextField fx:id="searchTF" prefWidth="222.0" promptText="Search for stock codes, companies" />
                                  </children>
                               </StackPane>
                            </children>
