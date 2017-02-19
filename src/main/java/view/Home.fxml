@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import java.net.URL?>
@@ -9,6 +8,8 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -16,27 +17,29 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="homeAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="932.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.HomeController">
+<AnchorPane fx:id="homeAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="928.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.HomeController">
    <children>
       <VBox layoutX="-4.0" layoutY="-1.0" prefHeight="584.0" prefWidth="932.0">
          <children>
-            <HBox fx:id="menuItem" prefHeight="99.0" prefWidth="1061.0" VBox.vgrow="ALWAYS">
+            <HBox prefHeight="99.0" prefWidth="1061.0" VBox.vgrow="ALWAYS">
                <children>
-                  <MenuBar prefHeight="29.0" prefWidth="185.0">
+                  <MenuBar prefHeight="29.0" prefWidth="932.0">
                      <menus>
-                        <Menu mnemonicParsing="false" text="File">
+                        <Menu mnemonicParsing="true" text="_File">
                            <items>
                               <MenuItem mnemonicParsing="false" text="Exit" />
                            </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Settings">
+                        <Menu mnemonicParsing="true" text="_Settings">
                            <items>
                               <MenuItem mnemonicParsing="false" text="My Porfolio" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem mnemonicParsing="false" text="Change Password" />
-                              <MenuItem mnemonicParsing="false" text="Update Balance" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#openAccountSettings" text="Account Settings" />
                            </items>
                         </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
+                        <Menu mnemonicParsing="true" text="_Help">
                            <items>
                               <MenuItem mnemonicParsing="false" text="About" />
                            </items>
@@ -45,7 +48,7 @@
                   </MenuBar>
                </children>
             </HBox>
-            <VBox prefHeight="485.0" prefWidth="1047.0">
+            <VBox prefHeight="485.0" prefWidth="939.0">
                <children>
                   <HBox>
                      <children>
@@ -67,7 +70,8 @@
                         </StackPane>
                      </children>
                   </HBox>
-                  <JFXTreeTableView fx:id="stockTableView" prefHeight="411.0" prefWidth="1035.0">
+                  <Separator prefWidth="200.0" />
+                  <JFXTreeTableView fx:id="stockTableView" prefHeight="418.0" prefWidth="926.0">
                      <columns>
                         <TreeTableColumn fx:id="stockCodeCol" editable="false" prefWidth="160" resizable="false" text="Stock Code" />
                         <TreeTableColumn fx:id="companyCol" editable="false" prefWidth="230" resizable="false" text="Company" />
@@ -78,7 +82,7 @@
                         <!-- <JFXTreeTableColumn fx:id="stockBuyCol" editable="true" prefWidth="120" resizable="false" text="Stock Buy" /> -->
                      </columns>
                      <VBox.margin>
-                        <Insets left="2.0" />
+                        <Insets left="2.0" top="15.0" />
                      </VBox.margin>
                   </JFXTreeTableView>
                </children>
@@ -88,11 +92,6 @@
             </VBox>
          </children>
       </VBox>
-      <JFXButton buttonType="RAISED" layoutX="787.0" layoutY="580.0" prefHeight="38.0" prefWidth="95.0" ripplerFill="BLACK" style="-fx-background-color: #128be2;" text="Buy" textFill="#fffefe">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </JFXButton>
    </children>
    	<stylesheets>
     	<URL value="@../../resources/css/home.css" />

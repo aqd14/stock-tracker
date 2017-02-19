@@ -15,11 +15,16 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import main.java.model.Stock;
 import main.java.utility.Utility;
 
@@ -104,6 +109,22 @@ public class HomeController implements Initializable {
 		                / param.getValue().getValue().getPrice(),2)).asObject());
 		//setPriceFormatColumn(percentChangeCol);
 	}
+
+	@FXML public void openAccountSettings(ActionEvent event) {
+		Stage settingsStage = new Stage();
+		settingsStage.setTitle("Account Settings");
+		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Settings.fxml"));
+        try {
+			Parent root = (Parent)loader.load();
+			settingsStage.setScene(new Scene(root));
+			settingsStage.setResizable(false);
+			settingsStage.show();
+		} catch (IOException e) {
+			System.err.println("Couldn't load FXML file!");
+			e.printStackTrace();
+		}
+	}
 	
 //	private void setCellFactoryStockBuy() {
 //		stockBuyCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Stock, String> param) ->{
@@ -137,4 +158,6 @@ public class HomeController implements Initializable {
 //	        }
 //	    });
 //	}
+	
+	
 }

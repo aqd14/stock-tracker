@@ -4,5 +4,6 @@ public enum Screen {
 	LOGIN,
 	REGISTER,
 	RESET_PASSWORD,
-	HOME
+	HOME,
+	SETTINGS
 }

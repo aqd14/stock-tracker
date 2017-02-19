@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="313.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SettingsController">
+   <children>
+      <VBox layoutX="7.0" layoutY="6.0" prefHeight="305.0" prefWidth="394.0">
+         <children>
+            <Label prefHeight="26.0" prefWidth="74.0" text="Settings">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Separator>
+            <TabPane prefHeight="200.0" prefWidth="376.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="User Information">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="158.0" prefWidth="277.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <children>
+                                    <HBox prefHeight="58.0" prefWidth="277.0">
+                                       <children>
+                                          <Label prefHeight="27.0" prefWidth="87.0" text="First Name" />
+                                          <JFXTextField prefHeight="25.0" prefWidth="189.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="58.0" prefWidth="277.0">
+                                       <children>
+                                          <Label prefHeight="27.0" prefWidth="87.0" text="Last Name" />
+                                          <JFXTextField prefHeight="25.0" prefWidth="189.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="58.0" prefWidth="277.0">
+                                       <children>
+                                          <Label prefHeight="27.0" prefWidth="87.0" text="Email" />
+                                          <JFXTextField prefHeight="25.0" prefWidth="189.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Account Balance">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="166.0" prefWidth="287.0" AnchorPane.leftAnchor="10.0">
+                                 <children>
+                                    <HBox prefHeight="59.0" prefWidth="283.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="124.0" text="Current Balance" />
+                                          <JFXTextField prefHeight="25.0" prefWidth="157.0" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox prefHeight="77.0" prefWidth="287.0">
+                                       <children>
+                                          <Label prefHeight="27.0" prefWidth="124.0" text="New Balance" />
+                                          <JFXTextField prefHeight="25.0" prefWidth="157.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Change Password">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="166.0" prefWidth="219.0" AnchorPane.leftAnchor="10.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="304.0">
+                                       <children>
+                                          <Label text="New Password">
+                                             <VBox.margin>
+                                                <Insets top="20.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <PasswordField prefWidth="373.0">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </PasswordField>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Label text="Re-enter New Password">
+                                             <VBox.margin>
+                                                <Insets top="20.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <PasswordField>
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </PasswordField>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </TabPane>
+            <JFXButton buttonType="RAISED" prefHeight="30.0" prefWidth="116.0" style="-fx-background-color: #87cde5;" text="Save Changes">
+               <ripplerFill>
+                  <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                     <stops>
+                        <Stop color="WHITE" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </RadialGradient>
+               </ripplerFill>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="10.0" top="15.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
+   </children>
+</Pane>
