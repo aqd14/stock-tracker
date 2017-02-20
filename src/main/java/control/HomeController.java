@@ -32,7 +32,7 @@ import main.java.utility.Utility;
  * @author doquocanh-macbook
  *
  */
-public class HomeController implements Initializable {
+public class HomeController extends ParentController implements Initializable {
 	@FXML private AnchorPane homeAP;
 	@FXML private JFXTreeTableView<Stock> stockTableView;
 	
@@ -48,9 +48,8 @@ public class HomeController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
 		// List of stocks that will be displayed in Home page
-		final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO", "HPQ"};
+		final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO", "HPQ", "FB", "F"};
 		ObservableList<Stock> stocks = null;
 		try {
 			stocks = Utility.getMultipleStockData(stockSymbols);
@@ -110,13 +109,18 @@ public class HomeController implements Initializable {
 		//setPriceFormatColumn(percentChangeCol);
 	}
 
-	@FXML public void openAccountSettings(ActionEvent event) {
+	@FXML private void openAccountSettings(ActionEvent event) {
 		Stage settingsStage = new Stage();
 		settingsStage.setTitle("Account Settings");
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Settings.fxml"));
         try {
 			Parent root = (Parent)loader.load();
+			// Set current user
+			SettingsController settingsController = loader.<SettingsController>getController();
+			settingsController.setUser(user);
+			settingsController.setAccountName(user.getAccount().getAccountName());
+			
 			settingsStage.setScene(new Scene(root));
 			settingsStage.setResizable(false);
 			settingsStage.show();

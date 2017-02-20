@@ -8,19 +8,28 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import main.java.dao.UserManager;
+import main.java.model.User;
 import main.java.utility.Screen;
 
 public class ParentController {
 	
+	protected User user;
 	protected UserManager userManager;
-//	protected Stage stage;
-
+	
 	public ParentController() {
 		// TODO Auto-generated constructor stub
 		 userManager = new UserManager();
 	}
 	
-    protected void switchScreen(Region region, Screen targetScreen) {
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+    protected void switchScreen(Region region, Screen targetScreen, User... users) {
     	Stage curStage = (Stage)region.getScene().getWindow();
         Parent root = null;
 		try {
@@ -29,7 +38,10 @@ public class ParentController {
 					root = new FXMLLoader(getClass().getResource("../../../main/java/view/Login.fxml")).load();
 					break;
 				case HOME:
-					root = new FXMLLoader(getClass().getResource("../../../main/java/view/Home.fxml")).load();
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("../../../main/java/view/Home.fxml"));
+					root = loader.load(); // Loading before get controller
+					HomeController homeController = loader.<HomeController>getController();
+					homeController.setUser(users[0]);
 					break;
 				case REGISTER:
 					root = new FXMLLoader(getClass().getResource("../../../main/java/view/UserRegistration.fxml")).load();

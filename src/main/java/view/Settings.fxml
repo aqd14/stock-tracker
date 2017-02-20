@@ -15,10 +15,11 @@
 <?import javafx.scene.paint.RadialGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="313.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SettingsController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SettingsController">
    <children>
-      <VBox layoutX="7.0" layoutY="6.0" prefHeight="305.0" prefWidth="394.0">
+      <VBox layoutX="7.0" layoutY="6.0" prefHeight="370.0" prefWidth="395.0">
          <children>
             <Label prefHeight="26.0" prefWidth="95.0" text="Settings">
                <font>
@@ -30,32 +31,59 @@
                   <Insets top="5.0" />
                </VBox.margin>
             </Separator>
-            <TabPane prefHeight="200.0" prefWidth="376.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane prefHeight="269.0" prefWidth="395.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="User Information">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="390.0">
                            <children>
-                              <VBox prefHeight="158.0" prefWidth="277.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <VBox prefHeight="225.0" prefWidth="361.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <children>
-                                    <HBox prefHeight="58.0" prefWidth="277.0">
+                                    <VBox prefHeight="65.0" prefWidth="376.0">
                                        <children>
-                                          <Label prefHeight="27.0" prefWidth="87.0" text="First Name" />
-                                          <JFXTextField prefHeight="25.0" prefWidth="189.0" />
+                                          <HBox prefHeight="40.0" prefWidth="376.0">
+                                             <children>
+                                                <Label prefHeight="27.0" prefWidth="87.0" text="First Name">
+                                                   <HBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </HBox.margin></Label>
+                                                <JFXTextField fx:id="firstNameTF" prefHeight="25.0" prefWidth="189.0">
+                                                   <HBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </HBox.margin></JFXTextField>
+                                             </children>
+                                          </HBox>
+                                          <Text fx:id="firstNameError" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="377.0" />
                                        </children>
-                                    </HBox>
-                                    <HBox prefHeight="58.0" prefWidth="277.0">
+                                    </VBox>
+                                    <VBox prefHeight="76.0" prefWidth="376.0">
                                        <children>
-                                          <Label prefHeight="27.0" prefWidth="87.0" text="Last Name" />
-                                          <JFXTextField prefHeight="25.0" prefWidth="189.0" />
+                                          <HBox prefHeight="43.0" prefWidth="376.0">
+                                             <children>
+                                                <Label prefHeight="27.0" prefWidth="87.0" text="Last Name">
+                                                   <HBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </HBox.margin></Label>
+                                                <JFXTextField fx:id="lastNameTF" prefHeight="25.0" prefWidth="189.0">
+                                                   <HBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </HBox.margin></JFXTextField>
+                                             </children>
+                                          </HBox>
+                                          <Text fx:id="lastNameError" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.21875" />
                                        </children>
-                                    </HBox>
-                                    <HBox prefHeight="58.0" prefWidth="277.0">
+                                    </VBox>
+                                    <VBox prefHeight="83.0" prefWidth="376.0">
                                        <children>
-                                          <Label prefHeight="27.0" prefWidth="87.0" text="Email" />
-                                          <JFXTextField prefHeight="25.0" prefWidth="189.0" />
+                                          <HBox prefHeight="39.0" prefWidth="376.0">
+                                             <children>
+                                                <Label prefHeight="27.0" prefWidth="87.0" text="Email" />
+                                                <JFXTextField fx:id="emailTF" prefHeight="25.0" prefWidth="189.0" />
+                                             </children>
+                                          </HBox>
+                                          <Text fx:id="emailError" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.0" />
                                        </children>
-                                    </HBox>
+                                    </VBox>
                                  </children>
                               </VBox>
                            </children>
@@ -68,19 +96,39 @@
                            <children>
                               <VBox prefHeight="166.0" prefWidth="287.0" AnchorPane.leftAnchor="10.0">
                                  <children>
+                                    <Label fx:id="accountName" prefHeight="37.0" prefWidth="286.0">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Label>
                                     <HBox prefHeight="59.0" prefWidth="283.0">
                                        <children>
-                                          <Label prefHeight="28.0" prefWidth="124.0" text="Current Balance" />
-                                          <JFXTextField editable="false" />
+                                          <Label prefHeight="28.0" prefWidth="124.0" text="Current Balance">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin></Label>
+                                          <JFXTextField fx:id="currentBalanceTF" editable="false">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin></JFXTextField>
                                        </children>
                                        <VBox.margin>
                                           <Insets top="30.0" />
                                        </VBox.margin>
                                     </HBox>
-                                    <HBox prefHeight="77.0" prefWidth="287.0">
+                                    <HBox prefHeight="58.0" prefWidth="288.0">
                                        <children>
-                                          <Label prefHeight="27.0" prefWidth="124.0" text="New Balance" />
-                                          <JFXTextField fx:id="newBalanceTF" />
+                                          <Label prefHeight="27.0" prefWidth="124.0" text="New Balance">
+                                             <HBox.margin>
+                                                <Insets top="10.0" />
+                                             </HBox.margin></Label>
+                                          <JFXTextField fx:id="newBalanceTF">
+                                             <HBox.margin>
+                                                <Insets top="10.0" />
+                                             </HBox.margin></JFXTextField>
                                        </children>
                                     </HBox>
                                  </children>
@@ -93,43 +141,48 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <VBox prefHeight="166.0" prefWidth="219.0" AnchorPane.leftAnchor="10.0">
+                              <VBox prefHeight="183.0" prefWidth="192.0" AnchorPane.leftAnchor="10.0">
                                  <children>
-                                    <VBox prefHeight="200.0" prefWidth="304.0">
+                                    <VBox prefHeight="200.0" prefWidth="200.0">
                                        <children>
                                           <Label text="New Password">
                                              <VBox.margin>
                                                 <Insets top="20.0" />
                                              </VBox.margin>
                                           </Label>
-                                       </children>
-                                    </VBox>
-                                    <VBox prefHeight="200.0" prefWidth="100.0">
-                                       <children>
-                                          <PasswordField prefWidth="373.0">
+                                          <PasswordField fx:id="newPasswordPF" prefWidth="373.0">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
                                           </PasswordField>
+                                          <Text fx:id="passwordError" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="194.0">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </Text>
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <VBox prefHeight="84.0" prefWidth="196.0">
                                        <children>
                                           <Label text="Re-enter New Password">
                                              <VBox.margin>
                                                 <Insets top="20.0" />
                                              </VBox.margin>
                                           </Label>
-                                       </children>
-                                    </VBox>
-                                    <VBox prefHeight="200.0" prefWidth="100.0">
-                                       <children>
-                                          <PasswordField>
+                                          <PasswordField fx:id="confirmPasswordPF" prefWidth="193.0">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
                                           </PasswordField>
+                                          <Text fx:id="confirmPasswordError" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="192.21875">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </Text>
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
                                     </VBox>
                                  </children>
                               </VBox>
@@ -142,7 +195,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </TabPane>
-            <JFXButton buttonType="RAISED" prefHeight="30.0" prefWidth="116.0" style="-fx-background-color: #87cde5;" text="Save Changes">
+            <JFXButton buttonType="RAISED" onAction="#saveChanges" prefHeight="30.0" prefWidth="116.0" style="-fx-background-color: #87cde5;" text="Save Changes">
                <ripplerFill>
                   <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                      <stops>

@@ -46,6 +46,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import main.java.model.User;
 import main.java.utility.Screen;
 import main.java.utility.Utility;
  
@@ -63,10 +64,13 @@ public class LoginController extends ParentController implements Initializable {
     private boolean rememberMe = false;
     
     @FXML protected void login(ActionEvent e) throws IOException {
-    	boolean matchedUsernamePassword = verifyUserNameOrEmail();
-        if (matchedUsernamePassword) {
+    	// Check if given username and password matched with records in database
+    	User user = userManager.findByUsernameOrEmail(usernameTF.getText(), passwordPF.getText());
+        if (user != null) {
         	System.out.println("Login successfully!");
-        	switchScreen(loginAP, Screen.HOME);
+        	// Initialize array to pass optional argument
+        	User[] users = {user};
+        	switchScreen(loginAP, Screen.HOME, users);
         	loginError.setVisible(false);
         	// Set remember me if have
         	if (rememberMe) {
@@ -78,24 +82,19 @@ public class LoginController extends ParentController implements Initializable {
         }
     }
     
-    // User might enter email in 
-    private boolean verifyUserNameOrEmail() {
-    	return userManager.findByUsernameOrEmail(usernameTF.getText(), passwordPF.getText()) == null ? false : true;
-    }
-    
-    @FXML protected void createNewAccount(MouseEvent e) {
+    @FXML private void createNewAccount(MouseEvent e) {
     	System.out.println("Create new account.");
     	// Switch to Registration View
     	switchScreen(loginAP, Screen.REGISTER);
     }
     
-    @FXML protected void resetPassword(MouseEvent e) {
+    @FXML private void resetPassword(MouseEvent e) {
     	System.out.println("Reset password.");
     	// Switch to Reset Password View
     	switchScreen(loginAP, Screen.RESET_PASSWORD);
     }
     
-    @FXML protected void rememberMe(MouseEvent e) {
+    @FXML private void rememberMe(MouseEvent e) {
     	rememberMe = !rememberMe;
     }
     
