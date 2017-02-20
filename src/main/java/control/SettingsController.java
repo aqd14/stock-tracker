@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,6 +34,7 @@ public class SettingsController extends ParentController implements Initializabl
 	
 	@FXML private TextField newBalanceTF;
 	@FXML private Label accountName;
+	@FXML private Text successfulMessage;
 	
 	public SettingsController() {
 		// TODO Auto-generated constructor stub
@@ -56,6 +58,8 @@ public class SettingsController extends ParentController implements Initializabl
 //        });
 
 		newBalanceTF.setTextFormatter(new CurrencyFormatter());
+		// Set successful sms invisible
+		successfulMessage.setVisible(false);
 
 //        textFormatter.valueProperty().addListener((obs, oldValue, newValue) -> {
 //            System.out.println("New double value "+newValue);
@@ -91,6 +95,8 @@ public class SettingsController extends ParentController implements Initializabl
 			if (ValidationUtil.validateFirstName(firstNameTF, firstNameError)) {
 				user.setFirstName(firstNameTF.getText());
 				anyChange = true;
+			} else {
+				anyChange = false;
 			}
 		}
 		
@@ -100,6 +106,8 @@ public class SettingsController extends ParentController implements Initializabl
 			if (ValidationUtil.validateLastName(lastNameTF, firstNameError)) {
 				user.setLastName(lastNameTF.getText());
 				anyChange = true;
+			} else {
+				anyChange = false;
 			}
 		}
 		
@@ -109,6 +117,8 @@ public class SettingsController extends ParentController implements Initializabl
 			if (ValidationUtil.validateEmail(emailTF, emailError)) {
 				user.setEmail(emailTF.getText());
 				anyChange = true;
+			} else {
+				anyChange = false;
 			}
 		}
 		
@@ -119,11 +129,13 @@ public class SettingsController extends ParentController implements Initializabl
 			if (ValidationUtil.validateOriginalPassword(newPasswordPF, passwordError) && ValidationUtil.validateConfirmedPassword(newPasswordPF, confirmPasswordPF, confirmPasswordError)) {
 				user.setPassword(newPasswordPF.getText());
 				anyChange = true;
+			} else {
+				anyChange = false;
 			}
 		}
 		
 		// Update balance
-		if (newBalanceTF.getText().equals("")) {
+		if (newBalanceTF.getText().equals("$0.00")) {
 			// User didn't update balance.
 			// Do nothing
 		} else {
@@ -136,15 +148,33 @@ public class SettingsController extends ParentController implements Initializabl
 				anyChange = true;
 			} catch (NumberFormatException ex) {
 				System.err.println("Invalid balance: " + newBalanceTF.getText());
+				anyChange = false;
 			}
 		}
 		
-		// Update to database if there is any change
+		// Update to database if there is any change and all others are valid
 		if (anyChange) {
 			userManager.update(user);
 			System.out.println("Update succesfully...");
 			System.out.println(user);
+			// Display successful message for 2s.
+			successfulMessage.setVisible(true);
+			Task<Void> sleeper = new Task<Void>() {
+				@Override
+				public Void call() throws Exception {
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					} 	finally {
+						successfulMessage.setVisible(false);
+					}
+					return null;
+				}
+			};
+			new Thread(sleeper).start();
+		} else {
+			System.out.println("Something invalid.. Please check again!");
 		}
 	}
-	
 }
