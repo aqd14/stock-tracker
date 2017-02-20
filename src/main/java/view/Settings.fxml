@@ -71,7 +71,7 @@
                                     <HBox prefHeight="59.0" prefWidth="283.0">
                                        <children>
                                           <Label prefHeight="28.0" prefWidth="124.0" text="Current Balance" />
-                                          <JFXTextField prefHeight="25.0" prefWidth="157.0" />
+                                          <JFXTextField editable="false" />
                                        </children>
                                        <VBox.margin>
                                           <Insets top="30.0" />
@@ -80,7 +80,7 @@
                                     <HBox prefHeight="77.0" prefWidth="287.0">
                                        <children>
                                           <Label prefHeight="27.0" prefWidth="124.0" text="New Balance" />
-                                          <JFXTextField prefHeight="25.0" prefWidth="157.0" />
+                                          <JFXTextField fx:id="newBalanceTF" />
                                        </children>
                                     </HBox>
                                  </children>

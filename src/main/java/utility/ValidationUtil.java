@@ -14,8 +14,18 @@ import main.java.model.User;
 public class ValidationUtil {
 	
 	static UserManager userManager = new UserManager();
+	
 	public ValidationUtil() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	/**
+	 * Check if given text contains only numbers
+	 * @param txt
+	 * @return
+	 */
+	public static boolean containOnlyNumber(String txt) {
+		return txt.matches("^[0-9]+$");
 	}
 	
 	/**
