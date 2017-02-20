@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
@@ -14,16 +15,22 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import main.java.model.Stock;
 import main.java.utility.Utility;
@@ -45,6 +52,8 @@ public class HomeController extends ParentController implements Initializable {
 //	@FXML private JFXTreeTableColumn<Integer, String> stockBuyCol;
 	
 	@FXML private JFXTextField searchTF;
+	@FXML private StackPane sp;
+	@FXML private JFXSpinner spinner;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -54,13 +63,47 @@ public class HomeController extends ParentController implements Initializable {
 													"BRK-A", "AMZN", "XOM", "JPM", "WFC", "GE",
 													"BAC", "T", "BABA", "PG", "CVX", "V",
 													"VZ", "HD", "DIS", "INTC", "ORCL", "HSBC"};
-		ObservableList<Stock> stocks = null;
-		try {
-			stocks = Utility.getMultipleStockData(stockSymbols);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		// Initialize new background thread to handle downloading data
+		Task<ObservableList<Stock>> task = new Task<ObservableList<Stock>>() {
+			
+			@Override
+			protected ObservableList<Stock> call() throws Exception {
+				// Display spinner while loading data.
+				ObservableList<Stock> stocks = Utility.getMultipleStockData(stockSymbols);
+				return stocks;
+			}
+		};
+		
+		// When task succeeded
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			
+			@Override
+			public void handle(WorkerStateEvent event) {
+				// Update view as all stock data downloaded
+				ObservableList<Stock> stocks = task.getValue();
+				TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
+				stockTableView.setRoot(root);
+				// Finish loading, hide spinner
+				spinner.setVisible(false);
+			}
+		});
+		
+		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				System.err.println("Task performed unsuccessfully!");
+				spinner.setVisible(false);
+			}
+		});
+		
+		// Start new thread
+		Thread t = new Thread(task);
+		t.setDaemon(true);
+		t.start();
+		
+		// Initialize GUI
+		ObservableList<Stock> stocks = FXCollections.observableArrayList();
 		TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
 		stockTableView.setRoot(root);
 		stockTableView.setShowRoot(false);
