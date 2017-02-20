@@ -129,6 +129,9 @@ public class ValidationUtil {
 		if (!passwordPF.getText().equals(confirmPasswordPF.getText())) {
 			System.err.println("Passwords not matching!");
 			displayErrorMessage(confirmPasswordError, ErrorMessage.PASSWORD_NOT_MATCHED_ERR);
+			// Reset password fields to empty
+			passwordPF.setText("");
+			confirmPasswordPF.setText("");
 			return false;
 		}
 		// Passed all validation
