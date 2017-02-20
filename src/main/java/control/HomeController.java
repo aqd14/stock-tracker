@@ -48,8 +48,12 @@ public class HomeController extends ParentController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// List of stocks that will be displayed in Home page
-		final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO", "HPQ", "FB", "F"};
+		// List of 30 stocks that will be displayed in Home page
+		final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT",
+													"TM", "KO", "HPQ", "FB", "F", "MSFT", 
+													"BRK-A", "AMZN", "XOM", "JPM", "WFC", "GE",
+													"BAC", "T", "BABA", "PG", "CVX", "V",
+													"VZ", "HD", "DIS", "INTC", "ORCL", "HSBC"};
 		ObservableList<Stock> stocks = null;
 		try {
 			stocks = Utility.getMultipleStockData(stockSymbols);
