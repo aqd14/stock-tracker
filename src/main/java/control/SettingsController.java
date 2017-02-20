@@ -2,7 +2,6 @@ package main.java.control;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 import com.jfoenix.controls.JFXTextField;
 
@@ -12,9 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.text.Text;
-import javafx.util.converter.DoubleStringConverter;
 import main.java.utility.ValidationUtil;
 
 public class SettingsController extends ParentController implements Initializable {
@@ -48,7 +45,7 @@ public class SettingsController extends ParentController implements Initializabl
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// Set balance validation
-		Pattern validDoubleText = Pattern.compile("((\\d*)|(\\d+\\.\\d*))");
+//		Pattern validDoubleText = Pattern.compile("((\\d*)|(\\d+\\.\\d*))");
 //        TextFormatter<Double> textFormatter = new TextFormatter<Double>(new DoubleStringConverter(), 0.0, 
 //            change -> {
 //                String newText = change.getControlNewText() ;
@@ -131,7 +128,11 @@ public class SettingsController extends ParentController implements Initializabl
 			// Do nothing
 		} else {
 			try {
-				user.getAccount().setBalance(Double.parseDouble(newBalanceTF.getText()));
+//				NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
+				String balance = newBalanceTF.getText().replace("$", "").replace(",", "");
+				System.out.println("Formatted balance: " + balance);
+				double newBalance = Double.parseDouble(balance); //(double) nf.parse(newBalanceTF.getText());
+				user.getAccount().setBalance(newBalance);
 				anyChange = true;
 			} catch (NumberFormatException ex) {
 				System.err.println("Invalid balance: " + newBalanceTF.getText());
@@ -141,6 +142,8 @@ public class SettingsController extends ParentController implements Initializabl
 		// Update to database if there is any change
 		if (anyChange) {
 			userManager.update(user);
+			System.out.println("Update succesfully...");
+			System.out.println(user);
 		}
 	}
 	

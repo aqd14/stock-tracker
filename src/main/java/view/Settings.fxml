@@ -12,8 +12,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.RadialGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -196,14 +194,6 @@
                </VBox.margin>
             </TabPane>
             <JFXButton buttonType="RAISED" onAction="#saveChanges" prefHeight="30.0" prefWidth="116.0" style="-fx-background-color: #87cde5;" text="Save Changes">
-               <ripplerFill>
-                  <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                     <stops>
-                        <Stop color="WHITE" />
-                        <Stop color="WHITE" offset="1.0" />
-                     </stops>
-                  </RadialGradient>
-               </ripplerFill>
                <font>
                   <Font size="14.0" />
                </font>
