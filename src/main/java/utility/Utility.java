@@ -146,10 +146,9 @@ public class Utility {
 	 * @param content Updated username
 	 */
 	public static void writeFile(String content) {
-		FileWriter fileWriter;
-		try {
-			fileWriter = new FileWriter(REMEMBER_ME_FILE);
-			BufferedWriter writer = new BufferedWriter(fileWriter);
+		// Try with resources management
+		// Don't need to close file anymore
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(REMEMBER_ME_FILE));){
 		    writer.write(content);
 	        writer.close();
 		} catch (FileNotFoundException e) {
