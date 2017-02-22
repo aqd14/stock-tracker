@@ -1,24 +1,26 @@
 /*
 * Style retrieved from Jfoenix
 */
- 
- /*******************************************************************************
-*                                                                              *
-* Tree Table View                                                              *
-*                                                                              *
-*******************************************************************************/
 
 .tree-table-view{
 	-fx-tree-table-color: rgba(82, 100, 174, 0.4);
 	-fx-tree-table-rippler-color : rgba(82, 100, 174, 0.6);
 }
- .tree-table-view:focused .tree-table-row-cell:selected {
+
+.tree-table-row-cell {
+    -fx-background-color: -fx-table-cell-border-color, -fx-control-inner-background;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+.tree-table-view:focused .tree-table-row-cell:selected {
 	-fx-background-color: -fx-tree-table-color  ;
 	-fx-table-cell-border-color: -fx-tree-table-color;
 	-fx-text-fill: BLACK;
 }
 
- .tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell{
+.tree-table-view:focused .tree-table-row-cell:selected .tree-table-cell{
 	-fx-text-fill: BLACK;
 }
 
