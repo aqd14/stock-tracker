@@ -3,24 +3,36 @@
  */
 package main.java.control;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ResourceBundle;
 
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
+import yahoofinance.Stock;
 
 /**
  * @author doquocanh-macbook
  *
  */
-public class StockDetailsController extends ParentController {
+public class StockDetailsController extends ParentController implements Initializable {
 	
 	@FXML private Label companyLB;
 	@FXML private Label stockCodeAndTimeLB;
 	@FXML private Label currentPriceLB;
 	@FXML private Label priceChangeLB;
+	
+	RealTimeUpdateService service;
 	
 	private yahoofinance.Stock yahooStock;
 	/**
@@ -32,6 +44,18 @@ public class StockDetailsController extends ParentController {
 
 	public void setStock(yahoofinance.Stock stock) {
 		this.yahooStock = stock;
+		service.setStockCode(this.yahooStock.getSymbol());
+		service.start();
+		service.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+
+			@Override
+			public void handle(WorkerStateEvent event) {
+				System.out.println("Update new stock changes...");
+				yahooStock = (Stock) event.getSource().getValue();
+				// Update values in GUIs
+				initContent();
+			}
+		});
 	}
 	
 	public yahoofinance.Stock getYahooStock() {
@@ -91,5 +115,32 @@ public class StockDetailsController extends ParentController {
 	
 	public void checkStockRealTime() {
 		// Create a thread to check price change for every 2 minutes
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// Check stock changes in real-time for each 2 minutes
+		service = new RealTimeUpdateService();
+		service.setPeriod(Duration.minutes(2));
+	}
+	
+	private static class RealTimeUpdateService extends ScheduledService<yahoofinance.Stock> {
+		private String stockCode;
+		
+		public void setStockCode(String stockCode) {
+			this.stockCode = stockCode;
+		}
+		
+		@Override
+		protected Task<Stock> createTask() {
+			return new Task<Stock>() {
+				@Override
+				protected Stock call() throws IOException {
+					System.out.println("Start getting data stock: " + stockCode + " ...");
+					return yahoofinance.YahooFinance.get(stockCode);
+				}
+			};
+		}
+		
 	}
 }

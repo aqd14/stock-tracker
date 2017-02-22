@@ -172,7 +172,7 @@ public class HomeController extends ParentController implements Initializable {
 				// TODO: Think about better way to find the stock given stock code
 				yahoofinance.Stock yahooStock = null;
 				try {
-					yahooStock = YahooFinance.get(item.getValue().getStockCode(), true);
+					yahooStock = YahooFinance.get(item.getValue().getStockCode(), false);
 				} catch (IOException e) {
 					System.err.println("Stock code is invalid: " + item.getValue().getStockCode());
 					e.printStackTrace();

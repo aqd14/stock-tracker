@@ -126,7 +126,7 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	}
 	
 	public String getPreviousPriceString() {
-		return Double.toString(price.doubleValue()); //previousPrice.toString();
+		return Double.toString(previousPrice.doubleValue()); //previousPrice.toString();
 	}
 	
 	public void setPriceChange(BigDecimal priceChange) {
