@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="4.0" layoutY="2.0" prefHeight="506.0" prefWidth="671.0">
+         <children>
+            <HBox prefHeight="296.0" prefWidth="671.0">
+               <children>
+                  <StackPane prefHeight="198.0" prefWidth="458.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <StackPane prefHeight="198.0" prefWidth="212.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="195.0">
+                                       <children>
+                                          <HBox prefHeight="70.0" prefWidth="212.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="114.0" text="Previous Close">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="previousCloseValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
+                                                   <HBox.margin>
+                                                      <Insets top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator prefWidth="200.0" />
+                                          <HBox prefHeight="70.0" prefWidth="212.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="54.0" text="Open">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="15.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="openPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
+                                                   <HBox.margin>
+                                                      <Insets top="15.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator prefWidth="200.0" />
+                                          <HBox prefHeight="70.0" prefWidth="212.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="77.0" text="Volume">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label prefHeight="17.0" prefWidth="165.0">
+                                                   <HBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator prefWidth="200.0" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </StackPane>
+                              <StackPane prefHeight="198.0" prefWidth="57.0" />
+                              <StackPane prefHeight="198.0" prefWidth="224.0">
+                                 <children>
+                                    <VBox prefHeight="198.0" prefWidth="227.0">
+                                       <children>
+                                          <HBox prefHeight="70.0" prefWidth="212.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="114.0" text="Day's Range">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="dayRange" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
+                                                   <HBox.margin>
+                                                      <Insets top="20.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator prefWidth="200.0" />
+                                          <HBox prefHeight="70.0" prefWidth="212.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="135.0" text="Week Range">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="15.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label fx:id="weekRange" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
+                                                   <HBox.margin>
+                                                      <Insets top="15.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator prefWidth="200.0" />
+                                          <HBox prefHeight="70.0" prefWidth="212.0">
+                                             <children>
+                                                <Label fx:id="averageVol" prefHeight="17.0" prefWidth="125.0" text="Avg. Volume">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" top="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <Label prefHeight="17.0" prefWidth="165.0">
+                                                   <HBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator prefWidth="200.0" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="198.0" prefWidth="254.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox prefHeight="83.0" prefWidth="236.0">
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <JFXToggleButton text="Alert Type 1">
+                                                   <tooltip>
+                                                      <Tooltip text="This alert is used to notify when a single stock unit reaches a certain level" />
+                                                   </tooltip>
+                                                </JFXToggleButton>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="91.0" text="Threshold">
+                                                   <HBox.margin>
+                                                      <Insets left="15.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <JFXTextField editable="false" prefWidth="126.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </HBox.margin>
+                                                </JFXTextField>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox prefHeight="83.0" prefWidth="236.0">
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <JFXToggleButton text="Alert Type 2">
+                                                   <tooltip>
+                                                      <Tooltip text="Notify when combined value of your shares of stock X reach a certain level Y" />
+                                                   </tooltip>
+                                                </JFXToggleButton>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="91.0" text="Threshold">
+                                                   <HBox.margin>
+                                                      <Insets left="15.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <JFXTextField editable="false" prefWidth="126.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </HBox.margin>
+                                                </JFXTextField>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="10.0" layoutY="110.0" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox prefHeight="83.0" prefWidth="236.0">
+                                       <children>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <JFXToggleButton text="Alert Type 3">
+                                                   <tooltip>
+                                                      <Tooltip text="Alert when your total shares of stock X switch from having a net profit to net loss or vice versa" />
+                                                   </tooltip>
+                                                </JFXToggleButton>
+                                             </children>
+                                          </HBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="17.0" prefWidth="91.0" text="Threshold">
+                                                   <HBox.margin>
+                                                      <Insets left="15.0" top="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <JFXTextField editable="false" prefWidth="126.0">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </HBox.margin>
+                                                </JFXTextField>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children></StackPane>
+               </children>
+            </HBox>
+            <AnchorPane prefHeight="246.0" prefWidth="671.0" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
