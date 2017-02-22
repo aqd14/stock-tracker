@@ -26,9 +26,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -121,8 +121,30 @@ public class HomeController extends ParentController implements Initializable {
 		searchTF.textProperty().addListener((o,oldVal,newVal)->{
 			stockTableView.setPredicate(stock -> filterCriteria(stock, newVal));
 		});
+		
+		// Add listener when user select a row
+		stockTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+//				System.out.println("Current number of rows: " + stockTableView.getCurrentItemsCount());
+				if (mouseEvent.getClickCount() == 2 && stockTableView.getCurrentItemsCount() > 0) { // Double click
+					TreeItem<Stock> item = stockTableView.getSelectionModel().getSelectedItem();
+					System.out.println("Selected stock: " + item.getValue().getStockName());
+				}
+			}
+			
+		});
 	}
 	
+	/**
+	 * <p>
+	 * Filter stock based on stock code or company name. It searches if stock code or company name 
+	 * contains search query.
+	 * </p>
+	 * @param stock
+	 * @param value
+	 * @return <code>True</code> if matched, otherwise return <code>False</code> 
+	 */
 	private boolean filterCriteria(TreeItem<Stock> stock, String value) {
 		return stock.getValue().getStockCode().toLowerCase().contains(value.toLowerCase()) ||
 				stock.getValue().getStockName().toLowerCase().contains(value.toLowerCase());
