@@ -10,8 +10,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.StockDetailsController">
    <children>
       <VBox layoutX="4.0" layoutY="2.0" prefHeight="506.0" prefWidth="671.0">
          <children>
@@ -19,119 +20,172 @@
                <children>
                   <StackPane prefHeight="198.0" prefWidth="458.0">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <StackPane prefHeight="198.0" prefWidth="212.0">
+                              <VBox prefHeight="155.0" prefWidth="432.0">
                                  <children>
-                                    <VBox prefHeight="200.0" prefWidth="195.0">
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <HBox prefHeight="70.0" prefWidth="212.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="114.0" text="Previous Close">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" top="20.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <Label fx:id="previousCloseValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
-                                                   <HBox.margin>
-                                                      <Insets top="20.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <Separator prefWidth="200.0" />
-                                          <HBox prefHeight="70.0" prefWidth="212.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="54.0" text="Open">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" top="15.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <Label fx:id="openPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
-                                                   <HBox.margin>
-                                                      <Insets top="15.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <Separator prefWidth="200.0" />
-                                          <HBox prefHeight="70.0" prefWidth="212.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="77.0" text="Volume">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" top="10.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <Label prefHeight="17.0" prefWidth="165.0">
-                                                   <HBox.margin>
-                                                      <Insets top="10.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <Separator prefWidth="200.0" />
+                                          <Label fx:id="companyLB" prefHeight="52.0" prefWidth="431.0" text="Apple Inc." textFill="#868282">
+                                             <font>
+                                                <Font name="Georgia" size="20.0" />
+                                             </font>
+                                          </Label>
                                        </children>
-                                    </VBox>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label fx:id="stockCodeAndTimeLB" prefHeight="52.0" prefWidth="432.0" text="NASDAQ: AAPL - Feb 22, 9:52 AM EST" textFill="#868282">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label id="stockPriceLB" fx:id="currentPriceLB" alignment="BOTTOM_LEFT" prefHeight="52.0" prefWidth="107.0" text="136.23">
+                                             <font>
+                                                <Font name="System Bold" size="30.0" />
+                                             </font>
+                                          </Label>
+                                          <Label alignment="BOTTOM_LEFT" prefHeight="53.0" prefWidth="41.0" text="USD">
+                                             <HBox.margin>
+                                                <Insets bottom="4.0" left="5.0" />
+                                             </HBox.margin>
+                                          </Label>
+                                          <Label fx:id="priceChangeLB" alignment="BOTTOM_LEFT" prefHeight="55.0" prefWidth="275.0" text="-0.45 (0.33%)" textFill="#f80000">
+                                             <font>
+                                                <Font size="26.0" />
+                                             </font>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </StackPane>
-                              <StackPane prefHeight="198.0" prefWidth="57.0" />
-                              <StackPane prefHeight="198.0" prefWidth="224.0">
+                              </VBox>
+                              <HBox prefHeight="116.0" prefWidth="432.0">
                                  <children>
-                                    <VBox prefHeight="198.0" prefWidth="227.0">
+                                    <StackPane prefHeight="198.0" prefWidth="212.0">
                                        <children>
-                                          <HBox prefHeight="70.0" prefWidth="212.0">
+                                          <VBox prefHeight="200.0" prefWidth="195.0">
                                              <children>
-                                                <Label prefHeight="17.0" prefWidth="114.0" text="Day's Range">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" top="20.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <Label fx:id="dayRange" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
-                                                   <HBox.margin>
-                                                      <Insets top="20.0" />
-                                                   </HBox.margin>
-                                                </Label>
+                                                <HBox prefHeight="70.0" prefWidth="212.0">
+                                                   <children>
+                                                      <Label prefHeight="17.0" prefWidth="114.0" text="Previous Close">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" top="20.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <Label fx:id="previousCloseValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
+                                                         <HBox.margin>
+                                                            <Insets top="20.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <Separator prefWidth="200.0" />
+                                                <HBox prefHeight="70.0" prefWidth="212.0">
+                                                   <children>
+                                                      <Label prefHeight="17.0" prefWidth="73.0" text="Open">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" top="15.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <Label fx:id="openPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
+                                                         <HBox.margin>
+                                                            <Insets top="15.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <Separator prefWidth="200.0" />
+                                                <HBox prefHeight="70.0" prefWidth="212.0">
+                                                   <children>
+                                                      <Label prefHeight="17.0" prefWidth="77.0" text="Volume">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <Label prefHeight="17.0" prefWidth="165.0">
+                                                         <HBox.margin>
+                                                            <Insets top="10.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <Separator prefWidth="200.0" />
                                              </children>
-                                          </HBox>
-                                          <Separator prefWidth="200.0" />
-                                          <HBox prefHeight="70.0" prefWidth="212.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="135.0" text="Week Range">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" top="15.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <Label fx:id="weekRange" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
-                                                   <HBox.margin>
-                                                      <Insets top="15.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <Separator prefWidth="200.0" />
-                                          <HBox prefHeight="70.0" prefWidth="212.0">
-                                             <children>
-                                                <Label fx:id="averageVol" prefHeight="17.0" prefWidth="125.0" text="Avg. Volume">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" top="10.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <Label prefHeight="17.0" prefWidth="165.0">
-                                                   <HBox.margin>
-                                                      <Insets top="10.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <Separator prefWidth="200.0" />
+                                          </VBox>
                                        </children>
-                                    </VBox>
+                                    </StackPane>
+                                    <StackPane prefHeight="198.0" prefWidth="57.0" />
+                                    <StackPane prefHeight="198.0" prefWidth="224.0">
+                                       <children>
+                                          <VBox prefHeight="198.0" prefWidth="227.0">
+                                             <children>
+                                                <HBox prefHeight="70.0" prefWidth="212.0">
+                                                   <children>
+                                                      <Label prefHeight="17.0" prefWidth="114.0" text="Market Cap">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" top="20.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <Label fx:id="dayRange" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
+                                                         <HBox.margin>
+                                                            <Insets top="20.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <Separator prefWidth="200.0" />
+                                                <HBox prefHeight="70.0" prefWidth="212.0">
+                                                   <children>
+                                                      <Label prefHeight="17.0" prefWidth="135.0" text="P/E Ratio">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" top="15.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <Label fx:id="weekRange" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
+                                                         <HBox.margin>
+                                                            <Insets top="15.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <Separator prefWidth="200.0" />
+                                                <HBox prefHeight="70.0" prefWidth="212.0">
+                                                   <children>
+                                                      <Label fx:id="averageVol" prefHeight="17.0" prefWidth="125.0" text="Div. Yield">
+                                                         <HBox.margin>
+                                                            <Insets left="5.0" top="10.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                      <Label prefHeight="17.0" prefWidth="165.0">
+                                                         <HBox.margin>
+                                                            <Insets top="10.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <Separator prefWidth="200.0" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </StackPane>
                                  </children>
-                              </StackPane>
+                              </HBox>
                            </children>
-                        </HBox>
+                        </VBox>
                      </children>
                   </StackPane>
+                  <Separator orientation="VERTICAL" prefHeight="200.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Separator>
                   <StackPane prefHeight="198.0" prefWidth="254.0">
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0">
@@ -234,6 +288,7 @@
                      </children></StackPane>
                </children>
             </HBox>
+            <Separator prefWidth="200.0" />
             <AnchorPane prefHeight="246.0" prefWidth="671.0" />
          </children>
       </VBox>

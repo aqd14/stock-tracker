@@ -69,15 +69,18 @@ public class Utility {
 			Stock stock = new Stock();
 			stock.setStockCode(entry.getKey());
 			yahoofinance.Stock s = entry.getValue();
-			s.print();
 			// Extract stock information
 			stock.setStockName(s.getName());
 			StockQuote stockQuote = s.getQuote(true);
 			if (stockQuote != null) {
 				if (stockQuote.getPrice() != null)
-					stock.setPrice(stockQuote.getPrice().doubleValue());
+					stock.setPrice(stockQuote.getPrice());
 				if (stockQuote.getPreviousClose() != null)
-					stock.setPreviousPrice(stockQuote.getPreviousClose().doubleValue());
+					stock.setPreviousPrice(stockQuote.getPreviousClose());
+				if (stockQuote.getChange() != null)
+					stock.setPriceChange(stockQuote.getChange());
+				if (stockQuote.getChangeInPercent() != null)
+					stock.setPriceChangePercent(stockQuote.getChangeInPercent());
 			}
 			stocks.add(stock);
 		}

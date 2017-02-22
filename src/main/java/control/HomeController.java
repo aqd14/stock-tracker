@@ -13,7 +13,6 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
-import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +32,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import main.java.model.Stock;
+import main.java.utility.Screen;
 import main.java.utility.Utility;
+import yahoofinance.YahooFinance;
 
 /**
  * @author doquocanh-macbook
@@ -45,10 +46,10 @@ public class HomeController extends ParentController implements Initializable {
 	
 	@FXML private TreeTableColumn<Stock, String> stockCodeCol;
 	@FXML private TreeTableColumn<Stock, String> companyCol;
-	@FXML private TreeTableColumn<Stock, Double> priceCol;
-	@FXML private TreeTableColumn<Stock, Double> lastPriceCol;
-	@FXML private TreeTableColumn<Stock, Double> changeCol;
-	@FXML private TreeTableColumn<Stock, Double> percentChangeCol;
+	@FXML private TreeTableColumn<Stock, String> priceCol;
+	@FXML private TreeTableColumn<Stock, String> lastPriceCol;
+	@FXML private TreeTableColumn<Stock, String> changeCol;
+	@FXML private TreeTableColumn<Stock, String> percentChangeCol;
 //	@FXML private JFXTreeTableColumn<Integer, String> stockBuyCol;
 	
 	@FXML private JFXTextField searchTF;
@@ -128,6 +129,7 @@ public class HomeController extends ParentController implements Initializable {
 			public void handle(MouseEvent mouseEvent) {
 //				System.out.println("Current number of rows: " + stockTableView.getCurrentItemsCount());
 				if (mouseEvent.getClickCount() == 2 && stockTableView.getCurrentItemsCount() > 0) { // Double click
+					makeNewStage(Screen.STOCK_DETAILS, "Stock Details", "../view/StockDetails.fxml");
 					TreeItem<Stock> item = stockTableView.getSelectionModel().getSelectedItem();
 					System.out.println("Selected stock: " + item.getValue().getStockName());
 				}
@@ -136,6 +138,67 @@ public class HomeController extends ParentController implements Initializable {
 		});
 	}
 	
+	/**
+	 * Create new stage besides primary one. That means there are more than one views displayed 
+	 * on the screen.
+	 * 
+	 * @param target The view that user wants to switch to
+	 * @param stageTitle The title of created stage
+	 * @param url <code>URL</code> to FXML file
+	 */
+	public void makeNewStage(Screen target, String stageTitle, String url) {
+		Stage settingsStage = new Stage();
+		settingsStage.setTitle(stageTitle);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
+		Parent root = null;
+		try {
+			root = (Parent)loader.load();
+		} catch (IOException e) {
+        	System.err.println("Could not load url: " + url);
+        	e.printStackTrace();
+        	return;
+        }
+		switch(target) {
+			case SETTINGS:
+				// Set current user
+				SettingsController settingsController = loader.<SettingsController>getController();
+				settingsController.setUser(user);
+				settingsController.setAccountName(user.getAccount().getAccountName());
+				break;
+			case STOCK_DETAILS:
+				StockDetailsController stockController = loader.<StockDetailsController>getController();
+				// Find selected stock in Java API
+				TreeItem<Stock> item = stockTableView.getSelectionModel().getSelectedItem();
+				// TODO: Think about better way to find the stock given stock code
+				yahoofinance.Stock yahooStock = null;
+				try {
+					yahooStock = YahooFinance.get(item.getValue().getStockCode(), true);
+				} catch (IOException e) {
+					System.err.println("Stock code is invalid: " + item.getValue().getStockCode());
+					e.printStackTrace();
+					return;
+				}
+				stockController.setStock(yahooStock);
+				stockController.initContent();
+				break;
+			default:
+				return;
+		}
+		
+		settingsStage.setScene(new Scene(root));
+		settingsStage.setResizable(false);
+		settingsStage.show();
+			
+	}
+	
+	/**
+	 * Open new screen when user select [Settings] on Menu bar
+	 * @param event Capture the action user performed. 
+	 */
+	@FXML private void openAccountSettings(ActionEvent event) {
+		makeNewStage(Screen.SETTINGS, "Settings", "../view/Settings.fxml");
+	}
+
 	/**
 	 * <p>
 	 * Filter stock based on stock code or company name. It searches if stock code or company name 
@@ -159,44 +222,21 @@ public class HomeController extends ParentController implements Initializable {
 	}
 	
 	private void setCellValueStockPrice() {
-		priceCol.setCellValueFactory(param -> new ReadOnlyDoubleWrapper(param.getValue().getValue().getPrice()).asObject());
+		priceCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getPriceString()));
 	}
 	
 	private void setCellFactoryLastPrice() {
-		lastPriceCol.setCellValueFactory(param -> new ReadOnlyDoubleWrapper(param.getValue().getValue().getPreviousPrice()).asObject());
+		lastPriceCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getPreviousPriceString()));
 	}
 	
 	private void setCellFactoryPriceChange() {
-		changeCol.setCellValueFactory(param -> new ReadOnlyDoubleWrapper(Utility.round(param.getValue().getValue().getPrice() - param.getValue().getValue().getPreviousPrice(), 2)).asObject());
+		changeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getPriceChangeString()));
 		//setPriceFormatColumn(changeCol);
 	}
 	
 	private void setCellFactoryPercentageChange() {
-		percentChangeCol.setCellValueFactory(param -> new ReadOnlyDoubleWrapper(
-		        Utility.round((param.getValue().getValue().getPrice() - param.getValue().getValue().getPreviousPrice())
-		                / param.getValue().getValue().getPrice(),2)).asObject());
+		percentChangeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getPriceChangePercentString()));
 		//setPriceFormatColumn(percentChangeCol);
-	}
-
-	@FXML private void openAccountSettings(ActionEvent event) {
-		Stage settingsStage = new Stage();
-		settingsStage.setTitle("Account Settings");
-		
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Settings.fxml"));
-        try {
-			Parent root = (Parent)loader.load();
-			// Set current user
-			SettingsController settingsController = loader.<SettingsController>getController();
-			settingsController.setUser(user);
-			settingsController.setAccountName(user.getAccount().getAccountName());
-			
-			settingsStage.setScene(new Scene(root));
-			settingsStage.setResizable(false);
-			settingsStage.show();
-		} catch (IOException e) {
-			System.err.println("Couldn't load FXML file!");
-			e.printStackTrace();
-		}
 	}
 	
 //	private void setCellFactoryStockBuy() {
@@ -231,6 +271,4 @@ public class HomeController extends ParentController implements Initializable {
 //	        }
 //	    });
 //	}
-	
-	
 }
