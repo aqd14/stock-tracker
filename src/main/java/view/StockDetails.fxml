@@ -3,6 +3,9 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tooltip?>
@@ -12,13 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.StockDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.StockDetailsController">
    <children>
-      <VBox layoutX="4.0" layoutY="2.0" prefHeight="506.0" prefWidth="671.0">
+      <VBox layoutX="4.0" layoutY="2.0" prefHeight="629.0" prefWidth="697.0">
          <children>
             <HBox prefHeight="296.0" prefWidth="671.0">
                <children>
-                  <StackPane prefHeight="198.0" prefWidth="458.0">
+                  <StackPane prefHeight="296.0" prefWidth="482.0">
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
@@ -26,7 +29,7 @@
                                  <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label fx:id="companyLB" prefHeight="52.0" prefWidth="431.0" text="Apple Inc." textFill="#868282">
+                                          <Label fx:id="companyLB" prefHeight="52.0" prefWidth="458.0" text="Apple Inc." textFill="#868282">
                                              <font>
                                                 <Font name="Georgia" size="20.0" />
                                              </font>
@@ -35,9 +38,9 @@
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label fx:id="stockCodeAndTimeLB" prefHeight="52.0" prefWidth="432.0" text="NASDAQ: AAPL - Feb 22, 9:52 AM EST" textFill="#868282">
+                                          <Label fx:id="stockCodeAndTimeLB" prefHeight="52.0" prefWidth="460.0" text="NASDAQ: AAPL - Feb 22, 9:52 AM EST" textFill="#868282">
                                              <font>
-                                                <Font size="20.0" />
+                                                <Font name="Georgia" size="20.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -46,7 +49,7 @@
                                        <children>
                                           <Label id="stockPriceLB" fx:id="currentPriceLB" alignment="BOTTOM_LEFT" prefHeight="52.0" prefWidth="107.0" text="136.23">
                                              <font>
-                                                <Font name="System Bold" size="30.0" />
+                                                <Font name="Georgia" size="30.0" />
                                              </font>
                                           </Label>
                                           <Label alignment="BOTTOM_LEFT" prefHeight="53.0" prefWidth="41.0" text="USD">
@@ -56,7 +59,7 @@
                                           </Label>
                                           <Label fx:id="priceChangeLB" alignment="BOTTOM_LEFT" prefHeight="55.0" prefWidth="275.0" text="-0.45 (0.33%)" textFill="#f80000">
                                              <font>
-                                                <Font size="26.0" />
+                                                <Font name="Georgia" size="26.0" />
                                              </font>
                                              <opaqueInsets>
                                                 <Insets />
@@ -74,10 +77,13 @@
                                              <children>
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label prefHeight="17.0" prefWidth="114.0" text="Previous Close">
+                                                      <Label fx:id="previousClose" prefHeight="17.0" prefWidth="120.0" text="Previous Close">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="20.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Georgia" size="13.0" />
+                                                         </font>
                                                       </Label>
                                                       <Label fx:id="previousCloseValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
                                                          <HBox.margin>
@@ -89,10 +95,13 @@
                                                 <Separator prefWidth="200.0" />
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label prefHeight="17.0" prefWidth="73.0" text="Open">
+                                                      <Label fx:id="open" prefHeight="17.0" prefWidth="73.0" text="Open">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="15.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Georgia" size="13.0" />
+                                                         </font>
                                                       </Label>
                                                       <Label fx:id="openPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
                                                          <HBox.margin>
@@ -104,10 +113,13 @@
                                                 <Separator prefWidth="200.0" />
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label prefHeight="17.0" prefWidth="77.0" text="Volume">
+                                                      <Label fx:id="volume" prefHeight="17.0" prefWidth="77.0" text="Volume">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="10.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Georgia" size="13.0" />
+                                                         </font>
                                                       </Label>
                                                       <Label prefHeight="17.0" prefWidth="165.0">
                                                          <HBox.margin>
@@ -128,12 +140,15 @@
                                              <children>
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label prefHeight="17.0" prefWidth="114.0" text="Market Cap">
+                                                      <Label fx:id="marketCap" prefHeight="17.0" prefWidth="114.0" text="Market Cap">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="20.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Georgia" size="13.0" />
+                                                         </font>
                                                       </Label>
-                                                      <Label fx:id="dayRange" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
+                                                      <Label fx:id="marketCapValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
                                                          <HBox.margin>
                                                             <Insets top="20.0" />
                                                          </HBox.margin>
@@ -143,12 +158,15 @@
                                                 <Separator prefWidth="200.0" />
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label prefHeight="17.0" prefWidth="135.0" text="P/E Ratio">
+                                                      <Label fx:id="peRatio" prefHeight="17.0" prefWidth="135.0" text="P/E Ratio">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="15.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Georgia" size="13.0" />
+                                                         </font>
                                                       </Label>
-                                                      <Label fx:id="weekRange" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
+                                                      <Label fx:id="peRatioPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
                                                          <HBox.margin>
                                                             <Insets top="15.0" />
                                                          </HBox.margin>
@@ -162,6 +180,9 @@
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="10.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Georgia" size="13.0" />
+                                                         </font>
                                                       </Label>
                                                       <Label prefHeight="17.0" prefWidth="165.0">
                                                          <HBox.margin>
@@ -178,6 +199,9 @@
                                  </children>
                               </HBox>
                            </children>
+                           <StackPane.margin>
+                              <Insets left="5.0" />
+                           </StackPane.margin>
                         </VBox>
                      </children>
                   </StackPane>
@@ -186,7 +210,7 @@
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Separator>
-                  <StackPane prefHeight="198.0" prefWidth="254.0">
+                  <StackPane prefHeight="198.0" prefWidth="240.0">
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
@@ -289,7 +313,25 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <AnchorPane prefHeight="246.0" prefWidth="671.0" />
+            <AnchorPane fx:id="lineChartAP" prefHeight="328.0" prefWidth="671.0">
+               <children>
+                  <VBox prefHeight="328.0" prefWidth="671.0">
+                     <children>
+                        <HBox prefHeight="53.0" prefWidth="664.0" />
+                        <LineChart fx:id="stockLineChart" prefHeight="274.0" prefWidth="664.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </LineChart>
+                     </children>
+                  </VBox>
+               </children></AnchorPane>
          </children>
       </VBox>
    </children>

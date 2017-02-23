@@ -147,8 +147,8 @@ public class HomeController extends ParentController implements Initializable {
 	 * @param url <code>URL</code> to FXML file
 	 */
 	public void makeNewStage(Screen target, String stageTitle, String url) {
-		Stage settingsStage = new Stage();
-		settingsStage.setTitle(stageTitle);
+		Stage newStage = new Stage();
+		newStage.setTitle(stageTitle);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
 		Parent root = null;
 		try {
@@ -179,15 +179,15 @@ public class HomeController extends ParentController implements Initializable {
 					return;
 				}
 				stockController.setStock(yahooStock);
-				stockController.initContent();
+				stockController.updateStockData();
 				break;
 			default:
 				return;
 		}
 		
-		settingsStage.setScene(new Scene(root));
-		settingsStage.setResizable(false);
-		settingsStage.show();
+		newStage.setScene(new Scene(root));
+		newStage.setResizable(false);
+		newStage.show();
 			
 	}
 	
