@@ -3,6 +3,7 @@ package main.java.model;
 // Generated Feb 9, 2017 11:38:22 PM by Hibernate Tools 5.2.0.CR1
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -91,6 +92,8 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 
 	public void setPrice(BigDecimal price) {
 //		price = Utility.round(price, 2);
+		// Rounding to 2 decimal numbers
+		price = price.setScale(2, RoundingMode.CEILING);
 		this.price = price;
 	}
 
@@ -100,6 +103,7 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	}
 
 	public void setPreviousPrice(BigDecimal previousPrice) {
+		previousPrice = previousPrice.setScale(2, RoundingMode.CEILING);
 		this.previousPrice = previousPrice;
 	}
 
@@ -142,6 +146,7 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	}
 	
 	public void setPriceChangePercent(BigDecimal priceChangePercent) {
+		priceChangePercent.setScale(2, RoundingMode.CEILING);
 		this.priceChangePercent = priceChangePercent;
 	}
 	
