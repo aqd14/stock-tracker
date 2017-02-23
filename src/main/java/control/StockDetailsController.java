@@ -5,6 +5,7 @@ package main.java.control;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -92,15 +95,15 @@ public class StockDetailsController extends ParentController implements Initiali
 	}
 	
 	private void initCurrentPrice() {
-		currentPriceLB.setText(yahooStock.getQuote().getPrice().toString());
+		currentPriceLB.setText(yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).toString());
 	}
 	
 	private void initPriceChange() {
 		// The difference between current price and price in last close
-		double priceChangeInMoney = yahooStock.getQuote().getChange().doubleValue();
+		double priceChangeInMoney = yahooStock.getQuote().getChange().setScale(2, RoundingMode.CEILING).doubleValue();
 		// Calculate in double value
 //		Double priceChangeInPercent = Utils.getPercent(yahooStock.getQuote().getPrice().doubleValue(), yahooStock.getQuote().getPreviousClose().doubleValue());
-		double priceChangeInPercent = yahooStock.getQuote().getChangeInPercent().doubleValue();//toString().substring(1); // Remove sign (- or +)
+		double priceChangeInPercent = yahooStock.getQuote().getChangeInPercent().setScale(2, RoundingMode.CEILING).doubleValue();//toString().substring(1); // Remove sign (- or +)
 		
 		StringBuilder sb = new StringBuilder("");
 		sb.append(priceChangeInMoney).append(" (").append(priceChangeInPercent).append("%)");
@@ -212,6 +215,14 @@ public class StockDetailsController extends ParentController implements Initiali
 		// Check stock changes in real-time for each 2 minutes
 		service = new RealTimeUpdateService();
 		service.setPeriod(Duration.minutes(2));
+		// Auto change width of label based on current text length
+		currentPriceLB.textProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldVal, String newVal) {
+				currentPriceLB.setPrefWidth(currentPriceLB.getText().length()*22 - 100/currentPriceLB.getText().length());
+			}
+		});
 	}
 	
 	private static class RealTimeUpdateService extends ScheduledService<yahoofinance.Stock> {
