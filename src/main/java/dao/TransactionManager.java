@@ -1,14 +1,10 @@
 package main.java.dao;
 
-import main.java.utility.HibernateUtil;
-
-import javax.naming.InitialContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import main.java.utility.HibernateUtil;
 
 /**
  * Home object for domain model class Transaction.

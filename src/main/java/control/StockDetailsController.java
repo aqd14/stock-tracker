@@ -269,6 +269,7 @@ public class StockDetailsController extends ParentController implements Initiali
 			double subtraction = curBal - quantity*price;
 			if (subtraction > 0) {
 				user.getAccount().setBalance(subtraction);
+				userManager.update(user);
 				// Create new instance and relationship in database
 				Stock boughtStock = extractStock();
 				stockManager.add(boughtStock);
