@@ -85,7 +85,7 @@
                                                             <Insets left="5.0" top="20.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Georgia" size="13.0" />
+                                                            <Font name="Helvetica" size="13.0" />
                                                          </font>
                                                       </Label>
                                                       <Label fx:id="previousCloseValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
@@ -103,7 +103,7 @@
                                                             <Insets left="5.0" top="15.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Georgia" size="13.0" />
+                                                            <Font name="Helvetica" size="13.0" />
                                                          </font>
                                                       </Label>
                                                       <Label fx:id="openPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
@@ -121,7 +121,7 @@
                                                             <Insets left="5.0" top="10.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Georgia" size="13.0" />
+                                                            <Font name="Helvetica" size="13.0" />
                                                          </font>
                                                       </Label>
                                                       <Label prefHeight="17.0" prefWidth="165.0">
@@ -148,7 +148,7 @@
                                                             <Insets left="5.0" top="20.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Georgia" size="13.0" />
+                                                            <Font name="Helvetica" size="13.0" />
                                                          </font>
                                                       </Label>
                                                       <Label fx:id="marketCapValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
@@ -166,7 +166,7 @@
                                                             <Insets left="5.0" top="15.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Georgia" size="13.0" />
+                                                            <Font name="Helvetica" size="13.0" />
                                                          </font>
                                                       </Label>
                                                       <Label fx:id="peRatioPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
@@ -184,7 +184,7 @@
                                                             <Insets left="5.0" top="10.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Georgia" size="13.0" />
+                                                            <Font name="Helvetica" size="13.0" />
                                                          </font>
                                                       </Label>
                                                       <Label prefHeight="17.0" prefWidth="165.0">
