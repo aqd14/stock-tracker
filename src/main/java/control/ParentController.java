@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import main.java.dao.UserManager;
+import main.java.dao.*;
 import main.java.model.User;
 import main.java.utility.Screen;
 
@@ -15,10 +15,16 @@ public class ParentController {
 	
 	protected User user;
 	protected UserManager userManager;
+	protected StockManager stockManager;
+	protected UserStockManager userStockManager;
+	protected TransactionManager transactionManager;
 	
 	public ParentController() {
 		// TODO Auto-generated constructor stub
 		 userManager = new UserManager();
+		 stockManager = new StockManager();
+		 userStockManager = new UserStockManager();
+		 transactionManager = new TransactionManager();
 	}
 	
 	public void setUser(User user) {

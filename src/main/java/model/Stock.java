@@ -36,22 +36,18 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	public Stock() {
 	}
 
-	public Stock(Transaction transaction, String stockName, String stockCode, BigDecimal price, BigDecimal previousPrice) {
+	public Stock(Transaction transaction, String stockName, String stockCode, int amount, BigDecimal price, BigDecimal previousPrice) {
 		this.transaction = transaction;
 		this.stockName = stockName;
 		this.stockCode = stockCode;
+		this.amount = amount;
 		this.price = price;
 		this.previousPrice = previousPrice;
 	}
 
-	public Stock(Transaction transaction, String stockName, String stockCode, BigDecimal price, BigDecimal previousPrice,
+	public Stock(Transaction transaction, String stockName, String stockCode, int amount, BigDecimal price, BigDecimal previousPrice,
 	        Set<UserStock> userStocks, StockDetail stockDetail) {
-		this.transaction = transaction;
-		this.stockName = stockName;
-		this.stockCode = stockCode;
-		this.price = price;
-		this.previousPrice = previousPrice;
-		this.userStocks = userStocks;
+		this(transaction, stockName, stockCode, amount, price, previousPrice);
 		this.stockDetail = stockDetail;
 	}
 

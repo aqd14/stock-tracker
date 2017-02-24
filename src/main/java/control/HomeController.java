@@ -182,10 +182,11 @@ public class HomeController extends ParentController implements Initializable {
 				// Set current user
 				SettingsController settingsController = loader.<SettingsController>getController();
 				settingsController.setUser(user);
-				settingsController.setAccountName(user.getAccount().getAccountName());
+				settingsController.setAccountInfo();
 				break;
 			case STOCK_DETAILS:
 				StockDetailsController stockController = loader.<StockDetailsController>getController();
+				stockController.setUser(user);
 				// Find selected stock in Java API
 				TreeItem<Stock> item = stockTableView.getSelectionModel().getSelectedItem();
 				// TODO: Think about better way to find the stock given stock code

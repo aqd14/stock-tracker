@@ -15,7 +15,7 @@ public class UserStock implements java.io.Serializable {
 	private Stock stock;
 	private User user;
 	private Double priceValueThreshold;
-	private Double privePercentageThreshold;
+	private Double pricePercentageThreshold;
 
 	public UserStock() {
 	}
@@ -27,12 +27,12 @@ public class UserStock implements java.io.Serializable {
 	}
 
 	public UserStock(UserStockId id, Stock stock, User user, Double priceValueThreshold,
-	        Double privePercentageThreshold) {
+	        Double pricePercentageThreshold) {
 		this.id = id;
 		this.stock = stock;
 		this.user = user;
 		this.priceValueThreshold = priceValueThreshold;
-		this.privePercentageThreshold = privePercentageThreshold;
+		this.pricePercentageThreshold = pricePercentageThreshold;
 	}
 
 	public UserStockId getId() {
@@ -67,12 +67,12 @@ public class UserStock implements java.io.Serializable {
 		this.priceValueThreshold = priceValueThreshold;
 	}
 
-	public Double getPrivePercentageThreshold() {
-		return this.privePercentageThreshold;
+	public Double getPricePercentageThreshold() {
+		return this.pricePercentageThreshold;
 	}
 
-	public void setPrivePercentageThreshold(Double privePercentageThreshold) {
-		this.privePercentageThreshold = privePercentageThreshold;
+	public void setPricePercentageThreshold(Double privePercentageThreshold) {
+		this.pricePercentageThreshold = privePercentageThreshold;
 	}
 
 }

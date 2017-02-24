@@ -32,6 +32,7 @@ public class SettingsController extends ParentController implements Initializabl
 	@FXML private Text passwordError;
 	@FXML private Text confirmPasswordError;
 	
+	@FXML private JFXTextField currentBalanceTF;
 	@FXML private TextField newBalanceTF;
 	@FXML private Label accountName;
 	@FXML private Text successfulMessage;
@@ -40,8 +41,9 @@ public class SettingsController extends ParentController implements Initializabl
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void setAccountName(String accountName) {
-		this.accountName.setText(accountName);
+	public void setAccountInfo() {
+		accountName.setText(user.getAccount().getAccountName());
+		currentBalanceTF.setText("$ " + String.valueOf(user.getAccount().getBalance()));
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class SettingsController extends ParentController implements Initializabl
 		newBalanceTF.setTextFormatter(new CurrencyFormatter());
 		// Set successful sms invisible
 		successfulMessage.setVisible(false);
-
+		
 //        textFormatter.valueProperty().addListener((obs, oldValue, newValue) -> {
 //            System.out.println("New double value "+newValue);
 //        });

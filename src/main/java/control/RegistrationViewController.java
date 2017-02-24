@@ -60,7 +60,7 @@ public class RegistrationViewController extends ParentController {
 			Date birthday = Date.valueOf(dateOfBirthDP.getValue());
 			User user = new User(username, password, firstName, lastName, email, birthday);
 			// Create account for new user
-			Account account = new Account(user, 0.0, user.getFirstName() + " " + user.getLastName(), null);
+			Account account = new Account(user, 1000, user.getFirstName() + " " + user.getLastName(), null);
 			user.setAccount(account);
 			account.setUser(user);
 			userManager.add(user);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -84,7 +85,7 @@
                                                             <Insets left="5.0" top="20.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Helvetica" size="13.0" />
+                                                            <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <Label fx:id="previousCloseValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
@@ -102,7 +103,7 @@
                                                             <Insets left="5.0" top="15.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Helvetica" size="13.0" />
+                                                            <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <Label fx:id="openPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
@@ -120,7 +121,7 @@
                                                             <Insets left="5.0" top="10.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Helvetica" size="13.0" />
+                                                            <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <Label prefHeight="17.0" prefWidth="165.0">
@@ -147,7 +148,7 @@
                                                             <Insets left="5.0" top="20.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Helvetica" size="13.0" />
+                                                            <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <Label fx:id="marketCapValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
@@ -165,7 +166,7 @@
                                                             <Insets left="5.0" top="15.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Helvetica" size="13.0" />
+                                                            <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <Label fx:id="peRatioPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
@@ -183,7 +184,7 @@
                                                             <Insets left="5.0" top="10.0" />
                                                          </HBox.margin>
                                                          <font>
-                                                            <Font name="Helvetica" size="13.0" />
+                                                            <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
                                                       <Label prefHeight="17.0" prefWidth="165.0">
@@ -253,17 +254,17 @@
                                  </VBox.margin></Separator>
                               <HBox prefHeight="55.0" prefWidth="212.0">
                                  <children>
-                                    <Label fx:id="stockCodeLB" prefHeight="31.0" prefWidth="64.0" text="APPL">
+                                    <Label fx:id="stockCodeLB" prefHeight="31.0" prefWidth="75.0">
                                        <font>
-                                          <Font size="19.0" />
+                                          <Font name="Georgia" size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="buyPriceLB" prefHeight="30.0" prefWidth="85.0" text="136.43">
+                                    <Label fx:id="buyPriceLB" prefHeight="30.0" prefWidth="94.0">
                                        <font>
-                                          <Font size="18.0" />
+                                          <Font name="Helvetica Neue" size="18.0" />
                                        </font>
                                     </Label>
-                                    <JFXComboBox fx:id="quantityCB" />
+                                    <JFXComboBox fx:id="quantityCB" prefHeight="27.0" prefWidth="41.0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets top="10.0" />
@@ -272,6 +273,7 @@
                                     <Insets left="10.0" top="20.0" />
                                  </VBox.margin>
                               </HBox>
+                              <Separator prefWidth="200.0" />
                               <HBox prefHeight="56.0" prefWidth="222.0">
                                  <children>
                                     <Label prefHeight="35.0" prefWidth="104.0" text="Balance">
@@ -279,26 +281,36 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                        <font>
-                                          <Font size="18.0" />
+                                          <Font name="Georgia" size="18.0" />
                                        </font>
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
                                     </Label>
-                                    <JFXTextField fx:id="currentBalanceTF" editable="false" prefHeight="25.0" prefWidth="109.0" />
+                                    <JFXTextField fx:id="currentBalanceTF" editable="false" prefHeight="25.0" prefWidth="109.0">
+                                       <font>
+                                          <Font name="Helvetica Neue Bold" size="17.0" />
+                                       </font></JFXTextField>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
                               </HBox>
                               <HBox prefHeight="44.0" prefWidth="222.0">
                                  <children>
                                     <Label prefHeight="35.0" prefWidth="114.0" text="Sub Total" textFill="#fc0505">
                                        <font>
-                                          <Font size="18.0" />
+                                          <Font name="Georgia" size="18.0" />
                                        </font>
                                        <opaqueInsets>
                                           <Insets left="10.0" />
                                        </opaqueInsets>
                                     </Label>
-                                    <JFXTextField fx:id="subTotalTF" editable="false" prefHeight="25.0" prefWidth="118.0" />
+                                    <JFXTextField fx:id="subTotalTF" editable="false" prefHeight="25.0" prefWidth="118.0">
+                                    <font>
+                                          <Font name="Helvetica Neue Bold" size="18.0" />
+                                       </font>
+                                    </JFXTextField>
                                  </children>
                                  <VBox.margin>
                                     <Insets left="10.0" />
@@ -312,7 +324,7 @@
                                  <children>
                                     <Label prefHeight="35.0" prefWidth="114.0" text="After">
                                        <font>
-                                          <Font name="System Bold" size="18.0" />
+                                          <Font name="Georgia Bold" size="18.0" />
                                        </font>
                                        <opaqueInsets>
                                           <Insets left="10.0" />
@@ -321,7 +333,10 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <JFXTextField fx:id="remainBalanceTF" editable="false" prefHeight="25.0" prefWidth="121.0" />
+                                    <JFXTextField fx:id="remainBalanceTF" editable="false" prefHeight="25.0" prefWidth="121.0">
+                                       <font>
+                                          <Font name="Helvetica Neue Bold" size="18.0" />
+                                       </font></JFXTextField>
                                  </children>
                                  <opaqueInsets>
                                     <Insets />
@@ -340,7 +355,17 @@
                <children>
                   <VBox prefHeight="328.0" prefWidth="697.0">
                      <children>
-                        <HBox prefHeight="53.0" prefWidth="664.0" />
+                        <HBox prefHeight="53.0" prefWidth="664.0">
+                           <children>
+                              <JFXButton buttonType="RAISED" onAction="#buyStock" prefHeight="37.0" prefWidth="106.0" style="-fx-background-color: #2196f3;" styleClass="custom_button" text="Buy" textFill="#f1f1f1">
+                                 <font>
+                                    <Font name="Georgia" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="600.0" top="10.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                           </children></HBox>
                         <LineChart fx:id="stockLineChart" prefHeight="274.0" prefWidth="664.0">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />

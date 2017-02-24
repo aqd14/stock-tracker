@@ -1,32 +1,59 @@
 package main.java.dao;
 
-import main.java.model.Stock;
-import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+import main.java.model.Stock;
+import main.java.utility.HibernateUtil;
 
 /**
  * Home object for domain model class Stock.
  * @see .Stock
  * @author aqd14
  */
-public class StockManager {
+public class StockManager implements IManager {
 
 	private static final Log log = LogFactory.getLog(StockManager.class);
 
-	private final SessionFactory sessionFactory = getSessionFactory();
-
-	protected SessionFactory getSessionFactory() {
-		try {
-			return (SessionFactory) new InitialContext().lookup("SessionFactory");
-		} catch (Exception e) {
-			log.error("Could not locate SessionFactory in JNDI", e);
-			throw new IllegalStateException("Could not locate SessionFactory in JNDI");
-		}
+	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	
+	/**
+	 * Add new stock to database
+	 * @param stock
+	 * @return False if user already existed or something went wrong with transaction
+	 */
+	@Override
+	public void add(Object obj) {
+		Stock stock = (Stock) obj;
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		session.save(stock);
+		tx.commit();
+	}
+	
+	@Override
+	public void remove(Object obj) {
+		// TODO Auto-generated method stub
+		Stock stock = (Stock) obj;
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		session.delete(stock);
+		tx.commit();
 	}
 
+	@Override
+	public void update(Object obj) {
+		Stock stock = (Stock) obj;
+		Session session = sessionFactory.getCurrentSession();
+		Transaction tx = session.beginTransaction();
+		session.update(stock);
+		tx.commit();
+	}
+	
 	public void persist(Stock transientInstance) {
 		log.debug("persisting Stock instance");
 		try {

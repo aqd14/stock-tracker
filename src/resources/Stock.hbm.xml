@@ -17,10 +17,10 @@
         <property name="stockCode" type="string">
             <column name="stock_code" length="45" not-null="true" />
         </property>
-        <property name="price" type="double">
+        <property name="price" type="java.math.BigDecimal">
             <column name="price" precision="22" scale="0" not-null="true" />
         </property>
-        <property name="previousPrice" type="double">
+        <property name="previousPrice" type="java.math.BigDecimal">
             <column name="previous_price" precision="22" scale="0" not-null="true" />
         </property>
         <property name="amount" type="int">

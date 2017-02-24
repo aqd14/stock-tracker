@@ -21,8 +21,8 @@
         <property name="priceValueThreshold" type="java.lang.Double">
             <column name="price_value_threshold" precision="22" scale="0" />
         </property>
-        <property name="privePercentageThreshold" type="java.lang.Double">
-            <column name="prive_percentage_threshold" precision="22" scale="0" />
+        <property name="pricePercentageThreshold" type="java.lang.Double">
+            <column name="price_percentage_threshold" precision="22" scale="0" />
         </property>
     </class>
 </hibernate-mapping>

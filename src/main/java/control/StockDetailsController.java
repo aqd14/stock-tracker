@@ -13,11 +13,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,9 +35,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import yahoofinance.Stock;
+
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
+
+import main.java.model.*;
 
 /**
  * @author doquocanh-macbook
@@ -48,6 +56,14 @@ public class StockDetailsController extends ParentController implements Initiali
 	@FXML private LineChart<CategoryAxis, NumberAxis> stockLineChart;
 	
 	RealTimeUpdateService service;
+	
+	// Buy Stock
+	@FXML private Label stockCodeLB;
+	@FXML private Label buyPriceLB;
+	@FXML private JFXComboBox<Integer> quantityCB;
+	@FXML JFXTextField currentBalanceTF;
+	@FXML JFXTextField subTotalTF;
+	@FXML JFXTextField remainBalanceTF;
 	
 	private yahoofinance.Stock yahooStock;
 	/**
@@ -67,7 +83,7 @@ public class StockDetailsController extends ParentController implements Initiali
 			@Override
 			public void handle(WorkerStateEvent event) {
 				System.out.println("Update new stock changes...");
-				yahooStock = (Stock) event.getSource().getValue();
+				yahooStock = (yahoofinance.Stock) event.getSource().getValue();
 				// Update values in GUIs
 				updateStockData();
 			}
@@ -134,8 +150,13 @@ public class StockDetailsController extends ParentController implements Initiali
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		LineChart<String, Number> lineChart = drawLineChart(2);
-//		lineChartAP.getChildren().add(lineChart);
+		
+		// Buying stock options
+		stockCodeLB.setText(yahooStock.getSymbol());
+		buyPriceLB.setText(yahooStock.getQuote().getPrice().toString());
+		ObservableList<Integer> options = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		quantityCB.setItems(options);
+		currentBalanceTF.setText("$ " + user.getAccount().getBalance());
 	}
 	
 	/**
@@ -223,6 +244,53 @@ public class StockDetailsController extends ParentController implements Initiali
 				currentPriceLB.setPrefWidth(currentPriceLB.getText().length()*22 - 100/currentPriceLB.getText().length());
 			}
 		});
+		
+		// Add listener when user selects item in combobox
+		quantityCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
+			@Override
+			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+				System.out.println("Selected item: " + newValue);
+				subTotalTF.setText("- $ " + yahooStock.getQuote().getPrice().doubleValue()*newValue);
+				remainBalanceTF.setText("$ " + (user.getAccount().getBalance() - newValue*yahooStock.getQuote().getPrice().doubleValue()));
+			}
+			
+		});
+	}
+	
+	@FXML private void buyStock(ActionEvent e) {
+		boolean isValidToBuy = true; // Condition to check if everything is correct to perform transaction
+		if (isValidToBuy) {
+			// Subtract money from user's balance
+			double curBal= user.getAccount().getBalance();
+			int quantity = quantityCB.getSelectionModel().getSelectedItem();
+			double price = yahooStock.getQuote().getPrice().doubleValue();
+			
+			// Check if current balance is enough to buy stock
+			double subtraction = curBal - quantity*price;
+			if (subtraction > 0) {
+				user.getAccount().setBalance(subtraction);
+				// Create new instance and relationship in database
+				Stock boughtStock = extractStock();
+				stockManager.add(boughtStock);
+				UserStockId userStockId = new UserStockId(boughtStock.getId(), user.getId());
+				UserStock userStock = new UserStock(userStockId, boughtStock, user, -1.0, -1.0);
+				userStockManager.add(userStock);
+			} else {
+				// Display error message for user
+			}
+		}
+	}
+	
+	private Stock extractStock() {
+		Transaction transaction = new Transaction(user.getAccount(), new Date());
+		transactionManager.add(transaction);
+		String stockName = yahooStock.getName();
+		String stockCode = yahooStock.getSymbol();
+		int amount = quantityCB.getSelectionModel().getSelectedItem();
+		BigDecimal price = yahooStock.getQuote().getPrice();
+		BigDecimal previousPrice = yahooStock.getQuote().getPreviousClose();
+		Stock stock = new Stock(transaction, stockName, stockCode, amount, price, previousPrice);
+		return stock;
 	}
 	
 	private static class RealTimeUpdateService extends ScheduledService<yahoofinance.Stock> {
@@ -233,10 +301,10 @@ public class StockDetailsController extends ParentController implements Initiali
 		}
 		
 		@Override
-		protected Task<Stock> createTask() {
-			return new Task<Stock>() {
+		protected Task<yahoofinance.Stock> createTask() {
+			return new Task<yahoofinance.Stock>() {
 				@Override
-				protected Stock call() throws IOException {
+				protected yahoofinance.Stock call() throws IOException {
 					System.out.println("Start getting data stock: " + stockCode + " ...");
 					return yahoofinance.YahooFinance.get(stockCode);
 				}
