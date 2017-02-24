@@ -248,10 +248,15 @@ public class StockDetailsController extends ParentController implements Initiali
 		// Add listener when user selects item in combobox
 		quantityCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
 			@Override
-			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-				System.out.println("Selected item: " + newValue);
-				subTotalTF.setText("- $ " + yahooStock.getQuote().getPrice().doubleValue()*newValue);
-				remainBalanceTF.setText("$ " + (user.getAccount().getBalance() - newValue*yahooStock.getQuote().getPrice().doubleValue()));
+			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer quantity) {
+				System.out.println("Selected item: " + quantity);
+				double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
+				System.out.println(price);
+				subTotalTF.setText("- $ " + price*quantity);
+				remainBalanceTF.setText("$ " + (user.getAccount().getBalance() - price*quantity));
+				System.out.println(user.getAccount().getBalance());
+				System.out.println(price*quantity);
+				System.out.println(user.getAccount().getBalance() - price*quantity);
 			}
 			
 		});
@@ -263,7 +268,7 @@ public class StockDetailsController extends ParentController implements Initiali
 			// Subtract money from user's balance
 			double curBal= user.getAccount().getBalance();
 			int quantity = quantityCB.getSelectionModel().getSelectedItem();
-			double price = yahooStock.getQuote().getPrice().doubleValue();
+			double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
 			
 			// Check if current balance is enough to buy stock
 			double subtraction = curBal - quantity*price;
@@ -279,6 +284,11 @@ public class StockDetailsController extends ParentController implements Initiali
 			} else {
 				// Display error message for user
 			}
+			
+			quantityCB.getSelectionModel().clearSelection();
+			subTotalTF.setText("");
+			remainBalanceTF.setText("");
+			currentBalanceTF.setText("$ " + user.getAccount().getBalance());
 		}
 	}
 	
