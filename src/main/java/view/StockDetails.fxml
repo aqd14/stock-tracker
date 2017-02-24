@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.StockDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.StockDetailsController">
    <children>
       <VBox layoutX="4.0" layoutY="2.0" prefHeight="629.0" prefWidth="697.0">
          <children>
@@ -217,98 +216,119 @@
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
+                              <HBox prefHeight="33.0" prefWidth="222.0">
                                  <children>
-                                    <VBox prefHeight="83.0" prefWidth="236.0">
-                                       <children>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <JFXToggleButton text="Alert Type 1">
-                                                   <tooltip>
-                                                      <Tooltip text="This alert is used to notify when a single stock unit reaches a certain level" />
-                                                   </tooltip>
-                                                </JFXToggleButton>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="91.0" text="Threshold">
-                                                   <HBox.margin>
-                                                      <Insets left="15.0" top="5.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <JFXTextField editable="false" prefWidth="126.0">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </HBox.margin>
-                                                </JFXTextField>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
+                                    <Label prefHeight="33.0" prefWidth="76.0" text="Stock" textFill="#0581ee" underline="true">
+                                       <font>
+                                          <Font name="Helvetica" size="18.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label prefHeight="33.0" prefWidth="63.0" text="Price" textFill="#0581ee" underline="true">
+                                       <font>
+                                          <Font name="Helvetica" size="18.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label prefHeight="33.0" prefWidth="76.0" text="Quantity" textFill="#0581ee" underline="true">
+                                       <font>
+                                          <Font name="Helvetica" size="18.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin></Separator>
+                              <HBox prefHeight="55.0" prefWidth="212.0">
+                                 <children>
+                                    <Label fx:id="stockCodeLB" prefHeight="31.0" prefWidth="64.0" text="APPL">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="buyPriceLB" prefHeight="30.0" prefWidth="85.0" text="136.43">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXComboBox fx:id="quantityCB" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets top="10.0" />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="20.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="56.0" prefWidth="222.0">
+                                 <children>
+                                    <Label prefHeight="35.0" prefWidth="104.0" text="Balance">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <JFXTextField fx:id="currentBalanceTF" editable="false" prefHeight="25.0" prefWidth="109.0" />
                                  </children>
                               </HBox>
-                              <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+                              <HBox prefHeight="44.0" prefWidth="222.0">
                                  <children>
-                                    <VBox prefHeight="83.0" prefWidth="236.0">
-                                       <children>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <JFXToggleButton text="Alert Type 2">
-                                                   <tooltip>
-                                                      <Tooltip text="Notify when combined value of your shares of stock X reach a certain level Y" />
-                                                   </tooltip>
-                                                </JFXToggleButton>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="91.0" text="Threshold">
-                                                   <HBox.margin>
-                                                      <Insets left="15.0" top="5.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <JFXTextField editable="false" prefWidth="126.0">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </HBox.margin>
-                                                </JFXTextField>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
+                                    <Label prefHeight="35.0" prefWidth="114.0" text="Sub Total" textFill="#fc0505">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets left="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <JFXTextField fx:id="subTotalTF" editable="false" prefHeight="25.0" prefWidth="118.0" />
                                  </children>
+                                 <VBox.margin>
+                                    <Insets left="10.0" />
+                                 </VBox.margin>
                               </HBox>
-                              <HBox layoutX="10.0" layoutY="110.0" prefHeight="100.0" prefWidth="200.0">
+                              <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin></Separator>
+                              <HBox prefHeight="64.0" prefWidth="222.0">
                                  <children>
-                                    <VBox prefHeight="83.0" prefWidth="236.0">
-                                       <children>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <JFXToggleButton text="Alert Type 3">
-                                                   <tooltip>
-                                                      <Tooltip text="Alert when your total shares of stock X switch from having a net profit to net loss or vice versa" />
-                                                   </tooltip>
-                                                </JFXToggleButton>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <Label prefHeight="17.0" prefWidth="91.0" text="Threshold">
-                                                   <HBox.margin>
-                                                      <Insets left="15.0" top="5.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                                <JFXTextField editable="false" prefWidth="126.0">
-                                                   <HBox.margin>
-                                                      <Insets left="5.0" right="5.0" />
-                                                   </HBox.margin>
-                                                </JFXTextField>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
+                                    <Label prefHeight="35.0" prefWidth="114.0" text="After">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets left="10.0" />
+                                       </opaqueInsets>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <JFXTextField fx:id="remainBalanceTF" editable="false" prefHeight="25.0" prefWidth="121.0" />
                                  </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
                               </HBox>
                            </children>
                         </VBox>
@@ -318,7 +338,7 @@
             <Separator prefWidth="200.0" />
             <AnchorPane fx:id="lineChartAP" prefHeight="328.0" prefWidth="671.0">
                <children>
-                  <VBox prefHeight="328.0" prefWidth="671.0">
+                  <VBox prefHeight="328.0" prefWidth="697.0">
                      <children>
                         <HBox prefHeight="53.0" prefWidth="664.0" />
                         <LineChart fx:id="stockLineChart" prefHeight="274.0" prefWidth="664.0">
