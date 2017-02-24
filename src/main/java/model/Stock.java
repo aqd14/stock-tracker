@@ -24,6 +24,7 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	private String stockCode;
 	private BigDecimal price;
 	private BigDecimal previousPrice;
+	private int amount;
 	private Set<UserStock> userStocks = new HashSet<UserStock>(0);
 	private StockDetail stockDetail;
 	
@@ -100,6 +101,14 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	public BigDecimal getPreviousPrice() {
 //		price = Utility.round(price, 2);
 		return this.previousPrice;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 	public void setPreviousPrice(BigDecimal previousPrice) {
