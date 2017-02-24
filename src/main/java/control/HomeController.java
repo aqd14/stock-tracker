@@ -16,6 +16,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -31,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import main.java.model.Stock;
 import main.java.utility.Screen;
 import main.java.utility.Utility;
@@ -65,43 +67,60 @@ public class HomeController extends ParentController implements Initializable {
 													"BAC", "T", "BABA", "PG", "CVX", "V",
 													"VZ", "HD", "DIS", "INTC", "ORCL", "HSBC"};
 		
-		// Initialize new background thread to handle downloading data
-		Task<ObservableList<Stock>> task = new Task<ObservableList<Stock>>() {
-			
-			@Override
-			protected ObservableList<Stock> call() throws Exception {
-				// Display spinner while loading data.
-				ObservableList<Stock> stocks = Utility.getMultipleStockData(stockSymbols);
-				return stocks;
-			}
-		};
+//		// Initialize new background thread to handle downloading data
+//		Task<ObservableList<Stock>> task = new Task<ObservableList<Stock>>() {
+//			
+//			@Override
+//			protected ObservableList<Stock> call() throws Exception {
+//				// Display spinner while loading data.
+//				ObservableList<Stock> stocks = Utility.getMultipleStockData(stockSymbols);
+//				return stocks;
+//			}
+//		};
+//		
+//		// When task succeeded
+//		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+//			
+//			@Override
+//			public void handle(WorkerStateEvent event) {
+//				// Update view as all stock data downloaded
+//				ObservableList<Stock> stocks = task.getValue();
+//				TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
+//				stockTableView.setRoot(root);
+//				// Finish loading, hide spinner
+//				spinner.setVisible(false);
+//			}
+//		});
+//		
+//		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+//			@Override
+//			public void handle(WorkerStateEvent event) {
+//				System.err.println("Task performed unsuccessfully!");
+//				spinner.setVisible(false);
+//			}
+//		});
+//		
+//		// Start new thread
+//		Thread t = new Thread(task);
+//		t.setDaemon(true);
+//		t.start();
 		
-		// When task succeeded
-		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-			
+		RealTimeUpdateService service = new RealTimeUpdateService(stockSymbols);
+		service.setPeriod(Duration.minutes(2));
+		service.start();
+		service.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+
 			@Override
 			public void handle(WorkerStateEvent event) {
-				// Update view as all stock data downloaded
-				ObservableList<Stock> stocks = task.getValue();
+				System.out.println("Continue update...");
+				ObservableList<Stock> stocks = service.getValue();
 				TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
 				stockTableView.setRoot(root);
 				// Finish loading, hide spinner
 				spinner.setVisible(false);
+				System.out.println("Finish updating!");
 			}
 		});
-		
-		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent event) {
-				System.err.println("Task performed unsuccessfully!");
-				spinner.setVisible(false);
-			}
-		});
-		
-		// Start new thread
-		Thread t = new Thread(task);
-		t.setDaemon(true);
-		t.start();
 		
 		// Initialize GUI
 		ObservableList<Stock> stocks = FXCollections.observableArrayList();
@@ -231,7 +250,6 @@ public class HomeController extends ParentController implements Initializable {
 	
 	private void setCellFactoryPriceChange() {
 		changeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getPriceChangeString()));
-		//setPriceFormatColumn(changeCol);
 	}
 	
 	private void setCellFactoryPercentageChange() {
@@ -239,36 +257,33 @@ public class HomeController extends ParentController implements Initializable {
 		//setPriceFormatColumn(percentChangeCol);
 	}
 	
-//	private void setCellFactoryStockBuy() {
-//		stockBuyCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Stock, String> param) ->{
-//			if(stockBuyCol.validateValue(param)) 
-//				return param.getValue().getValue().getStockBuy();
-//			else 
-//				return stockBuyCol.getComputedValue(param);
-//		});
-//		
-//		stockBuyCol.setCellFactory((TreeTableColumn<Stock, String> param) -> new GenericEditableTreeTableCell<Stock, String>(new TextFieldEditorBuilder()));
-//		stockBuyCol.setOnEditCommit((CellEditEvent<Stock, String> t)->{
-//			((Stock) t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue()).setStockBuy(t.getNewValue());
-//		});
-//	}
-	
 	/**
-	 * Set format for stock price. Only two floating points displayed
-	 * @param c
+	 * <p>
+	 * Scheduled service to automatically download real-time stock information.
+	 * Default downloading time interval is 2 minutes. 
+	 * </p>
+	 * @author doquocanh-macbook
+	 *
 	 */
-//	private void setPriceFormatColumn(TreeTableColumn<Stock, Double> c) {
-//		c.setCellFactory(col -> new TreeTableCell<Stock, Double>() {
-//	        @Override 
-//	        public void updateItem(Double price, boolean empty) {
-//	            //super.updateItem(price, empty);
-//	            if (empty || price < 0.001) {
-//	                setText("0.00");
-//	            } else {
-//	            	DecimalFormat doubleFormat = new DecimalFormat("+#,##0.000;-#");
-//            		setText(doubleFormat.format(price));
-//	            }
-//	        }
-//	    });
-//	}
+	private static class RealTimeUpdateService extends ScheduledService<ObservableList<Stock>> {
+		String[] stockSymbols;
+		
+		public RealTimeUpdateService(String[] stockSymbols) {
+			this.stockSymbols = stockSymbols;
+		}
+		
+//		public void setStockSymbols(String[] stockSymbols) {
+//			this.stockSymbols = stockSymbols;
+//		}
+		
+		@Override
+		protected Task<ObservableList<Stock>> createTask() {
+			return new Task<ObservableList<Stock>>() {
+				@Override
+				protected ObservableList<Stock> call() throws IOException {
+					 return Utility.getMultipleStockData(stockSymbols);
+				}
+			};
+		}
+	}
 }
