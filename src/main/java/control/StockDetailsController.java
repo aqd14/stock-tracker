@@ -40,6 +40,7 @@ import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
 import main.java.model.*;
+import main.java.utility.Utility;
 
 /**
  * @author doquocanh-macbook
@@ -249,16 +250,14 @@ public class StockDetailsController extends ParentController implements Initiali
 		quantityCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
 			@Override
 			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer quantity) {
-				System.out.println("Selected item: " + quantity);
-				double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
-				System.out.println(price);
-				subTotalTF.setText("- $ " + price*quantity);
-				remainBalanceTF.setText("$ " + (user.getAccount().getBalance() - price*quantity));
-				System.out.println(user.getAccount().getBalance());
-				System.out.println(price*quantity);
-				System.out.println(user.getAccount().getBalance() - price*quantity);
+				if (quantity != null) {
+					System.out.println("Selected item: " + quantity);
+					double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
+					double remainingBalance = Utility.round(user.getAccount().getBalance() - price*quantity,2);
+					subTotalTF.setText("- $ " + price*quantity);
+					remainBalanceTF.setText("$ " + (remainingBalance));
+				}
 			}
-			
 		});
 	}
 	
@@ -271,7 +270,7 @@ public class StockDetailsController extends ParentController implements Initiali
 			double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
 			
 			// Check if current balance is enough to buy stock
-			double subtraction = curBal - quantity*price;
+			double subtraction = Utility.round(curBal - quantity*price, 2);
 			if (subtraction > 0) {
 				user.getAccount().setBalance(subtraction);
 				userManager.update(user);
