@@ -178,6 +178,12 @@ public class HomeController extends ParentController implements Initializable {
         	return;
         }
 		switch(target) {
+			case PORFOLIO:
+				PortfolioController portfolioController = loader.<PortfolioController>getController();
+				portfolioController.setUser(user);
+				portfolioController.initPortfolio();
+				portfolioController.initTransactionHistory();
+				break;
 			case SETTINGS:
 				// Set current user
 				SettingsController settingsController = loader.<SettingsController>getController();
@@ -208,7 +214,6 @@ public class HomeController extends ParentController implements Initializable {
 		newStage.setScene(new Scene(root));
 		newStage.setResizable(false);
 		newStage.show();
-			
 	}
 	
 	/**
@@ -217,6 +222,10 @@ public class HomeController extends ParentController implements Initializable {
 	 */
 	@FXML private void openAccountSettings(ActionEvent event) {
 		makeNewStage(Screen.SETTINGS, "Settings", "../view/Settings.fxml");
+	}
+	
+	@FXML private void openPorfolio(ActionEvent event) {
+		makeNewStage(Screen.PORFOLIO, "My Porfolio", "../view/Portfolio.fxml");
 	}
 
 	/**

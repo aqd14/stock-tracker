@@ -18,7 +18,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="homeSP" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.HomeController">
    <children>
       <AnchorPane fx:id="homeAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="928.0">
@@ -36,9 +35,7 @@
                               </Menu>
                               <Menu mnemonicParsing="true" text="_Settings">
                                  <items>
-                                    <MenuItem mnemonicParsing="false" text="My Porfolio" />
-                                    <SeparatorMenuItem mnemonicParsing="false" />
-                                    <MenuItem mnemonicParsing="false" text="Change Password" />
+                                    <MenuItem mnemonicParsing="false" onAction="#openPorfolio" text="My Porfolio" />
                                     <SeparatorMenuItem mnemonicParsing="false" />
                                     <MenuItem mnemonicParsing="false" onAction="#openAccountSettings" text="Account Settings" />
                                  </items>
