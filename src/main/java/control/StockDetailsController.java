@@ -35,12 +35,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-
+import main.java.model.Stock;
+import main.java.model.Transaction;
+import main.java.model.UserStock;
+import main.java.model.UserStockId;
+import main.java.utility.Utility;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
-
-import main.java.model.*;
-import main.java.utility.Utility;
 
 /**
  * @author doquocanh-macbook
@@ -65,6 +66,13 @@ public class StockDetailsController extends ParentController implements Initiali
 	@FXML JFXTextField currentBalanceTF;
 	@FXML JFXTextField subTotalTF;
 	@FXML JFXTextField remainBalanceTF;
+	
+	@FXML private Label dayLow;
+	@FXML private Label dayHigh;
+	@FXML private Label volume;
+	@FXML private Label marketCapValue;
+	@FXML private Label peRatio;
+	@FXML private Label eps;
 	
 	private yahoofinance.Stock yahooStock;
 	/**
@@ -133,17 +141,49 @@ public class StockDetailsController extends ParentController implements Initiali
 		if (priceChange.compareTo(BigDecimal.ZERO) == 0) { // Nothing change in price
 			priceChangeLB.setTextFill(Color.BLACK);
 		} else if (priceChange.compareTo(BigDecimal.ZERO) > 0) { // price increased
-			priceChangeLB.setTextFill(Color.BLUE);
+			priceChangeLB.setTextFill(Color.GREEN);
 		} else { // Price decreased
 			priceChangeLB.setTextFill(Color.RED);
 		}
 	}
+	
+	private void initDayLow() {
+		dayLow.setText(Utility.formatCurrencyNumber(yahooStock.getQuote().getDayLow()));
+	}
+	
+	private void initDayHigh() {
+		dayHigh.setText(Utility.formatCurrencyNumber(yahooStock.getQuote().getDayHigh()));
+	}
+	
+	private void initVolume() {
+		volume.setText(Utility.formatCurrencyNumber(new BigDecimal(yahooStock.getQuote().getVolume())));
+	}
+	
+	private void initMarketCap() {
+		marketCapValue.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getMarketCap()));
+	}
+	
+	private void initPriceEarnRatio() {
+		peRatio.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getPe()));
+	}
+	
+	private void initEarnPerShare() {
+		eps.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getEps()));
+	}
 
 	public void updateStockData() {
+		// Above
 		initCompanyName();
 		initStockCodeAndTime();
 		initCurrentPrice();
 		initPriceChange();
+		// Below
+		initDayLow();
+		initDayHigh();
+		initVolume();
+		initMarketCap();
+		initPriceEarnRatio();
+		initEarnPerShare();
 		// Make line chart based on current data
 		try {
 			drawLineChart(2);
@@ -157,7 +197,7 @@ public class StockDetailsController extends ParentController implements Initiali
 		buyPriceLB.setText(yahooStock.getQuote().getPrice().toString());
 		ObservableList<Integer> options = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		quantityCB.setItems(options);
-		currentBalanceTF.setText("$ " + user.getAccount().getBalance());
+		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
 	}
 	
 	/**
@@ -239,7 +279,6 @@ public class StockDetailsController extends ParentController implements Initiali
 		service.setPeriod(Duration.minutes(2));
 		// Auto change width of label based on current text length
 		currentPriceLB.textProperty().addListener(new ChangeListener<String>() {
-
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldVal, String newVal) {
 				currentPriceLB.setPrefWidth(currentPriceLB.getText().length()*22 - 100/currentPriceLB.getText().length());
@@ -252,10 +291,10 @@ public class StockDetailsController extends ParentController implements Initiali
 			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer quantity) {
 				if (quantity != null) {
 					System.out.println("Selected item: " + quantity);
-					double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
-					double remainingBalance = Utility.round(user.getAccount().getBalance() - price*quantity,2);
-					subTotalTF.setText("- $ " + price*quantity);
-					remainBalanceTF.setText("$ " + (remainingBalance));
+					double price = yahooStock.getQuote().getPrice().doubleValue()*quantity;
+					double remainingBalance = user.getAccount().getBalance() - price*quantity;
+					subTotalTF.setText("- $" + Utility.formatCurrencyDouble(price));
+					remainBalanceTF.setText("$" + Utility.formatCurrencyDouble(remainingBalance));
 				}
 			}
 		});
@@ -283,12 +322,22 @@ public class StockDetailsController extends ParentController implements Initiali
 			} else {
 				// Display error message for user
 			}
-			
-			quantityCB.getSelectionModel().clearSelection();
-			subTotalTF.setText("");
-			remainBalanceTF.setText("");
-			currentBalanceTF.setText("$ " + user.getAccount().getBalance());
+			afterBuyingStock();
 		}
+	}
+	
+	/**
+	 * Handle GUI after buying stocks successfully
+	 */
+	private void afterBuyingStock() {
+//		Alert alert = new Alert(AlertType.NONE);
+//		alert.setContentText("Buying stock successfully!");
+//		alert.show();
+		// After 
+		quantityCB.getSelectionModel().clearSelection();
+		subTotalTF.setText("");
+		remainBalanceTF.setText("");
+		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
 	}
 	
 	private Stock extractStock() {

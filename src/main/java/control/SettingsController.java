@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import main.java.utility.Utility;
 import main.java.utility.ValidationUtil;
 
 public class SettingsController extends ParentController implements Initializable {
@@ -45,7 +46,7 @@ public class SettingsController extends ParentController implements Initializabl
 	
 	public void setAccountInfo() {
 		accountName.setText(user.getAccount().getAccountName());
-		currentBalanceTF.setText("$ " + String.valueOf(user.getAccount().getBalance()));
+		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
 	}
 
 	@Override
@@ -183,6 +184,7 @@ public class SettingsController extends ParentController implements Initializabl
 	}
 	
 	private void updateSettingFields() {
+		// Hide all error messages
 		passwordError.setVisible(false);
 		emailError.setVisible(false);
 		firstNameError.setVisible(false);
@@ -192,6 +194,6 @@ public class SettingsController extends ParentController implements Initializabl
 		currentPasswordPF.clear();
 		newPasswordPF.clear();
 		confirmPasswordPF.clear();
-		currentBalanceTF.setText(String.valueOf(user.getAccount().getBalance()));
+		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
 	}
 }

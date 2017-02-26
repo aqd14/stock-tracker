@@ -80,7 +80,7 @@
                                              <children>
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label fx:id="previousClose" prefHeight="17.0" prefWidth="120.0" text="Previous Close">
+                                                      <Label fx:id="previousClose" prefHeight="17.0" prefWidth="62.0" text="Day Low">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="20.0" />
                                                          </HBox.margin>
@@ -88,17 +88,20 @@
                                                             <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="previousCloseValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
+                                                      <Label fx:id="dayLow" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="133.0" textAlignment="RIGHT">
                                                          <HBox.margin>
                                                             <Insets top="20.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Serif Regular" size="16.0" />
+                                                         </font>
                                                       </Label>
                                                    </children>
                                                 </HBox>
                                                 <Separator prefWidth="200.0" />
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label fx:id="open" prefHeight="17.0" prefWidth="73.0" text="Open">
+                                                      <Label fx:id="open" prefHeight="17.0" prefWidth="113.0" text="Day High">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="15.0" />
                                                          </HBox.margin>
@@ -106,17 +109,20 @@
                                                             <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="openPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
+                                                      <Label fx:id="dayHigh" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="178.0" textAlignment="RIGHT">
                                                          <HBox.margin>
                                                             <Insets top="15.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Serif Regular" size="16.0" />
+                                                         </font>
                                                       </Label>
                                                    </children>
                                                 </HBox>
                                                 <Separator prefWidth="200.0" />
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label fx:id="volume" prefHeight="17.0" prefWidth="77.0" text="Volume">
+                                                      <Label fx:id="volume" prefHeight="17.0" prefWidth="99.0" text="Volume">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="10.0" />
                                                          </HBox.margin>
@@ -124,10 +130,13 @@
                                                             <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label prefHeight="17.0" prefWidth="165.0">
+                                                      <Label fx:id="volume" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="165.0" textAlignment="RIGHT">
                                                          <HBox.margin>
                                                             <Insets top="10.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Serif Regular" size="16.0" />
+                                                         </font>
                                                       </Label>
                                                    </children>
                                                 </HBox>
@@ -143,7 +152,7 @@
                                              <children>
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label fx:id="marketCap" prefHeight="17.0" prefWidth="114.0" text="Market Cap">
+                                                      <Label fx:id="marketCap" prefHeight="17.0" prefWidth="82.0" text="Market Cap">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="20.0" />
                                                          </HBox.margin>
@@ -151,10 +160,13 @@
                                                             <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="marketCapValue" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="117.0">
+                                                      <Label fx:id="marketCapValue" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="126.0" textAlignment="RIGHT">
                                                          <HBox.margin>
                                                             <Insets top="20.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Serif Regular" size="16.0" />
+                                                         </font>
                                                       </Label>
                                                    </children>
                                                 </HBox>
@@ -169,17 +181,20 @@
                                                             <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="peRatioPrice" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="178.0">
+                                                      <Label fx:id="peRatio" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="178.0" textAlignment="RIGHT">
                                                          <HBox.margin>
                                                             <Insets top="15.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Serif Regular" size="16.0" />
+                                                         </font>
                                                       </Label>
                                                    </children>
                                                 </HBox>
                                                 <Separator prefWidth="200.0" />
                                                 <HBox prefHeight="70.0" prefWidth="212.0">
                                                    <children>
-                                                      <Label fx:id="averageVol" prefHeight="17.0" prefWidth="125.0" text="Div. Yield">
+                                                      <Label prefHeight="17.0" prefWidth="125.0" text="EPS">
                                                          <HBox.margin>
                                                             <Insets left="5.0" top="10.0" />
                                                          </HBox.margin>
@@ -187,10 +202,13 @@
                                                             <Font name="Helvetica" size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label prefHeight="17.0" prefWidth="165.0">
+                                                      <Label fx:id="eps" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="165.0" textAlignment="RIGHT">
                                                          <HBox.margin>
                                                             <Insets top="10.0" />
                                                          </HBox.margin>
+                                                         <font>
+                                                            <Font name="Serif Regular" size="16.0" />
+                                                         </font>
                                                       </Label>
                                                    </children>
                                                 </HBox>
@@ -261,7 +279,7 @@
                                     </Label>
                                     <Label fx:id="buyPriceLB" prefHeight="30.0" prefWidth="94.0">
                                        <font>
-                                          <Font name="Helvetica Neue" size="18.0" />
+                                          <Font name="Serif Regular" size="18.0" />
                                        </font>
                                     </Label>
                                     <JFXComboBox fx:id="quantityCB" prefHeight="27.0" prefWidth="41.0" />
@@ -289,7 +307,7 @@
                                     </Label>
                                     <JFXTextField fx:id="currentBalanceTF" editable="false" prefHeight="25.0" prefWidth="109.0">
                                        <font>
-                                          <Font name="Helvetica Neue Bold" size="17.0" />
+                                          <Font name="Serif Regular" size="18.0" />
                                        </font></JFXTextField>
                                  </children>
                                  <VBox.margin>
@@ -308,7 +326,7 @@
                                     </Label>
                                     <JFXTextField fx:id="subTotalTF" editable="false" prefHeight="25.0" prefWidth="118.0">
                                     <font>
-                                          <Font name="Helvetica Neue Bold" size="18.0" />
+                                          <Font name="Serif Regular" size="18.0" />
                                        </font>
                                     </JFXTextField>
                                  </children>
@@ -335,7 +353,7 @@
                                     </Label>
                                     <JFXTextField fx:id="remainBalanceTF" editable="false" prefHeight="25.0" prefWidth="121.0">
                                        <font>
-                                          <Font name="Helvetica Neue Bold" size="18.0" />
+                                          <Font name="Serif Regular" size="18.0" />
                                        </font></JFXTextField>
                                  </children>
                                  <opaqueInsets>

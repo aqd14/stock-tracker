@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -168,5 +170,14 @@ public class Utility {
 	    java.math.BigDecimal bd = new java.math.BigDecimal(value);
 	    bd = bd.setScale(places, RoundingMode.HALF_UP);
 	    return bd.doubleValue();
+	}
+	
+	public static String formatCurrencyNumber(Number number) {
+		return NumberFormat.getNumberInstance(java.util.Locale.US).format(number);
+	}
+	
+	public static String formatCurrencyDouble(double number) {
+		DecimalFormat df = new DecimalFormat("####,###,###.00"); 
+		return df.format(number);
 	}
 }
