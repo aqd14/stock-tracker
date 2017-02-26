@@ -22,6 +22,7 @@ public class SettingsController extends ParentController implements Initializabl
 	@FXML private JFXTextField emailTF;
 	
 	// New password
+	@FXML private PasswordField currentPasswordPF;
 	@FXML private PasswordField newPasswordPF;
 	@FXML private PasswordField confirmPasswordPF;
 	
@@ -29,6 +30,7 @@ public class SettingsController extends ParentController implements Initializabl
 	@FXML private Text firstNameError;
 	@FXML private Text lastNameError;
 	@FXML private Text emailError;
+	@FXML private Text currentPasswordError;
 	@FXML private Text passwordError;
 	@FXML private Text confirmPasswordError;
 	
@@ -124,11 +126,11 @@ public class SettingsController extends ParentController implements Initializabl
 			}
 		}
 		
-		if (newPasswordPF.getText().equals("") && confirmPasswordPF.getText().equals("")) {
+		if (currentPasswordPF.getText().equals("") && newPasswordPF.getText().equals("") && confirmPasswordPF.getText().equals("")) {
 			// User doesn't want to update password
 		} else {
 			// Update password
-			if (ValidationUtil.validateOriginalPassword(newPasswordPF, passwordError) && ValidationUtil.validateConfirmedPassword(newPasswordPF, confirmPasswordPF, passwordError)) {
+			if (ValidationUtil.validateCurrentPassword(user.getPassword(), currentPasswordPF, currentPasswordError) && ValidationUtil.validateOriginalPassword(newPasswordPF, passwordError) && ValidationUtil.validateConfirmedPassword(newPasswordPF, confirmPasswordPF, passwordError)) {
 				user.setPassword(newPasswordPF.getText());
 				anyChange = true;
 			} else {
@@ -158,7 +160,7 @@ public class SettingsController extends ParentController implements Initializabl
 		if (anyChange) {
 			userManager.update(user);
 			System.out.println("Update succesfully...");
-			System.out.println(user);
+			updateSettingFields();
 			// Display successful message for 2s.
 			successfulMessage.setVisible(true);
 			Task<Void> sleeper = new Task<Void>() {
@@ -178,5 +180,18 @@ public class SettingsController extends ParentController implements Initializabl
 		} else {
 			System.out.println("Something invalid.. Please check again!");
 		}
+	}
+	
+	private void updateSettingFields() {
+		passwordError.setVisible(false);
+		emailError.setVisible(false);
+		firstNameError.setVisible(false);
+		lastNameError.setVisible(false);
+		currentPasswordError.setVisible(false);
+		// Clear passwords
+		currentPasswordPF.clear();
+		newPasswordPF.clear();
+		confirmPasswordPF.clear();
+		currentBalanceTF.setText(String.valueOf(user.getAccount().getBalance()));
 	}
 }

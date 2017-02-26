@@ -176,8 +176,8 @@
                                                 <Font name="Georgia" size="14.0" />
                                              </font>
                                           </Label>
-                                          <JFXPasswordField />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="194.21875">
+                                          <JFXPasswordField fx:id="currentPasswordPF" />
+                                          <Text fx:id="currentPasswordError" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_message" wrappingWidth="288.21875">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
@@ -198,7 +198,7 @@
                                              </font>
                                           </Label>
                                           <JFXPasswordField fx:id="newPasswordPF" />
-                                          <Text fx:id="passwordError" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_message" wrappingWidth="194.0">
+                                          <Text fx:id="passwordError" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_message" wrappingWidth="288.0">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>
@@ -216,7 +216,7 @@
                                              </font>
                                           </Label>
                                           <JFXPasswordField fx:id="confirmPasswordPF" />
-                                          <Text fx:id="confirmPasswordError" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_message" wrappingWidth="192.21875">
+                                          <Text fx:id="confirmPasswordError" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_message" wrappingWidth="293.21875">
                                              <VBox.margin>
                                                 <Insets top="5.0" />
                                              </VBox.margin>

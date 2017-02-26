@@ -102,6 +102,29 @@ public class ValidationUtil {
 		return true;
 	}
 	
+	/**
+	 * Validate current password when user changes password in [Settings]
+	 * 
+	 * @param passwordPF
+	 * @param passwordError
+	 * @return
+	 */
+	public static boolean validateCurrentPassword(String curPw, PasswordField passwordPF, Text passwordError) {
+		if (!curPw.equals(passwordPF.getText())) {
+			passwordError.setText(ErrorMessage.CURRENT_PASSWORD_INCORRECT);
+			passwordError.setVisible(true);
+			return false;
+		}
+		hideErrorMessage(passwordError);
+		return true;
+	}
+	
+	/**
+	 * Validate password when user registers new account, resets or changes password
+	 * @param passwordPF
+	 * @param passwordError
+	 * @return
+	 */
 	public static boolean validateOriginalPassword(PasswordField passwordPF, Text passwordError) {
 		// Validate empty
 		if (Utility.isTextFieldEmpty(passwordPF)) {
@@ -120,6 +143,13 @@ public class ValidationUtil {
 		return true;
 	}
 	
+	/**
+	 * Validate if confirm password matches entered password
+	 * @param passwordPF
+	 * @param confirmPasswordPF
+	 * @param confirmPasswordError
+	 * @return
+	 */
 	public static boolean validateConfirmedPassword(PasswordField passwordPF, PasswordField confirmPasswordPF, Text confirmPasswordError) {
 		if (Utility.isTextFieldEmpty(confirmPasswordPF)) {
 			displayErrorMessage(confirmPasswordError, ErrorMessage.EMPTY_FIELD_ERR);

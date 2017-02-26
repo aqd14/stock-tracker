@@ -16,4 +16,5 @@ public class ErrorMessage {
 	public static final String INVALID_USERNAME_LENGTH_ERR = "Please use between 6 and 15 characters.";
 	public static final String EMAIL_TAKEN_ERR = "This email is taken. Try another.";
 	public static final String USER_NOT_EXIST = "Given username or email is not exist. Try another.";
+	public static final String CURRENT_PASSWORD_INCORRECT = "Current password is incorrect. Try again.";
 }
