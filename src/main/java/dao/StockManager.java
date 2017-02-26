@@ -29,10 +29,19 @@ public class StockManager implements IManager {
 	@Override
 	public void add(Object obj) {
 		Stock stock = (Stock) obj;
-		Session session = sessionFactory.getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		session.save(stock);
-		tx.commit();
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.save(stock);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 	@Override

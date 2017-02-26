@@ -23,10 +23,19 @@ private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	@Override
 	public void add(Object obj) {
 		main.java.model.Transaction trans = (main.java.model.Transaction) obj;
-		Session session = sessionFactory.getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		session.save(trans);
-		tx.commit();
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.save(trans);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 	@Override

@@ -32,30 +32,57 @@ public class UserManager implements IManager {
 	@Override
 	public void add(Object obj) {
 		User user = (User) obj;
-		Session session = sessionFactory.getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		session.save(user);
-		tx.commit();
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.save(user);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 	@Override
 	public void remove(Object obj) {
 		// TODO Auto-generated method stub
 		User user = (User) obj;
-		Session session = sessionFactory.getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		session.delete(user);
-		tx.commit();
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.delete(user);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 
 	@Override
 	public void update(Object obj) {
 		// TODO Auto-generated method stub
 		User user = (User) obj;
-		Session session = sessionFactory.getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		session.update(user);
-		tx.commit();
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.update(user);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 	public void persist(User transientInstance) {

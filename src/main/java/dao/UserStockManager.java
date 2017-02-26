@@ -17,29 +17,55 @@ public class UserStockManager implements IManager {
 	@Override
 	public void add(Object obj) {
 		UserStock manager = (UserStock) obj;
-		Session session = sessionFactory.getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		session.save(manager);
-		tx.commit();
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.save(manager);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 	@Override
 	public void remove(Object obj) {
-		// TODO Auto-generated method stub
 		UserStock manager = (UserStock) obj;
-		Session session = sessionFactory.getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		session.delete(manager);
-		tx.commit();
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.delete(manager);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 
 	@Override
 	public void update(Object obj) {
 		UserStock manager = (UserStock) obj;
-		Session session = sessionFactory.getCurrentSession();
-		Transaction tx = session.beginTransaction();
-		session.update(manager);
-		tx.commit();
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			Transaction tx = session.beginTransaction();
+			session.update(manager);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 	/**
@@ -51,13 +77,20 @@ public class UserStockManager implements IManager {
 	public List<Stock> findStocksByUserID(Integer userId) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		String hql = "SELECT stock FROM Stock stock INNER JOIN UserStock us"
-				+ " ON stock.id = us.id.stockId AND us.id.userId = :userID";
-		@SuppressWarnings("unchecked")
-		Query<Stock> query = session.createQuery(hql);
-		query.setParameter("userID", userId);
-		List<Stock> stocks = (List<Stock>)query.getResultList();
-		session.close();
-		return stocks;
+		try {
+			String hql = "SELECT stock FROM Stock stock INNER JOIN UserStock us"
+					+ " ON stock.id = us.id.stockId AND us.id.userId = :userID";
+			@SuppressWarnings("unchecked")
+			Query<Stock> query = session.createQuery(hql);
+			query.setParameter("userID", userId);
+			List<Stock> stocks = (List<Stock>)query.getResultList();
+			session.close();
+			return stocks;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
 	}
 }

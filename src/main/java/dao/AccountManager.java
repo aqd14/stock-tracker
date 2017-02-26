@@ -21,16 +21,21 @@ public class AccountManager {
 	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	
 	public boolean create(Account account) {
-		// Check if user already existed in database by using email
-//		User existingUser = findByEmail(user.getEmail());
-//		if (null == existingUser) {
-//			return false;
-//		}
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		session.save(account);
-		session.getTransaction().commit();
-		return true;
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			session.save(account);
+			session.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 
 	public void persist(Account transientInstance) {

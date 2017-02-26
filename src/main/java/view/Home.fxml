@@ -53,14 +53,6 @@
                      <children>
                         <HBox>
                            <children>
-                              <Label prefHeight="48.0" prefWidth="188.0" styleClass="title-label" text="Stock Information">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Label>
                               <StackPane prefHeight="40.0" prefWidth="678.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <StackPane maxWidth="277.0" prefHeight="48.0" prefWidth="277.0" StackPane.alignment="CENTER_RIGHT">
@@ -68,12 +60,20 @@
                                           <JFXTextField fx:id="searchTF" prefWidth="222.0" promptText="Search for stock codes, companies" />
                                        </children>
                                     </StackPane>
+                                    <Label contentDisplay="CENTER" prefHeight="40.0" prefWidth="266.0" text="STOCK INFORMATION" underline="true" StackPane.alignment="CENTER_LEFT">
+                                       <font>
+                                          <Font name="Georgia" size="16.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets left="10.0" top="10.0" />
+                                       </StackPane.margin>
+                                    </Label>
                                  </children>
                               </StackPane>
                            </children>
                         </HBox>
                         <Separator prefWidth="200.0" />
-                        <JFXTreeTableView fx:id="stockTableView" prefHeight="418.0" prefWidth="926.0">
+                        <JFXTreeTableView fx:id="stockTableView" prefHeight="428.0" prefWidth="926.0">
 							<placeholder>
 								<Label text="" />
 							</placeholder>
