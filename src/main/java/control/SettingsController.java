@@ -128,7 +128,7 @@ public class SettingsController extends ParentController implements Initializabl
 			// User doesn't want to update password
 		} else {
 			// Update password
-			if (ValidationUtil.validateOriginalPassword(newPasswordPF, passwordError) && ValidationUtil.validateConfirmedPassword(newPasswordPF, confirmPasswordPF, confirmPasswordError)) {
+			if (ValidationUtil.validateOriginalPassword(newPasswordPF, passwordError) && ValidationUtil.validateConfirmedPassword(newPasswordPF, confirmPasswordPF, passwordError)) {
 				user.setPassword(newPasswordPF.getText());
 				anyChange = true;
 			} else {
