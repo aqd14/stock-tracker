@@ -26,8 +26,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -135,7 +138,40 @@ public class HomeController extends ParentController implements Initializable {
 		setCellFactoryLastPrice();
 		setCellFactoryPriceChange();
 		setCellFactoryPercentageChange();
-		// setCellFactoryStockBuy();
+		// Initialize context menu when user click right mouse on a row
+		stockTableView.setRowFactory(ttv -> {
+		    ContextMenu contextMenu = new ContextMenu();
+		    MenuItem alertSettingsItem = new MenuItem("Alert Settings");
+		    // ...
+		    MenuItem removeItem = new MenuItem("Remove Stock");
+		    // ...
+		    contextMenu.getItems().addAll(alertSettingsItem, removeItem);
+		    TreeTableRow<Stock> row = new TreeTableRow<Stock>() {
+		        @Override
+		        public void updateItem(Stock item, boolean empty) {
+		            super.updateItem(item, empty);
+		            if (empty) {
+		                setContextMenu(null);
+		            } else {
+		                // configure context menu with appropriate menu items, 
+		                // depending on value of item
+		                setContextMenu(contextMenu);
+		            }
+		        }
+		    };
+		    alertSettingsItem.setOnAction(evt -> {
+//		        Stock item = row.getItem();
+		        makeNewStage(Screen.ALERT_SETTINGS, "Alert Settings", "../view/AlertSettings.fxml");
+		    });
+		    // event handlers for other menu items...
+		    removeItem.setOnAction(evt -> {
+		    	// Remove selected stock from table view
+		    	TreeItem<Stock> treeItem = row.getTreeItem();
+		    	treeItem.getParent().getChildren().remove(treeItem);
+		    	stockTableView.getSelectionModel().clearSelection();
+		    });
+		    return row ;
+		});
 		
 		// Add listener for search field
 		searchTF.textProperty().addListener((o,oldVal,newVal)->{
@@ -178,6 +214,8 @@ public class HomeController extends ParentController implements Initializable {
         	return;
         }
 		switch(target) {
+			case ALERT_SETTINGS:
+				break;
 			case PORFOLIO:
 				PortfolioController portfolioController = loader.<PortfolioController>getController();
 				portfolioController.setUser(user);

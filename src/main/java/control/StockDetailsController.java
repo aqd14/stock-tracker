@@ -160,15 +160,24 @@ public class StockDetailsController extends ParentController implements Initiali
 	}
 	
 	private void initMarketCap() {
-		marketCapValue.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getMarketCap()));
+		if (yahooStock.getStats().getMarketCap() != null)
+			marketCapValue.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getMarketCap()));
+		else
+			marketCapValue.setText("N/A");
 	}
 	
 	private void initPriceEarnRatio() {
-		peRatio.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getPe()));
+		if (yahooStock.getStats().getPe() != null)
+			peRatio.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getPe()));
+		else
+			peRatio.setText("N/A");
 	}
 	
 	private void initEarnPerShare() {
-		eps.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getEps()));
+		if (yahooStock.getStats().getEps() != null)
+			eps.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getEps()));
+		else
+			eps.setText("N/A");
 	}
 
 	public void updateStockData() {

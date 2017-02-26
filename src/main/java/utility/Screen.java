@@ -8,4 +8,5 @@ public enum Screen {
 	SETTINGS,
 	STOCK_DETAILS,
 	PORFOLIO,
+	ALERT_SETTINGS
 }
