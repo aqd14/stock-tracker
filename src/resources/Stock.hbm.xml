@@ -23,6 +23,9 @@
         <property name="previousPrice" type="java.math.BigDecimal">
             <column name="previous_price" precision="22" scale="0" not-null="true" />
         </property>
+        <property name="valueThreshold" type="java.math.BigDecimal">
+        	<column name="value_threshold" precision="22" scale="0" not-null="true" />
+        </property>
         <property name="amount" type="int">
             <column name="amount"/>
         </property>

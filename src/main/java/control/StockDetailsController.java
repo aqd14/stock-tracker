@@ -326,7 +326,7 @@ public class StockDetailsController extends ParentController implements Initiali
 				Stock boughtStock = extractStock();
 				stockManager.add(boughtStock);
 				UserStockId userStockId = new UserStockId(boughtStock.getId(), user.getId());
-				UserStock userStock = new UserStock(userStockId, boughtStock, user, -1.0, -1.0);
+				UserStock userStock = new UserStock(userStockId, boughtStock, user);
 				userStockManager.add(userStock);
 			} else {
 				// Display error message for user

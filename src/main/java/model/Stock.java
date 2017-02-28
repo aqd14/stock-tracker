@@ -26,6 +26,7 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	private String stockCode;
 	private BigDecimal price;
 	private BigDecimal previousPrice;
+	private BigDecimal valueThreshold; // Threshold when the price of a certain stock X reaches level Y
 	private int amount;
 	private Set<UserStock> userStocks = new HashSet<UserStock>(0);
 	private StockDetail stockDetail;
@@ -45,6 +46,7 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 		this.amount = amount;
 		setPrice(price);
 		setPreviousPrice(previousPrice);
+		this.valueThreshold = new BigDecimal(-1); // Default value for value threshold when user doesn't set any value
 	}
 
 	public Stock(Transaction transaction, String stockName, String stockCode, int amount, BigDecimal price, BigDecimal previousPrice,
@@ -112,6 +114,20 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	public void setPreviousPrice(BigDecimal previousPrice) {
 		this.previousPrice = previousPrice.setScale(2, RoundingMode.CEILING);
 		this.previousPrice = previousPrice;
+	}
+
+	/**
+	 * @return the valueThreshold
+	 */
+	public BigDecimal getValueThreshold() {
+		return valueThreshold;
+	}
+
+	/**
+	 * @param valueThreshold the valueThreshold to set
+	 */
+	public void setValueThreshold(BigDecimal valueThreshold) {
+		this.valueThreshold = valueThreshold;
 	}
 
 	public Set<UserStock> getUserStocks() {

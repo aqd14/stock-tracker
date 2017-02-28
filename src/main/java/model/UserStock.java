@@ -1,4 +1,7 @@
 package main.java.model;
+
+import java.math.BigDecimal;
+
 // default package
 // Generated Feb 9, 2017 11:38:22 PM by Hibernate Tools 5.2.0.CR1
 
@@ -14,8 +17,8 @@ public class UserStock implements java.io.Serializable {
 	private UserStockId id;
 	private Stock stock;
 	private User user;
-	private Double priceValueThreshold;
-	private Double pricePercentageThreshold;
+	private BigDecimal combinedValueThreshold;
+	private BigDecimal netProfitThreshold;
 
 	public UserStock() {
 	}
@@ -24,15 +27,16 @@ public class UserStock implements java.io.Serializable {
 		this.id = id;
 		this.stock = stock;
 		this.user = user;
+		this.combinedValueThreshold = new BigDecimal(-1);
+		this.netProfitThreshold = new BigDecimal(-1);
 	}
 
-	public UserStock(UserStockId id, Stock stock, User user, Double priceValueThreshold,
-	        Double pricePercentageThreshold) {
+	public UserStock(UserStockId id, Stock stock, User user, BigDecimal combinedValueThreshold, BigDecimal netProfitThreshold) {
 		this.id = id;
 		this.stock = stock;
 		this.user = user;
-		this.priceValueThreshold = priceValueThreshold;
-		this.pricePercentageThreshold = pricePercentageThreshold;
+		this.combinedValueThreshold = combinedValueThreshold;
+		this.netProfitThreshold = netProfitThreshold;
 	}
 
 	public UserStockId getId() {
@@ -59,20 +63,19 @@ public class UserStock implements java.io.Serializable {
 		this.user = user;
 	}
 
-	public Double getPriceValueThreshold() {
-		return this.priceValueThreshold;
+	public BigDecimal getCombinedValueThreshold() {
+		return this.combinedValueThreshold;
 	}
 
-	public void setPriceValueThreshold(Double priceValueThreshold) {
-		this.priceValueThreshold = priceValueThreshold;
+	public void setCombinedValueThreshold(BigDecimal combinedValueThreshold) {
+		this.combinedValueThreshold = combinedValueThreshold;
 	}
 
-	public Double getPricePercentageThreshold() {
-		return this.pricePercentageThreshold;
+	public BigDecimal getNetProfitThreshold() {
+		return this.netProfitThreshold;
 	}
 
-	public void setPricePercentageThreshold(Double privePercentageThreshold) {
-		this.pricePercentageThreshold = privePercentageThreshold;
+	public void setNetProfitThreshold(BigDecimal netProfitThreshold) {
+		this.netProfitThreshold = netProfitThreshold;
 	}
-
 }

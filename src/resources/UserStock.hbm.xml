@@ -18,11 +18,11 @@
         <many-to-one name="user" class="main.java.model.User" update="false" insert="false" fetch="select">
             <column name="user_id" not-null="true" />
         </many-to-one>
-        <property name="priceValueThreshold" type="java.lang.Double">
-            <column name="price_value_threshold" precision="22" scale="0" />
+        <property name="combinedValueThreshold" type="java.math.BigDecimal">
+            <column name="combined_value_threshold" precision="22" scale="0" />
         </property>
-        <property name="pricePercentageThreshold" type="java.lang.Double">
-            <column name="price_percentage_threshold" precision="22" scale="0" />
+        <property name="netProfitThreshold" type="java.math.BigDecimal">
+            <column name="net_profit_threshold" precision="22" scale="0" />
         </property>
     </class>
 </hibernate-mapping>
