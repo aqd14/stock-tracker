@@ -95,7 +95,7 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 //		price = Utility.round(price, 2);
 		// Rounding to 2 decimal numbers
 		this.price = price.setScale(2, RoundingMode.CEILING);
-		this.price = price;
+//		this.price = price;
 	}
 
 	public BigDecimal getPreviousPrice() {
@@ -169,7 +169,7 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	}
 	
 	public void setPriceChangePercent(BigDecimal priceChangePercent) {
-		priceChangePercent.setScale(2, RoundingMode.CEILING);
+		priceChangePercent = priceChangePercent.setScale(2, RoundingMode.CEILING);
 		this.priceChangePercent = priceChangePercent;
 	}
 	
