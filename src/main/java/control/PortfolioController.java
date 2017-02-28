@@ -38,7 +38,7 @@ public class PortfolioController extends ParentController implements Initializab
 	 */
 	public void initPortfolio() {
 		if (user != null) {
-			stocks = userStockManager.findStocksByUserID(user.getId());
+			stocks = userStockManager.findStocks(user.getId());
 			portfolioPagination.setPageCount(stocks.size()/rowsPerPage + 1);
 			table = createTable();
 			portfolioPagination.setPageFactory(this::createPage);
