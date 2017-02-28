@@ -300,8 +300,8 @@ public class StockDetailsController extends ParentController implements Initiali
 			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer quantity) {
 				if (quantity != null) {
 					System.out.println("Selected item: " + quantity);
-					double price = yahooStock.getQuote().getPrice().doubleValue()*quantity;
-					double remainingBalance = user.getAccount().getBalance() - price*quantity;
+					double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue()*quantity;
+					double remainingBalance = user.getAccount().getBalance() - price;
 					subTotalTF.setText("- $" + Utility.formatCurrencyDouble(price));
 					remainBalanceTF.setText("$" + Utility.formatCurrencyDouble(remainingBalance));
 				}
