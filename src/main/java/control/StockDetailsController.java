@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
@@ -66,6 +67,7 @@ public class StockDetailsController extends ParentController implements Initiali
 	@FXML JFXTextField currentBalanceTF;
 	@FXML JFXTextField subTotalTF;
 	@FXML JFXTextField remainBalanceTF;
+	@FXML JFXButton buyStockButton;
 	
 	@FXML private Label dayLow;
 	@FXML private Label dayHigh;
@@ -302,6 +304,9 @@ public class StockDetailsController extends ParentController implements Initiali
 					System.out.println("Selected item: " + quantity);
 					double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue()*quantity;
 					double remainingBalance = user.getAccount().getBalance() - price;
+					// Disable [Buy] button if the remaining balance is negative
+					buyStockButton.setDisable(remainingBalance < 0);
+					// Set corresponding balance and sub total
 					subTotalTF.setText("- $" + Utility.formatCurrencyDouble(price));
 					remainBalanceTF.setText("$" + Utility.formatCurrencyDouble(remainingBalance));
 				}

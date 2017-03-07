@@ -375,7 +375,7 @@
                      <children>
                         <HBox prefHeight="53.0" prefWidth="664.0">
                            <children>
-                              <JFXButton buttonType="RAISED" onAction="#buyStock" prefHeight="37.0" prefWidth="106.0" style="-fx-background-color: #2196f3;" styleClass="custom_button" text="Buy" textFill="#f1f1f1">
+                              <JFXButton buttonType="RAISED" fx:id="buyStockButton" onAction="#buyStock" prefHeight="37.0" prefWidth="106.0" style="-fx-background-color: #2196f3;" styleClass="custom_button" text="Buy" textFill="#f1f1f1">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
