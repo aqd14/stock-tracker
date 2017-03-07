@@ -5,6 +5,7 @@ package main.java.control;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXSpinner;
@@ -26,6 +27,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
@@ -168,6 +172,22 @@ public class HomeController extends ParentController implements Initializable {
 		    });
 		    // event handlers for other menu items...
 		    removeItem.setOnAction(evt -> {
+		    	// Display dialog warning users
+		    	// when they try to remove an owned stock
+		    	String stockCode = row.getItem().getStockCode();
+		    	if (userStockManager.hasStock(user.getId(), stockCode)) {
+		    		// Display alert to notify user before removing an owned stock
+		    		Alert alert = new Alert(AlertType.CONFIRMATION);
+		    		alert.setTitle("Confirmation Dialog");
+		    		alert.setContentText("You owned this stock. Do you really want to remove it?");
+		    		Optional<ButtonType> result = alert.showAndWait();
+		    		if (!result.isPresent() || result.get() == ButtonType.CANCEL) {
+		    			// User cancels removing
+		    			return;
+		    		}
+		    	} else {
+		    		// Do nothing, just remove selected stock
+		    	}
 		    	// Remove selected stock from table view
 		    	TreeItem<Stock> treeItem = row.getTreeItem();
 		    	treeItem.getParent().getChildren().remove(treeItem);

@@ -94,4 +94,15 @@ public class UserStockManager implements IManager {
 			session.close();
 		}
 	}
+	
+	/**
+	 * Check if user currently owns certain stock
+	 * @param userId	User ID
+	 * @param stockCode Stock code that is checked
+	 * @return <code>true</code> if users own that stock. Otherwise returns <code>false</code>
+	 */
+	public boolean hasStock(Integer userId, String stockCode) {
+		List<Stock> stocks = findStocks(userId, stockCode);
+		return (null != stocks && stocks.size() > 0);
+	}
 }
