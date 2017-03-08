@@ -7,7 +7,7 @@ package main.java.common;
  * @author aqd14
  *
  */
-public class CommonMessage {
+public class CommonDefine {
 	public static final String EMPTY_FIELD_ERR = "You can't leave this empty.";
 	public static final String INVALID_NAME_ERR = "Your name should be alphabetical.";
 	public static final String INVALID_EMAIL_ERR = "Please use only letters (a-z), numbers, and periods.";
@@ -22,4 +22,17 @@ public class CommonMessage {
 	public static final String REMOVE_STOCK_SMS = "You owned this stock. Do you really want to remove it?";
 	public static final String SELL_STOCK_SMS = "Are you sure you really want to sell these stocks?";
 	public static final String BUY_STOCK_SUCCESSFUL_SMS = "Your transaction is successful!";
+	
+	/**
+	 * Interval for display stock data.
+	 * @author doquocanh-macbook
+	 *
+	 */
+	public enum Interval {
+		ONE_WEEK,
+		ONE_MONTH,
+		THREE_MONTH,
+		SIX_MONTH,
+		ONE_YEAR
+	}
 }

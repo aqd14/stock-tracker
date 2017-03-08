@@ -7,7 +7,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import main.java.common.CommonMessage;
+import main.java.common.CommonDefine;
 import main.java.dao.UserManager;
 import main.java.model.User;
 
@@ -35,12 +35,12 @@ public class ValidationUtil {
 	public static boolean validateFirstName(TextField firstNameTF, Text firstNameError) {
 		// Validate first name's empty
 		if (Utility.isTextFieldEmpty(firstNameTF)) {
-			displayErrorMessage(firstNameError, CommonMessage.EMPTY_FIELD_ERR);
+			displayErrorMessage(firstNameError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		} 
 		
 		if (!Utility.isNameValid(firstNameTF.getText())) {
-			displayErrorMessage(firstNameError, CommonMessage.INVALID_NAME_ERR);
+			displayErrorMessage(firstNameError, CommonDefine.INVALID_NAME_ERR);
 			return false;
 		}
 		// Valid first name
@@ -56,12 +56,12 @@ public class ValidationUtil {
 	public static boolean validateLastName(TextField lastNameTF, Text lastNameError) {
 		// Validate first name
 		if (Utility.isTextFieldEmpty(lastNameTF)) {
-			displayErrorMessage(lastNameError, CommonMessage.EMPTY_FIELD_ERR);
+			displayErrorMessage(lastNameError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		} 
 		
 		if (!Utility.isNameValid(lastNameTF.getText())) {
-			displayErrorMessage(lastNameError, CommonMessage.INVALID_NAME_ERR);
+			displayErrorMessage(lastNameError, CommonDefine.INVALID_NAME_ERR);
 			return false;
 		}
 		
@@ -73,7 +73,7 @@ public class ValidationUtil {
 	public static boolean validateUsername(TextField usernameTF, Text usernameError) {
 		// Validate first name
 		if (Utility.isTextFieldEmpty(usernameTF)) {
-			displayErrorMessage(usernameError, CommonMessage.EMPTY_FIELD_ERR);
+			displayErrorMessage(usernameError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		}
 		
@@ -95,7 +95,7 @@ public class ValidationUtil {
 		final int maxLength = 15;
 		if (usernameTF.getText().length() < minLength || usernameTF.getText().length() > maxLength) { // Length should be from 6 - 30 (Eg)
 			// Print warning message
-			displayErrorMessage(usernameError, CommonMessage.INVALID_USERNAME_LENGTH_ERR);
+			displayErrorMessage(usernameError, CommonDefine.INVALID_USERNAME_LENGTH_ERR);
 			return false;
 		}
 		hideErrorMessage(usernameError);
@@ -111,7 +111,7 @@ public class ValidationUtil {
 	 */
 	public static boolean validateCurrentPassword(String curPw, PasswordField passwordPF, Text passwordError) {
 		if (!curPw.equals(passwordPF.getText())) {
-			passwordError.setText(CommonMessage.CURRENT_PASSWORD_INCORRECT);
+			passwordError.setText(CommonDefine.CURRENT_PASSWORD_INCORRECT);
 			passwordError.setVisible(true);
 			return false;
 		}
@@ -128,14 +128,14 @@ public class ValidationUtil {
 	public static boolean validateOriginalPassword(PasswordField passwordPF, Text passwordError) {
 		// Validate empty
 		if (Utility.isTextFieldEmpty(passwordPF)) {
-			passwordError.setText(CommonMessage.EMPTY_FIELD_ERR);
+			passwordError.setText(CommonDefine.EMPTY_FIELD_ERR);
 			passwordError.setVisible(true);
 			return false;
 		}
 		
 		final int minLength = 8;
 		if(passwordPF.getText().length() < minLength) {
-			displayErrorMessage(passwordError, CommonMessage.PASSWORD_TOO_SHORT_ERR);
+			displayErrorMessage(passwordError, CommonDefine.PASSWORD_TOO_SHORT_ERR);
 			return false;
 		}
 		// Passed all validation
@@ -152,13 +152,13 @@ public class ValidationUtil {
 	 */
 	public static boolean validateConfirmedPassword(PasswordField passwordPF, PasswordField confirmPasswordPF, Text confirmPasswordError) {
 		if (Utility.isTextFieldEmpty(confirmPasswordPF)) {
-			displayErrorMessage(confirmPasswordError, CommonMessage.EMPTY_FIELD_ERR);
+			displayErrorMessage(confirmPasswordError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		}
 		
 		if (!passwordPF.getText().equals(confirmPasswordPF.getText())) {
 			System.err.println("Passwords not matching!");
-			displayErrorMessage(confirmPasswordError, CommonMessage.PASSWORD_NOT_MATCHED_ERR);
+			displayErrorMessage(confirmPasswordError, CommonDefine.PASSWORD_NOT_MATCHED_ERR);
 			// Reset password fields to empty
 			passwordPF.setText("");
 			confirmPasswordPF.setText("");
@@ -179,18 +179,18 @@ public class ValidationUtil {
 	 */
 	public static boolean validateEmail(TextField emailTF, Text emailError) {
 		if (Utility.isTextFieldEmpty(emailTF)) {
-			displayErrorMessage(emailError, CommonMessage.EMPTY_FIELD_ERR);
+			displayErrorMessage(emailError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		}
 		
 		if (!Utility.isValidEmail(emailTF.getText())) {
-			displayErrorMessage(emailError, CommonMessage.INVALID_EMAIL_ERR);
+			displayErrorMessage(emailError, CommonDefine.INVALID_EMAIL_ERR);
 			return false;
 		}
 		
 		User user = userManager.findByEmail(emailTF.getText());
 		if (null != user) {
-			displayErrorMessage(emailError, CommonMessage.EMAIL_TAKEN_ERR);
+			displayErrorMessage(emailError, CommonDefine.EMAIL_TAKEN_ERR);
 			return false;
 		}
 		// Passed all validations
@@ -201,7 +201,7 @@ public class ValidationUtil {
 	public static boolean validateDoB(JFXDatePicker dateOfBirthDP, Text dobError) {
 		LocalDate dob = dateOfBirthDP.getValue();
 		if (null == dob) {
-			displayErrorMessage(dobError, CommonMessage.EMPTY_FIELD_ERR);
+			displayErrorMessage(dobError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		}
 		LocalDate maxDate = LocalDate.of(2000, 1, 1);

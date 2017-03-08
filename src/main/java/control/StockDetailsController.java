@@ -32,13 +32,14 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import main.java.common.CommonMessage;
+import main.java.common.CommonDefine;
+import main.java.common.CommonDefine.Interval;
 import main.java.model.Stock;
 import main.java.model.Transaction;
 import main.java.model.UserStock;
@@ -46,7 +47,6 @@ import main.java.model.UserStockId;
 import main.java.utility.AlertGenerator;
 import main.java.utility.Utility;
 import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes.Interval;
 
 /**
  * @author doquocanh-macbook
@@ -80,12 +80,113 @@ public class StockDetailsController extends ParentController implements Initiali
 	@FXML private Label peRatio;
 	@FXML private Label eps;
 	
+	// Options for displaying line chart
+	@FXML private Label oneWeekLB;
+	@FXML private Label oneMonthLB;
+	@FXML private Label threeMonthLB;
+	@FXML private Label sixMonthLB;
+	@FXML private Label oneYearLB;
+	
+	private Label selectedLB;
+	
 	private yahoofinance.Stock yahooStock;
+	private Interval interval;
+	
 	/**
 	 * 
 	 */
 	public StockDetailsController() {
 		yahooStock = null;
+	}
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// Check stock changes in real-time for each 2 minutes
+		service = new RealTimeUpdateService();
+		service.setPeriod(Duration.minutes(2));
+		// Auto change width of label based on current text length
+		currentPriceLB.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldVal, String newVal) {
+				currentPriceLB.setPrefWidth(currentPriceLB.getText().length()*22 - 100/currentPriceLB.getText().length());
+			}
+		});
+		
+		// Add listener when user selects item in combobox
+		quantityCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
+			@Override
+			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer quantity) {
+				if (quantity != null) {
+					System.out.println("Selected item: " + quantity);
+					double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue()*quantity;
+					double remainingBalance = user.getAccount().getBalance() - price;
+					// Disable [Buy] button if the remaining balance is negative
+					buyStockButton.setDisable(remainingBalance < 0);
+					// Set corresponding balance and sub total
+					subTotalTF.setText("- $" + Utility.formatCurrencyDouble(price));
+					remainBalanceTF.setText("$" + Utility.formatCurrencyDouble(remainingBalance));
+				}
+			}
+		});
+		
+		// default interval for line chart data is one month
+		interval = Interval.ONE_MONTH;
+		// One month is default interval for line chart when
+		// user first opens Stock Details page
+		handleOptionSelected(oneMonthLB);
+		
+		// Add event listener for line chart options
+		oneWeekLB.setOnMouseClicked(event -> {
+			interval = Interval.ONE_WEEK;
+			handleOptionSelected(oneWeekLB);
+		});
+
+		oneMonthLB.setOnMouseClicked(event -> {
+			interval = Interval.ONE_MONTH;
+			handleOptionSelected(oneMonthLB);
+		});
+		
+		threeMonthLB.setOnMouseClicked(event -> {
+			interval = Interval.THREE_MONTH;
+			handleOptionSelected(threeMonthLB);
+		});
+		
+		sixMonthLB.setOnMouseClicked(event -> {
+			interval = Interval.SIX_MONTH;
+			handleOptionSelected(sixMonthLB);
+		});
+		
+		oneYearLB.setOnMouseClicked(event -> {
+			interval = Interval.ONE_YEAR;
+			handleOptionSelected(oneYearLB);
+		});
+	}
+	
+	/**
+	 * Update selected label for line chart data and draw corresponding line chart
+	 * @param lb The option user is switching to
+	 */
+	private void handleOptionSelected(Label lb) {
+		if (lb != selectedLB) {
+			setSelectedStyle(lb);
+			removeSelectedStyle(selectedLB);
+			drawLineChart(interval);
+			selectedLB = lb;
+		}
+	}
+	
+	private void setSelectedStyle(Label lb) {
+		if (lb != null) {
+			lb.setUnderline(true);
+			lb.setTextFill(Color.RED);
+		}
+	}
+	
+	private void removeSelectedStyle(Label lb) {
+		if (lb != null) {
+			lb.setUnderline(false);
+			lb.setTextFill(Color.BLACK);
+		}
 	}
 
 	public void setStock(yahoofinance.Stock stock) {
@@ -185,7 +286,10 @@ public class StockDetailsController extends ParentController implements Initiali
 		else
 			eps.setText("N/A");
 	}
-
+	
+	/**
+	 * Update stock data displayed in page
+	 */
 	public void updateStockData() {
 		// Above
 		initCompanyName();
@@ -199,13 +303,6 @@ public class StockDetailsController extends ParentController implements Initiali
 		initMarketCap();
 		initPriceEarnRatio();
 		initEarnPerShare();
-		// Make line chart based on current data
-		try {
-			drawLineChart(2);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		// Buying stock options
 		stockCodeLB.setText(yahooStock.getSymbol());
@@ -223,15 +320,16 @@ public class StockDetailsController extends ParentController implements Initiali
 	 * 
 	 * @param interval The time interval expected to show price trending of stock.
 	 * The possible values of <code>interval</code> are: 
-	 * <li>1 : WEEK</li>
-	 * <li>2 : MONTH</li>
-	 * <li>3 : QUATER</li>
-	 * <li>4 : YEAR</li>
+	 * <li>ONE_WEEK</li>
+	 * <li>ONE_MONTH</li>
+	 * <li>THREE_MONTH</li>
+	 * <li>SIX_MONTH</li>
+	 * <li>ONE_YEARYEAR</li>
 	 * 
 	 * @throws IOException 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void drawLineChart(int interval) throws IOException {
+	private void drawLineChart(Interval interval) {
 		if (yahooStock != null) {
 			// Remove data from last time
 			stockLineChart.getData().clear();
@@ -239,85 +337,60 @@ public class StockDetailsController extends ParentController implements Initiali
 	        stockLineChart.getXAxis().setAutoRanging(true);
 	        stockLineChart.getYAxis().setAutoRanging(true);
 			
-			List<HistoricalQuote> historyQuotes;
+			List<HistoricalQuote> historyQuotes = null;
 			// Get stock history within one year
 			Calendar from = Calendar.getInstance();
 			Calendar to = Calendar.getInstance();
+			SimpleDateFormat dfm;
 			
 			switch(interval) {
-				case 1: // Nearest week
+				case ONE_WEEK: // Nearest week
 					from.add(Calendar.DAY_OF_MONTH, -7);
+					dfm = new SimpleDateFormat("EEE");
 					break;
-				case 2: // Nearest month
+				case ONE_MONTH: // Nearest month
 					from.add(Calendar.MONTH, -1);
+					dfm = new SimpleDateFormat("MMM dd");
 					break;
-					
-				case 3: // Nearest 3 months
+				case THREE_MONTH: // Nearest 3 months
 					from.add(Calendar.MONTH, -3);
+					dfm = new SimpleDateFormat("MMM dd");
 					break;
-				case 4: //Nearest year
+				case SIX_MONTH: // Nearest 6 months
+					from.add(Calendar.MONTH, -6);
+					dfm = new SimpleDateFormat("MMM");
+					break;
+				case ONE_YEAR: //Nearest year
 					from.add(Calendar.YEAR, -1);
+					dfm = new SimpleDateFormat("MMM yyyy");
 					break;
 				default:
-					throw new RuntimeException("Wrong interval time: " + interval);
+					return;
 			}
 			// Loading stock historical quotes
 			System.out.println("From: " + from);
 			System.out.println("From: " + to);
-			historyQuotes = yahooStock.getHistory(from, to, Interval.DAILY);
+			try {
+				historyQuotes = yahooStock.getHistory(from, to, yahoofinance.histquotes.Interval.DAILY);
+			} catch (IOException e) { // Exception happens, return without creating line chart
+				e.printStackTrace();
+				return;
+			}
 			
 			XYChart.Series series = new XYChart.Series();
 			series.setName("Stock Price");
 			// Reverse iteration because date appears as reverse order in List
 			for (int index = historyQuotes.size() - 1; index >= 0; index --) {
 				HistoricalQuote quote = historyQuotes.get(index);
-				String date = String.valueOf(quote.getDate().get(Calendar.DATE));
-				System.out.println(date);
-				if (quote.getDate().get(Calendar.DATE) % 3 == 0) {
-					series.getData().add(new XYChart.Data<String, Number>(date, quote.getOpen().doubleValue()));
-				} else {
-					series.getData().add(new XYChart.Data<String, Number>("", quote.getOpen().doubleValue()));
-				}
-//				System.out.println(quote);
-				
-				//series.getData().add(new XYChart<CategoryAxis, NumberAxis>().Data(String.valueOf(from.DATE), quote.getOpen()));
+				String date = dfm.format(quote.getDate().getTime());
+				double price = quote.getOpen().doubleValue();
+				series.getData().add(new XYChart.Data<String, Number>(date, price));
 			}
 	        stockLineChart.getData().add(series);
 	        System.out.println("Data: " + stockLineChart.getData());
 		}
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// Check stock changes in real-time for each 2 minutes
-		service = new RealTimeUpdateService();
-		service.setPeriod(Duration.minutes(2));
-		// Auto change width of label based on current text length
-		currentPriceLB.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldVal, String newVal) {
-				currentPriceLB.setPrefWidth(currentPriceLB.getText().length()*22 - 100/currentPriceLB.getText().length());
-			}
-		});
-		
-		// Add listener when user selects item in combobox
-		quantityCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
-			@Override
-			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer quantity) {
-				if (quantity != null) {
-					System.out.println("Selected item: " + quantity);
-					double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue()*quantity;
-					double remainingBalance = user.getAccount().getBalance() - price;
-					// Disable [Buy] button if the remaining balance is negative
-					buyStockButton.setDisable(remainingBalance < 0);
-					// Set corresponding balance and sub total
-					subTotalTF.setText("- $" + Utility.formatCurrencyDouble(price));
-					remainBalanceTF.setText("$" + Utility.formatCurrencyDouble(remainingBalance));
-				}
-			}
-		});
-	}
-	
 	@FXML private void buyStock(ActionEvent e) {
 		// Subtract money from user's balance
 		double curBal= user.getAccount().getBalance();
@@ -345,7 +418,7 @@ public class StockDetailsController extends ParentController implements Initiali
 	 * Update GUI elements after buying stocks successfully
 	 */
 	private void setupAfterBuyingStock() {
-		Alert alert = AlertGenerator.generateAlert(AlertType.INFORMATION, CommonMessage.BUY_STOCK_SUCCESSFUL_SMS);
+		Alert alert = AlertGenerator.generateAlert(AlertType.INFORMATION, CommonDefine.BUY_STOCK_SUCCESSFUL_SMS);
 		alert.showAndWait();
 		// After 
 		quantityCB.getSelectionModel().clearSelection();

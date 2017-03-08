@@ -377,31 +377,31 @@
                            <children>
                               <HBox prefHeight="53.0" prefWidth="518.0">
                                  <children>
-                                    <Label prefHeight="17.0" prefWidth="61.0" text="1 week">
+                                    <Label fx:id="oneWeekLB" prefHeight="17.0" prefWidth="61.0" text="1 week">
                                        <HBox.margin>
                                           <Insets left="20.0" top="20.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label prefHeight="17.0" prefWidth="66.0" text="1 month">
+                                    <Label fx:id="oneMonthLB" prefHeight="17.0" prefWidth="66.0" text="1 month">
                                        <HBox.margin>
                                           <Insets left="20.0" top="20.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label prefHeight="17.0" prefWidth="83.0" text="3 months">
+                                    <Label fx:id="threeMonthLB" prefHeight="17.0" prefWidth="83.0" text="3 months">
                                        <HBox.margin>
                                           <Insets left="20.0" top="20.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label prefHeight="17.0" prefWidth="76.0" text="6 months">
+                                    <Label fx:id="sixMonthLB" prefHeight="17.0" prefWidth="76.0" text="6 months">
                                        <HBox.margin>
                                           <Insets left="20.0" top="20.0" />
                                        </HBox.margin>
                                     </Label>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <Label prefHeight="17.0" prefWidth="60.0" text="1 year">
+                                    <Label fx:id="oneYearLB" prefHeight="17.0" prefWidth="60.0" text="1 year">
                                        <HBox.margin>
                                           <Insets left="20.0" top="20.0" />
                                        </HBox.margin>

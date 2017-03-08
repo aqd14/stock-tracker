@@ -27,7 +27,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
-import main.java.common.CommonMessage;
+import main.java.common.CommonDefine;
 import main.java.model.Stock;
 import main.java.model.TransactionWrapper;
 import main.java.model.UserStock;
@@ -80,7 +80,7 @@ public class PortfolioController extends ParentController implements Initializab
 			sellStockButton.setOnAction(event -> {
 				// Only display alert when user select some stocks
 				if (selectedStock != null && selectedStock.size() > 0) {
-					Alert alert = AlertGenerator.generateAlert(AlertType.CONFIRMATION, CommonMessage.SELL_STOCK_SMS);
+					Alert alert = AlertGenerator.generateAlert(AlertType.CONFIRMATION, CommonDefine.SELL_STOCK_SMS);
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.isPresent() && result.get() == ButtonType.OK) {
 						sellStock(selectedStock);

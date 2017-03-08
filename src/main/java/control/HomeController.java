@@ -40,7 +40,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import main.java.common.CommonMessage;
+import main.java.common.CommonDefine;
 import main.java.model.Stock;
 import main.java.utility.AlertGenerator;
 import main.java.utility.Screen;
@@ -179,7 +179,7 @@ public class HomeController extends ParentController implements Initializable {
 		    	String stockCode = row.getItem().getStockCode();
 		    	if (userStockManager.hasStock(user.getId(), stockCode)) {
 		    		// Display alert to notify user before removing an owned stock
-		    		Alert alert = AlertGenerator.generateAlert(AlertType.CONFIRMATION, CommonMessage.REMOVE_STOCK_SMS);
+		    		Alert alert = AlertGenerator.generateAlert(AlertType.CONFIRMATION, CommonDefine.REMOVE_STOCK_SMS);
 		    		Optional<ButtonType> result = alert.showAndWait();
 		    		if (!result.isPresent() || result.get() == ButtonType.CANCEL) {
 		    			// User cancels removing
