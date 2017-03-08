@@ -375,12 +375,46 @@
                      <children>
                         <HBox prefHeight="53.0" prefWidth="664.0">
                            <children>
-                              <JFXButton buttonType="RAISED" fx:id="buyStockButton" onAction="#buyStock" prefHeight="37.0" prefWidth="106.0" style="-fx-background-color: #2196f3;" styleClass="custom_button" text="Buy" textFill="#f1f1f1">
+                              <HBox prefHeight="53.0" prefWidth="518.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="61.0" text="1 week">
+                                       <HBox.margin>
+                                          <Insets left="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                    <Label prefHeight="17.0" prefWidth="66.0" text="1 month">
+                                       <HBox.margin>
+                                          <Insets left="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                    <Label prefHeight="17.0" prefWidth="83.0" text="3 months">
+                                       <HBox.margin>
+                                          <Insets left="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                    <Label prefHeight="17.0" prefWidth="76.0" text="6 months">
+                                       <HBox.margin>
+                                          <Insets left="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                    <Label prefHeight="17.0" prefWidth="60.0" text="1 year">
+                                       <HBox.margin>
+                                          <Insets left="20.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                 </children>
+                              </HBox>
+                              <JFXButton fx:id="buyStockButton" buttonType="RAISED" onAction="#buyStock" prefHeight="37.0" prefWidth="106.0" style="-fx-background-color: #2196f3;" styleClass="custom_button" text="Buy" textFill="#f1f1f1">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
                                  <HBox.margin>
-                                    <Insets left="600.0" top="10.0" />
+                                    <Insets left="70.0" top="10.0" />
                                  </HBox.margin>
                               </JFXButton>
                            </children></HBox>
