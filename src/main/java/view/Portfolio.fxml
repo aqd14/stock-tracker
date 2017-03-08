@@ -7,16 +7,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.PortfolioController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.PortfolioController">
    <children>
-      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane prefHeight="400.0" prefWidth="759.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Portfolio">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Pagination fx:id="portfolioPagination" prefHeight="335.0" prefWidth="600.0" AnchorPane.topAnchor="0.0" />
-                        <JFXButton fx:id="sellStockButton" buttonType="RAISED" layoutX="499.0" layoutY="332.0" prefHeight="31.0" prefWidth="65.0" ripplerFill="WHITE" style="-fx-background-color: #18bc6a;" text="Sell" textFill="WHITE">
+                        <Pagination fx:id="portfolioPagination" prefHeight="335.0" prefWidth="759.0" AnchorPane.topAnchor="10.0" />
+                        <JFXButton fx:id="sellStockButton" buttonType="RAISED" layoutX="605.0" layoutY="322.0" prefHeight="31.0" prefWidth="65.0" ripplerFill="WHITE" style="-fx-background-color: #18bc6a;" text="Sell" textFill="WHITE">
                            <font>
                               <Font name="Segoe UI" size="16.0" />
                            </font>
@@ -29,7 +29,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Pagination fx:id="transactionHistoryPagination" prefHeight="364.0" prefWidth="600.0" />
+                        <Pagination fx:id="transactionHistoryPagination" prefHeight="353.0" prefWidth="759.0" AnchorPane.topAnchor="10.0" />
                      </children>
                   </AnchorPane>
             </content>

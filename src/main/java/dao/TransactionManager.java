@@ -64,23 +64,40 @@ private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	}
 	
 	/**
-	 * Using inner join query to retrieve list of bought stocks in Portfolio
+	 * <p>
+	 * Using inner join query to retrieve list of transactions in Portfolio and Transaction History page.
+	 * If <code>sold</code> is set to <code>false</code>, only pull out the currently owned stocks.
+	 * Otherwise, pull out all transaction history.
+	 * </p>
 	 * 
 	 * @param userId Current user id
+	 * @param owned Flag to decide which transaction should be pulled out
 	 * @return List of bought stock that user didn't sell yet
 	 */
-	public List<TransactionWrapper> findTransactions(Integer userId) {
+	public List<TransactionWrapper> findTransactions(Integer userId, boolean owned) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		try {
 //			String hql = "SELECT stock, transaction FROM Stock stock INNER JOIN Transaction transaction INNER JOIN Account account"
 //					+ " ON account.userId = :userID";
-			String hql = "SELECT stock, transaction "
-					+ "FROM Transaction transaction "
-					+ "INNER JOIN Stock stock "
-					+ "ON stock.transaction = transaction "
-					// + "INNER JOIN Account account " 
-					+ "AND transaction.account.userId = :userId";
+			String hql;
+			if (owned) {
+				hql = "SELECT stock, transaction "
+						+ "FROM Transaction transaction "
+						+ "INNER JOIN Stock stock "
+						+ "ON stock.transaction = transaction "
+						// + "INNER JOIN Account account " 
+						+ "AND transaction.account.userId = :userId "
+						+ "INNER JOIN UserStock us "
+						+ "ON us.id.userId = :userId AND stock = us.stock";
+			} else {
+				hql = "SELECT stock, transaction "
+						+ "FROM Transaction transaction "
+						+ "INNER JOIN Stock stock "
+						+ "ON stock.transaction = transaction "
+						// + "INNER JOIN Account account " 
+						+ "AND transaction.account.userId = :userId";
+			}
 			@SuppressWarnings("unchecked")
 			Query<Object> query = session.createQuery(hql);
 			query.setParameter("userId", userId);
