@@ -45,6 +45,7 @@ import main.java.model.Transaction;
 import main.java.model.UserStock;
 import main.java.model.UserStockId;
 import main.java.utility.AlertGenerator;
+import main.java.utility.Screen;
 import main.java.utility.Utility;
 import yahoofinance.histquotes.HistoricalQuote;
 
@@ -447,6 +448,12 @@ public class StockDetailsController extends ParentController implements Initiali
 				}
 			};
 		}
+		
+	}
+
+	@Override
+	protected void makeNewStage(Screen target, String stageTitle, String url) {
+		// TODO Auto-generated method stub
 		
 	}
 }

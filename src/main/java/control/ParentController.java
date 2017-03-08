@@ -7,11 +7,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import main.java.dao.*;
+import main.java.dao.StockManager;
+import main.java.dao.TransactionManager;
+import main.java.dao.UserManager;
+import main.java.dao.UserStockManager;
 import main.java.model.User;
 import main.java.utility.Screen;
 
-public class ParentController {
+public abstract class ParentController {
 	
 	protected User user;
 	protected UserManager userManager;
@@ -67,8 +70,14 @@ public class ParentController {
 			e.printStackTrace();
 		}
     }
-	
-//	public void setStage(Stage stage) {
-//		this.stage = stage;
-//	}
+    
+	/**
+	 * Create new stage besides primary one. That means there are more than one views displayed 
+	 * on the screen.
+	 * 
+	 * @param target The view that user wants to switch to
+	 * @param stageTitle The title of created stage
+	 * @param url <code>URL</code> to FXML file
+	 */
+	protected abstract void makeNewStage(Screen target, String stageTitle, String url);
 }

@@ -1,4 +1,4 @@
-package main.java.control;
+package main.java.utility;
 
 import javafx.scene.control.TextFormatter;
 import javafx.util.StringConverter;
@@ -6,14 +6,14 @@ import javafx.util.StringConverter;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
-class CurrencyFormatter extends TextFormatter<Double> {
+public class CurrencyFormatter extends TextFormatter<Double> {
     private static final double DEFAULT_VALUE = 0.00;
     private static final String CURRENCY_SYMBOL = "$";
 
     private static final DecimalFormat strictZeroDecimalFormat  
         = new DecimalFormat(CURRENCY_SYMBOL + "###,##0.00");
 
-    CurrencyFormatter() {
+    public CurrencyFormatter() {
         super(
                 // string converter converts between a string and a value property.
                 new StringConverter<Double>() {

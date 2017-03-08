@@ -43,4 +43,10 @@ public class ResetPasswordController extends ParentController {
 			// Update remember_me file
 		}
 	}
+
+	@Override
+	protected void makeNewStage(Screen target, String stageTitle, String url) {
+		// TODO Auto-generated method stub
+		
+	}
 }

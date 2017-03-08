@@ -14,24 +14,30 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.java.common.CommonDefine;
 import main.java.model.Stock;
 import main.java.model.TransactionWrapper;
 import main.java.model.UserStock;
 import main.java.utility.AlertGenerator;
+import main.java.utility.Screen;
+import yahoofinance.YahooFinance;
 
 public class PortfolioController extends ParentController implements Initializable {
 	@FXML private Pagination portfolioPagination;
@@ -91,6 +97,13 @@ public class PortfolioController extends ParentController implements Initializab
 					} else {
 						// User doesn't want to sell stock. Close alert and get back to portfolio page
 					}
+				}
+			});
+			// Open Stock Detail page when user select item on table view
+			// TODO: Update portfolio view when user buy some stocks
+			portfolioTable.setOnMouseClicked(eventHandler -> {
+				if (2 == eventHandler.getClickCount()) {
+					makeNewStage(Screen.STOCK_DETAILS, "Stock Details", "../view/StockDetails.fxml");
 				}
 			});
 		}
@@ -286,4 +299,45 @@ public class PortfolioController extends ParentController implements Initializab
         historyTable.setItems(FXCollections.observableArrayList(historyTransactions.subList(fromIndex, toIndex)));
         return new BorderPane(historyTable);
     }
+
+	@Override
+	protected void makeNewStage(Screen target, String stageTitle, String url) {
+		// TODO Auto-generated method stub
+		Stage newStage = new Stage();
+		newStage.setTitle(stageTitle);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
+		Parent root = null;
+		try {
+			root = (Parent)loader.load();
+		} catch (IOException e) {
+        	System.err.println("Could not load url: " + url);
+        	e.printStackTrace();
+        	return;
+        }
+		switch(target) {
+			case STOCK_DETAILS:
+				StockDetailsController stockController = loader.<StockDetailsController>getController();
+				stockController.setUser(user);
+				// Find selected stock in Java API
+				TransactionWrapper item = portfolioTable.getSelectionModel().getSelectedItem();
+				// TODO: Think about better way to find the stock given stock code
+				yahoofinance.Stock yahooStock = null;
+				try {
+					yahooStock = YahooFinance.get(item.getStockCode(), false);
+				} catch (IOException e) {
+					System.err.println("Stock code is invalid: " + item.getStockCode());
+					e.printStackTrace();
+					return;
+				}
+				stockController.setStock(yahooStock);
+				stockController.updateStockData();
+				break;
+			default:
+				return; // Move to undefined target. Should throw some exception?
+		}
+		
+		newStage.setScene(new Scene(root));
+		newStage.setResizable(false);
+		newStage.show();
+	}
 }

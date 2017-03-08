@@ -13,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import main.java.utility.CurrencyFormatter;
+import main.java.utility.Screen;
 import main.java.utility.Utility;
 import main.java.utility.ValidationUtil;
 
@@ -201,5 +203,11 @@ public class SettingsController extends ParentController implements Initializabl
 		newPasswordPF.clear();
 		confirmPasswordPF.clear();
 		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
+	}
+
+	@Override
+	protected void makeNewStage(Screen target, String stageTitle, String url) {
+		// TODO Auto-generated method stub
+		
 	}
 }

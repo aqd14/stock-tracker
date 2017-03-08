@@ -79,4 +79,10 @@ public class RegistrationViewController extends ParentController {
 				ValidationUtil.validateUsername(usernameTF, usernameError) && ValidationUtil.validateOriginalPassword(passwordPF, confirmPasswordError) && 
 				ValidationUtil.validateConfirmedPassword(passwordPF, confirmPasswordPF, confirmPasswordError) && ValidationUtil.validateEmail(emailTF, emailError) && ValidationUtil.validateDoB(dateOfBirthDP, dobError);
 	}
+
+	@Override
+	protected void makeNewStage(Screen target, String stageTitle, String url) {
+		// TODO Auto-generated method stub
+		
+	}
 }

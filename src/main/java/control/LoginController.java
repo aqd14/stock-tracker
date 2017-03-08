@@ -103,4 +103,10 @@ public class LoginController extends ParentController implements Initializable {
 //			rememberMe = !rememberMe;
 //		});
 	}
+
+	@Override
+	protected void makeNewStage(Screen target, String stageTitle, String url) {
+		// TODO Auto-generated method stub
+		
+	}
 }

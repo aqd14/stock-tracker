@@ -167,23 +167,16 @@ public class HomeController extends ParentController implements Initializable {
 //				System.out.println("Current number of rows: " + stockTableView.getCurrentItemsCount());
 				if (mouseEvent.getClickCount() == 2 && stockTableView.getCurrentItemsCount() > 0) { // Double click
 					makeNewStage(Screen.STOCK_DETAILS, "Stock Details", "../view/StockDetails.fxml");
-					TreeItem<Stock> item = stockTableView.getSelectionModel().getSelectedItem();
-					System.out.println("Selected stock: " + item.getValue().getStockName());
+//					TreeItem<Stock> item = stockTableView.getSelectionModel().getSelectedItem();
+//					System.out.println("Selected stock: " + item.getValue().getStockName());
 				}
 			}
 			
 		});
 	}
 	
-	/**
-	 * Create new stage besides primary one. That means there are more than one views displayed 
-	 * on the screen.
-	 * 
-	 * @param target The view that user wants to switch to
-	 * @param stageTitle The title of created stage
-	 * @param url <code>URL</code> to FXML file
-	 */
-	public void makeNewStage(Screen target, String stageTitle, String url) {
+	@Override
+	protected void makeNewStage(Screen target, String stageTitle, String url) {
 		Stage newStage = new Stage();
 		newStage.setTitle(stageTitle);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));

@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXToggleButton;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import main.java.utility.Screen;
 
 /**
  * @author doquocanh-macbook
@@ -99,5 +100,11 @@ public class AlertSettingsController extends ParentController implements Initial
 			netProfitAlertSwitchOn = !netProfitAlertSwitchOn;
 			netProfitThreshold.setEditable(netProfitAlertSwitchOn);
 		});
+	}
+
+	@Override
+	protected void makeNewStage(Screen target, String stageTitle, String url) {
+		// TODO Auto-generated method stub
+		
 	}
 }
