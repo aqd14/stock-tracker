@@ -105,4 +105,33 @@ public class UserStockManager implements IManager {
 		List<Stock> stocks = findStocks(userId, stockCode);
 		return (null != stocks && stocks.size() > 0);
 	}
+	
+	/**
+	 * Find UserStock instance in database that matches user and stock
+	 * @param userId
+	 * @param stockId
+	 * @return
+	 */
+	public UserStock findUserStock(Integer userId, Integer stockId) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		try {
+			String hql = "SELECT us FROM UserStock us WHERE"
+					+ " us.id.userId = :userID AND us.id.stockId = :stockID";
+			@SuppressWarnings("unchecked")
+			Query<UserStock> query = session.createQuery(hql);
+			query.setParameter("userID", userId);
+			query.setParameter("stockID", stockId);
+			List<UserStock> userStocks = query.getResultList();
+			session.close();
+			if (userStocks != null && userStocks.size() > 0)
+				return userStocks.get(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+		return null;
+	}
 }
