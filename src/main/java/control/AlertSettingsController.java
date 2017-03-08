@@ -6,6 +6,7 @@ package main.java.control;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 
@@ -26,11 +27,14 @@ public class AlertSettingsController extends ParentController implements Initial
 	@FXML private JFXTextField valueThreshold;
 	@FXML private JFXTextField combinedValueThreshold;
 	@FXML private JFXTextField netProfitThreshold;
+	// Save settings button
+	@FXML private JFXButton saveAlertSettingsButton;
 	// Flag to check toggles switch ON/OFF
 	boolean valueAlertSwitchOn = false;
 	boolean combinedValueAlertSwitchOn = false;
 	boolean netProfitAlertSwitchOn = false;
-	
+	// Code of selected stock
+	private String selectedStockCode;
 	/**
 	 * 
 	 */
@@ -40,7 +44,22 @@ public class AlertSettingsController extends ParentController implements Initial
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		// Save alert settings to database
+		saveAlertSettingsButton.setOnAction(eventHandler -> {
+			if (userStockManager.hasStock(user.getId(), selectedStockCode)) {
+				if (!valueThreshold.getText().isEmpty()) {
+					
+				}
+				
+				if (!combinedValueThreshold.getText().isEmpty()) {
+					
+				}
+				
+				if (!netProfitAlert.getText().isEmpty()) {
+					
+				}
+			}
+		});
 	}
 	
 	/**
@@ -48,10 +67,10 @@ public class AlertSettingsController extends ParentController implements Initial
 	 * if user doesn't own selected stock.
 	 */
 	public void initAlertSettings(String stockCode) {
+		selectedStockCode = stockCode;
 		// Check status of selected stock if it already belongs to user
-//		List<Stock> stocks = userStockManager.findStocks(user.getId(), stockCode);
 		// User doesn't have this stock on portfolio
-		if(userStockManager.hasStock(user.getId(), stockCode)) {
+		if(userStockManager.hasStock(user.getId(), selectedStockCode)) {
 			// Enable alert settings for [Combined Value Alert] and [Net Profit Alert]
 			combinedValueAlert.setDisable(false);
 			netProfitAlert.setDisable(false);

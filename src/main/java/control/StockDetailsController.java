@@ -427,7 +427,7 @@ public class StockDetailsController extends ParentController implements Initiali
 		int amount = quantityCB.getSelectionModel().getSelectedItem();
 		BigDecimal price = yahooStock.getQuote().getPrice();
 		BigDecimal previousPrice = yahooStock.getQuote().getPreviousClose();
-		Stock stock = new Stock(transaction, stockName, stockCode, amount, price, previousPrice);
+		Stock stock = new Stock(transaction, stockName, stockCode, amount, CommonDefine.OWNED_STOCK, price, previousPrice);
 		return stock;
 	}
 	

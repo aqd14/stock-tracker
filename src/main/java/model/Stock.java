@@ -26,8 +26,8 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	private String stockCode;
 	private BigDecimal price;
 	private BigDecimal previousPrice;
-	private BigDecimal valueThreshold; // Threshold when the price of a certain stock X reaches level Y
 	private int amount;
+	private int owned; // The attribute marks if user owns stock or not. Used for alert settings
 	private Set<UserStock> userStocks = new HashSet<UserStock>(0);
 	private StockDetail stockDetail;
 	
@@ -39,19 +39,19 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	public Stock() {
 	}
 
-	public Stock(Transaction transaction, String stockName, String stockCode, int amount, BigDecimal price, BigDecimal previousPrice) {
+	public Stock(Transaction transaction, String stockName, String stockCode, int amount, int owned, BigDecimal price, BigDecimal previousPrice) {
 		this.transaction = transaction;
 		this.stockName = stockName;
 		this.stockCode = stockCode;
 		this.amount = amount;
+		setOwned(owned);
 		setPrice(price);
 		setPreviousPrice(previousPrice);
-		this.valueThreshold = new BigDecimal(-1); // Default value for value threshold when user doesn't set any value
 	}
 
-	public Stock(Transaction transaction, String stockName, String stockCode, int amount, BigDecimal price, BigDecimal previousPrice,
+	public Stock(Transaction transaction, String stockName, String stockCode, int amount, int owned, BigDecimal price, BigDecimal previousPrice,
 	        Set<UserStock> userStocks, StockDetail stockDetail) {
-		this(transaction, stockName, stockCode, amount, price, previousPrice);
+		this(transaction, stockName, stockCode, amount, owned, price, previousPrice);
 		this.stockDetail = stockDetail;
 	}
 
@@ -110,24 +110,24 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
+	
+	public int getOwned() {
+		return owned;
+	}
+	
+	public void setOwned(int owned) {
+		// Keep value of "owned" within 0 & 1
+		if (owned == 0) {
+			
+		} else if (owned != 1) {
+			owned = 1;
+		}
+		this.owned = owned;
+	}
 
 	public void setPreviousPrice(BigDecimal previousPrice) {
 		this.previousPrice = previousPrice.setScale(2, RoundingMode.CEILING);
 		this.previousPrice = previousPrice;
-	}
-
-	/**
-	 * @return the valueThreshold
-	 */
-	public BigDecimal getValueThreshold() {
-		return valueThreshold;
-	}
-
-	/**
-	 * @param valueThreshold the valueThreshold to set
-	 */
-	public void setValueThreshold(BigDecimal valueThreshold) {
-		this.valueThreshold = valueThreshold;
 	}
 
 	public Set<UserStock> getUserStocks() {

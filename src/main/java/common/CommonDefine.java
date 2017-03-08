@@ -35,4 +35,7 @@ public class CommonDefine {
 		SIX_MONTH,
 		ONE_YEAR
 	}
+	
+	public static final int OWNED_STOCK = 1;
+	public static final int NOT_OWNED_STOCK = 0;
 }

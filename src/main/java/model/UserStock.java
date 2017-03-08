@@ -17,6 +17,7 @@ public class UserStock implements java.io.Serializable {
 	private UserStockId id;
 	private Stock stock;
 	private User user;
+	private BigDecimal valueThreshold; // Threshold when the price of a certain stock X reaches level Y
 	private BigDecimal combinedValueThreshold;
 	private BigDecimal netProfitThreshold;
 
@@ -27,6 +28,7 @@ public class UserStock implements java.io.Serializable {
 		this.id = id;
 		this.stock = stock;
 		this.user = user;
+		this.valueThreshold = new BigDecimal(-1); // Default value for value threshold when user doesn't set any value
 		this.combinedValueThreshold = new BigDecimal(-1);
 		this.netProfitThreshold = new BigDecimal(-1);
 	}
@@ -61,6 +63,20 @@ public class UserStock implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	/**
+	 * @return the valueThreshold
+	 */
+	public BigDecimal getValueThreshold() {
+		return valueThreshold;
+	}
+
+	/**
+	 * @param valueThreshold the valueThreshold to set
+	 */
+	public void setValueThreshold(BigDecimal valueThreshold) {
+		this.valueThreshold = valueThreshold;
 	}
 
 	public BigDecimal getCombinedValueThreshold() {

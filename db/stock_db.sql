@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock` (
   `previous_price` DECIMAL(10,2) NOT NULL,
   `transaction_id` INT NOT NULL,
   `amount` INT NULL,
-  `value_threshold` DECIMAL(10,2) NULL,
+  `owned` INT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `stock_id_UNIQUE` (`id` ASC),
   INDEX `fk_stock_transaction1_idx` (`transaction_id` ASC),
@@ -131,6 +131,7 @@ DROP TABLE IF EXISTS `stock`.`user_stock` ;
 CREATE TABLE IF NOT EXISTS `stock`.`user_stock` (
   `stock_id` INT NOT NULL,
   `user_id` INT NOT NULL,
+  `value_threshold` DECIMAL(10,2) NULL,
   `combined_value_threshold` DECIMAL(10,2) NULL,
   `net_profit_threshold` DECIMAL(10,2) NULL,
   PRIMARY KEY (`stock_id`, `user_id`),

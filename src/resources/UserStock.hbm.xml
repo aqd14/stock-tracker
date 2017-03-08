@@ -18,6 +18,9 @@
         <many-to-one name="user" class="main.java.model.User" update="false" insert="false" fetch="select">
             <column name="user_id" not-null="true" />
         </many-to-one>
+        <property name="valueThreshold" type="java.math.BigDecimal">
+        	<column name="value_threshold" precision="22" scale="0" not-null="true" />
+        </property>
         <property name="combinedValueThreshold" type="java.math.BigDecimal">
             <column name="combined_value_threshold" precision="22" scale="0" />
         </property>

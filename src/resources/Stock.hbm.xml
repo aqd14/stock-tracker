@@ -23,12 +23,12 @@
         <property name="previousPrice" type="java.math.BigDecimal">
             <column name="previous_price" precision="22" scale="0" not-null="true" />
         </property>
-        <property name="valueThreshold" type="java.math.BigDecimal">
-        	<column name="value_threshold" precision="22" scale="0" not-null="true" />
-        </property>
         <property name="amount" type="int">
             <column name="amount"/>
         </property>
+		<property name="owned" type="int">
+			<column name="owned" />
+		</property>
         <set name="userStocks" table="user_stock" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="stock_id" not-null="true" />
