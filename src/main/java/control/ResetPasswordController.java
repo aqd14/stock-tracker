@@ -7,8 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import main.java.common.CommonMessage;
 import main.java.dao.UserManager;
-import main.java.err.ErrorMessage;
 import main.java.model.User;
 import main.java.utility.Screen;
 import main.java.utility.ValidationUtil;
@@ -35,7 +35,7 @@ public class ResetPasswordController extends ParentController {
 			UserManager userManager = new UserManager();
 			User user = userManager.findByUsernameOrEmail(usernameTF.getText(), null);
 			if (user == null) {
-				ValidationUtil.displayErrorMessage(errorT, ErrorMessage.USER_NOT_EXIST);
+				ValidationUtil.displayErrorMessage(errorT, CommonMessage.USER_NOT_EXIST);
 				return;
 			}
 			user.setPassword(passwordPF.getText());

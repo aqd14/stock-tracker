@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -15,17 +16,22 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
+import main.java.common.CommonMessage;
 import main.java.model.Stock;
 import main.java.model.TransactionWrapper;
 import main.java.model.UserStock;
+import main.java.utility.AlertGenerator;
 
 public class PortfolioController extends ParentController implements Initializable {
 	@FXML private Pagination portfolioPagination;
@@ -72,11 +78,20 @@ public class PortfolioController extends ParentController implements Initializab
 			portfolioPagination.setPageFactory(this::createPage);
 			// Sell stock when user click on button
 			sellStockButton.setOnAction(event -> {
-				sellStock(selectedStock);
-				// Refresh table view
-				refreshTableView(selectedStock);
-				// Clear selected stocl
-				selectedStock.clear();
+				// Only display alert when user select some stocks
+				if (selectedStock != null && selectedStock.size() > 0) {
+					Alert alert = AlertGenerator.generateAlert(AlertType.CONFIRMATION, CommonMessage.SELL_STOCK_SMS);
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.isPresent() && result.get() == ButtonType.OK) {
+						sellStock(selectedStock);
+						// Refresh table view
+						refreshTableView(selectedStock);
+						// Clear selected stocl
+						selectedStock.clear();
+					} else {
+						// User doesn't want to sell stock. Close alert and get back to portfolio page
+					}
+				}
 			});
 		}
 	}

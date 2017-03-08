@@ -33,13 +33,17 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import main.java.common.CommonMessage;
 import main.java.model.Stock;
 import main.java.model.Transaction;
 import main.java.model.UserStock;
 import main.java.model.UserStockId;
+import main.java.utility.AlertGenerator;
 import main.java.utility.Utility;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
@@ -315,38 +319,34 @@ public class StockDetailsController extends ParentController implements Initiali
 	}
 	
 	@FXML private void buyStock(ActionEvent e) {
-		boolean isValidToBuy = true; // Condition to check if everything is correct to perform transaction
-		if (isValidToBuy) {
-			// Subtract money from user's balance
-			double curBal= user.getAccount().getBalance();
-			int quantity = quantityCB.getSelectionModel().getSelectedItem();
-			double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
-			
-			// Check if current balance is enough to buy stock
-			double subtraction = Utility.round(curBal - quantity*price, 2);
-			if (subtraction > 0) {
-				user.getAccount().setBalance(subtraction);
-				userManager.update(user);
-				// Create new instance and relationship in database
-				Stock boughtStock = extractStock();
-				stockManager.add(boughtStock);
-				UserStockId userStockId = new UserStockId(boughtStock.getId(), user.getId());
-				UserStock userStock = new UserStock(userStockId, boughtStock, user);
-				userStockManager.add(userStock);
-			} else {
-				// Display error message for user
-			}
-			afterBuyingStock();
+		// Subtract money from user's balance
+		double curBal= user.getAccount().getBalance();
+		int quantity = quantityCB.getSelectionModel().getSelectedItem();
+		double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
+		
+		// Check if current balance is enough to buy stock
+		double subtraction = Utility.round(curBal - quantity*price, 2);
+		if (subtraction > 0) {
+			user.getAccount().setBalance(subtraction);
+			userManager.update(user);
+			// Create new instance and relationship in database
+			Stock boughtStock = extractStock();
+			stockManager.add(boughtStock);
+			UserStockId userStockId = new UserStockId(boughtStock.getId(), user.getId());
+			UserStock userStock = new UserStock(userStockId, boughtStock, user);
+			userStockManager.add(userStock);
+		} else {
+			// Display error message for user
 		}
+		setupAfterBuyingStock();
 	}
 	
 	/**
-	 * Handle GUI after buying stocks successfully
+	 * Update GUI elements after buying stocks successfully
 	 */
-	private void afterBuyingStock() {
-//		Alert alert = new Alert(AlertType.NONE);
-//		alert.setContentText("Buying stock successfully!");
-//		alert.show();
+	private void setupAfterBuyingStock() {
+		Alert alert = AlertGenerator.generateAlert(AlertType.INFORMATION, CommonMessage.BUY_STOCK_SUCCESSFUL_SMS);
+		alert.showAndWait();
 		// After 
 		quantityCB.getSelectionModel().clearSelection();
 		subTotalTF.setText("");
