@@ -252,7 +252,7 @@ public class HomeController extends ParentController implements Initializable {
 				// Set current user
 				SettingsController settingsController = loader.<SettingsController>getController();
 				settingsController.setUser(user);
-				settingsController.setAccountInfo();
+				settingsController.initUserInfo();
 				break;
 			case STOCK_DETAILS:
 				StockDetailsController stockController = loader.<StockDetailsController>getController();

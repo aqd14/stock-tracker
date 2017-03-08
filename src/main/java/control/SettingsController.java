@@ -44,9 +44,15 @@ public class SettingsController extends ParentController implements Initializabl
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void setAccountInfo() {
+	/**
+	 * Initialize some basic user information when user open [Settings]
+	 */
+	public void initUserInfo() {
 		accountName.setText(user.getAccount().getAccountName());
 		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
+		firstNameTF.setText(user.getFirstName());
+		lastNameTF.setText(user.getLastName());
+		emailTF.setText(user.getEmail());
 	}
 
 	@Override
