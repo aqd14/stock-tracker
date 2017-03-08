@@ -9,8 +9,6 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -67,48 +65,39 @@ public class AlertSettingsController extends ParentController implements Initial
 		netProfitThreshold.setEditable(netProfitAlertSwitchOn);
 		
 		// Event handler when user clicks on [Value Alert] toggle
-		valueAlert.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if (valueAlertSwitchOn) {
-					System.out.println("Turning OFF Value Alert.");
-					valueThreshold.clear(); // Remove threshold when user turns off alert
-				} else {
-					System.out.println("Turning ON Value Alert.");
-				}
-				valueAlertSwitchOn = !valueAlertSwitchOn;
-				valueThreshold.setEditable(valueAlertSwitchOn);
+		valueAlert.setOnAction(eventHandler -> {
+			if (valueAlertSwitchOn) {
+				System.out.println("Turning OFF Value Alert.");
+				valueThreshold.clear(); // Remove threshold when user turns off alert
+			} else {
+				System.out.println("Turning ON Value Alert.");
 			}
+			valueAlertSwitchOn = !valueAlertSwitchOn;
+			valueThreshold.setEditable(valueAlertSwitchOn);
 		});
 		
 		// Event handler when user clicks on [Combined Value Alert] toggle
-		combinedValueAlert.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if (combinedValueAlertSwitchOn) {
-					System.out.println("Turning OFF Combined Value Alert.");
-					combinedValueThreshold.clear(); // Remove threshold when user turns off alert
-				} else {
-					System.out.println("Turning ON Combined Value Alert.");
-				}
-				combinedValueAlertSwitchOn = !combinedValueAlertSwitchOn;
-				combinedValueThreshold.setEditable(combinedValueAlertSwitchOn);
+		combinedValueAlert.setOnAction(eventHandler -> {
+			if (combinedValueAlertSwitchOn) {
+				System.out.println("Turning OFF Combined Value Alert.");
+				combinedValueThreshold.clear(); // Remove threshold when user turns off alert
+			} else {
+				System.out.println("Turning ON Combined Value Alert.");
 			}
+			combinedValueAlertSwitchOn = !combinedValueAlertSwitchOn;
+			combinedValueThreshold.setEditable(combinedValueAlertSwitchOn);
 		});
 		
 		// Event handler when user clicks on [Combined Value Alert] toggle
-		netProfitAlert.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if (netProfitAlertSwitchOn) {
-					System.out.println("Turning OFF Net Profit Alert.");
-					netProfitThreshold.clear(); // Remove threshold when user turns off alert
-				} else {
-					System.out.println("Turning ON Net Profit Alert.");
-				}
-				netProfitAlertSwitchOn = !netProfitAlertSwitchOn;
-				netProfitThreshold.setEditable(netProfitAlertSwitchOn);
+		netProfitAlert.setOnAction(eventHandler -> {
+			if (netProfitAlertSwitchOn) {
+				System.out.println("Turning OFF Net Profit Alert.");
+				netProfitThreshold.clear(); // Remove threshold when user turns off alert
+			} else {
+				System.out.println("Turning ON Net Profit Alert.");
 			}
+			netProfitAlertSwitchOn = !netProfitAlertSwitchOn;
+			netProfitThreshold.setEditable(netProfitAlertSwitchOn);
 		});
 	}
 }
