@@ -107,7 +107,7 @@ public class UserStockManager implements IManager {
 	}
 	
 	/**
-	 * Find UserStock instance in database that matches user and stock
+	 * Find UserStock instance in database that matches user's id and stock's id
 	 * @param userId
 	 * @param stockId
 	 * @return
@@ -123,7 +123,6 @@ public class UserStockManager implements IManager {
 			query.setParameter("userID", userId);
 			query.setParameter("stockID", stockId);
 			List<UserStock> userStocks = query.getResultList();
-			session.close();
 			if (userStocks != null && userStocks.size() > 0)
 				return userStocks.get(0);
 		} catch (Exception e) {
@@ -133,5 +132,34 @@ public class UserStockManager implements IManager {
 			session.close();
 		}
 		return null;
+	}
+	
+	/**
+	 * Find UserStock instance in database that matches user'id and stock code
+	 * @param userId
+	 * @param stockCode
+	 * @return
+	 */
+	public List<UserStock> findUserStock(Integer userId, String stockCode) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		try {
+			String hql = "SELECT us FROM UserStock us "
+						+ "INNER JOIN Stock stock "
+						+ "ON us.id.userId = :userID "
+						+ "AND us.id.stockId = stock.id "
+						+ "AND stock.stockCode = :stockCode";
+			@SuppressWarnings("unchecked")
+			Query<UserStock> query = session.createQuery(hql);
+			query.setParameter("userID", userId);
+			query.setParameter("stockID", stockCode);
+			List<UserStock> userStocks = query.getResultList();
+			return userStocks;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
 	}
 }

@@ -66,7 +66,7 @@ public class HomeController extends ParentController implements Initializable {
 	@FXML private StackPane sp;
 	@FXML private JFXSpinner spinner;
 	
-	private String stockCodeAlert; // The code of selected stock for alert
+	private Stock stock; // The selected stock for alert
 	
 	private ObservableList<Stock> stocks;
 	
@@ -127,8 +127,7 @@ public class HomeController extends ParentController implements Initializable {
 		        }
 		    };
 		    alertSettingsItem.setOnAction(evt -> {
-		        stockCodeAlert = row.getItem().getStockCode();
-		        System.out.println("Stock code: " + stockCodeAlert);
+		        stock = row.getItem();
 		        makeNewStage(Screen.ALERT_SETTINGS, "Alert Settings", "../view/AlertSettings.fxml");
 		    });
 		    // event handlers for other menu items...
@@ -192,7 +191,7 @@ public class HomeController extends ParentController implements Initializable {
 			case ALERT_SETTINGS:
 				AlertSettingsController alertSettingsController = loader.<AlertSettingsController>getController();
 				alertSettingsController.setUser(user);
-				alertSettingsController.initAlertSettings(stockCodeAlert);
+				alertSettingsController.initAlertSettings(stock);
 				break;
 			case PORFOLIO:
 				PortfolioController portfolioController = loader.<PortfolioController>getController();

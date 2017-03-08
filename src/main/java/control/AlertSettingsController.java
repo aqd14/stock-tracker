@@ -4,6 +4,7 @@
 package main.java.control;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -12,6 +13,8 @@ import com.jfoenix.controls.JFXToggleButton;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import main.java.model.Stock;
+import main.java.model.UserStock;
 import main.java.utility.Screen;
 
 /**
@@ -34,7 +37,7 @@ public class AlertSettingsController extends ParentController implements Initial
 	boolean combinedValueAlertSwitchOn = false;
 	boolean netProfitAlertSwitchOn = false;
 	// Code of selected stock
-	private String selectedStockCode;
+	private Stock selectedStock;
 	/**
 	 * 
 	 */
@@ -46,7 +49,8 @@ public class AlertSettingsController extends ParentController implements Initial
 	public void initialize(URL location, ResourceBundle resources) {
 		// Save alert settings to database
 		saveAlertSettingsButton.setOnAction(eventHandler -> {
-			if (userStockManager.hasStock(user.getId(), selectedStockCode)) {
+			List<UserStock> us = userStockManager.findUserStock(user.getId(), selectedStock.getStockCode());
+			if (us != null) {
 				if (!valueThreshold.getText().isEmpty()) {
 					
 				}
@@ -58,6 +62,8 @@ public class AlertSettingsController extends ParentController implements Initial
 				if (!netProfitAlert.getText().isEmpty()) {
 					
 				}
+			} else { // Create new UserStock instance in database but user doesn't own this stock
+				
 			}
 		});
 	}
@@ -66,11 +72,11 @@ public class AlertSettingsController extends ParentController implements Initial
 	 * Initialize status of alert settings. Disable [combined value alert] and [net profit alert]
 	 * if user doesn't own selected stock.
 	 */
-	public void initAlertSettings(String stockCode) {
-		selectedStockCode = stockCode;
+	public void initAlertSettings(Stock stock) {
+		selectedStock = stock;
 		// Check status of selected stock if it already belongs to user
 		// User doesn't have this stock on portfolio
-		if(userStockManager.hasStock(user.getId(), selectedStockCode)) {
+		if(userStockManager.hasStock(user.getId(), selectedStock.getStockCode())) {
 			// Enable alert settings for [Combined Value Alert] and [Net Profit Alert]
 			combinedValueAlert.setDisable(false);
 			netProfitAlert.setDisable(false);
