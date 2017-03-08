@@ -19,7 +19,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -69,6 +68,8 @@ public class HomeController extends ParentController implements Initializable {
 	
 	private String stockCodeAlert; // The code of selected stock for alert
 	
+	private ObservableList<Stock> stocks;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// List of 30 stocks that will be displayed in Home page
@@ -78,63 +79,21 @@ public class HomeController extends ParentController implements Initializable {
 													"BAC", "T", "BABA", "PG", "CVX", "V",
 													"VZ", "HD", "DIS", "INTC", "ORCL", "HSBC"};
 		
-//		// Initialize new background thread to handle downloading data
-//		Task<ObservableList<Stock>> task = new Task<ObservableList<Stock>>() {
-//			
-//			@Override
-//			protected ObservableList<Stock> call() throws Exception {
-//				// Display spinner while loading data.
-//				ObservableList<Stock> stocks = Utility.getMultipleStockData(stockSymbols);
-//				return stocks;
-//			}
-//		};
-//		
-//		// When task succeeded
-//		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-//			
-//			@Override
-//			public void handle(WorkerStateEvent event) {
-//				// Update view as all stock data downloaded
-//				ObservableList<Stock> stocks = task.getValue();
-//				TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
-//				stockTableView.setRoot(root);
-//				// Finish loading, hide spinner
-//				spinner.setVisible(false);
-//			}
-//		});
-//		
-//		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
-//			@Override
-//			public void handle(WorkerStateEvent event) {
-//				System.err.println("Task performed unsuccessfully!");
-//				spinner.setVisible(false);
-//			}
-//		});
-//		
-//		// Start new thread
-//		Thread t = new Thread(task);
-//		t.setDaemon(true);
-//		t.start();
-		
 		RealTimeUpdateService service = new RealTimeUpdateService(stockSymbols);
 		service.setPeriod(Duration.minutes(2));
 		service.start();
-		service.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-
-			@Override
-			public void handle(WorkerStateEvent event) {
-				System.out.println("Continue update...");
-				ObservableList<Stock> stocks = service.getValue();
-				TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
-				stockTableView.setRoot(root);
-				// Finish loading, hide spinner
-				spinner.setVisible(false);
-				System.out.println("Finish updating!");
-			}
+		service.setOnSucceeded(event -> {
+			System.out.println("Continue update...");
+			stocks = service.getValue();
+			 TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
+			 stockTableView.setRoot(root);
+			// Finish loading, hide spinner
+			spinner.setVisible(false);
+			System.out.println("Finish updating!");
 		});
 		
 		// Initialize GUI
-		ObservableList<Stock> stocks = FXCollections.observableArrayList();
+		stocks = FXCollections.observableArrayList();
 		TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
 		stockTableView.setRoot(root);
 		stockTableView.setShowRoot(false);
