@@ -56,12 +56,7 @@ public class LoginController extends ParentController implements Initializable {
     @FXML private PasswordField passwordPF;
     
     @FXML private JFXCheckBox rememberMeCB;
-//    @FXML private Label registerLB;
-//    @FXML private Label resetPasswordLB;
-    
     @FXML private AnchorPane loginAP;
-    
-    private boolean rememberMe = false;
     
     @FXML protected void login(ActionEvent e) throws IOException {
     	// Check if given username and password matched with records in database
@@ -72,9 +67,12 @@ public class LoginController extends ParentController implements Initializable {
         	User[] users = {user};
         	switchScreen(loginAP, Screen.HOME, users);
         	loginError.setVisible(false);
-        	// Set remember me if have
-        	if (rememberMe) {
+        	// Save current username to file if user selects remember me
+        	// Otherwise, empty file's content
+        	if (rememberMeCB.isSelected()) {
             	Utility.writeFile(usernameTF.getText());
+        	} else {
+        		Utility.writeFile("");
         	}
         } else {
         	loginError.setText("Incorrect username or password. Try again.");
@@ -94,13 +92,15 @@ public class LoginController extends ParentController implements Initializable {
     	switchScreen(loginAP, Screen.RESET_PASSWORD);
     }
     
-    @FXML private void rememberMe(MouseEvent e) {
-    	rememberMe = !rememberMe;
-    }
-    
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// Set initial username based on last time saved
-		usernameTF.setText(Utility.readFile());
+		String username = Utility.readFile();
+		rememberMeCB.setSelected(!(null == username || username.equals("")));
+		usernameTF.setText(username);
+//		// Action listener
+//		rememberMeCB.setOnAction(event -> {
+//			rememberMe = !rememberMe;
+//		});
 	}
 }

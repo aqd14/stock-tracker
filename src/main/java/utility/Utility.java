@@ -134,7 +134,6 @@ public class Utility {
 			BufferedReader reader = new BufferedReader(fileReader);
 		    String line = null;
 		    line = reader.readLine();
-	        System.out.println(line);
 	        reader.close();
 	        return line;
 		} catch (FileNotFoundException e) {
