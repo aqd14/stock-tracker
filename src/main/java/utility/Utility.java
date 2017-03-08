@@ -172,8 +172,19 @@ public class Utility {
 	    return bd.doubleValue();
 	}
 	
+	/**
+	 * Format number as US Dollar currency
+	 * @param number
+	 * @return Formatted number. Returns "N/A" if current number is not available.
+	 */
 	public static String formatCurrencyNumber(Number number) {
-		return NumberFormat.getNumberInstance(java.util.Locale.US).format(number);
+		try {
+			return NumberFormat.getNumberInstance(java.util.Locale.US).format(number);
+		} catch (NullPointerException e1) {
+			return "N/A";
+		} catch (IllegalArgumentException e2) {
+			return "N/A";
+		}
 	}
 	
 	public static String formatCurrencyDouble(double number) {

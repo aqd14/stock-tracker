@@ -131,9 +131,6 @@ public class StockDetailsController extends ParentController implements Initiali
 		
 		// default interval for line chart data is one month
 		interval = Interval.ONE_MONTH;
-		// One month is default interval for line chart when
-		// user first opens Stock Details page
-		handleOptionSelected(oneMonthLB);
 		
 		// Add event listener for line chart options
 		oneWeekLB.setOnMouseClicked(event -> {
@@ -267,24 +264,15 @@ public class StockDetailsController extends ParentController implements Initiali
 	}
 	
 	private void initMarketCap() {
-		if (yahooStock.getStats().getMarketCap() != null)
-			marketCapValue.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getMarketCap()));
-		else
-			marketCapValue.setText("N/A");
+		marketCapValue.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getMarketCap()));
 	}
 	
 	private void initPriceEarnRatio() {
-		if (yahooStock.getStats().getPe() != null)
-			peRatio.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getPe()));
-		else
-			peRatio.setText("N/A");
+		peRatio.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getPe()));
 	}
 	
 	private void initEarnPerShare() {
-		if (yahooStock.getStats().getEps() != null)
-			eps.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getEps()));
-		else
-			eps.setText("N/A");
+		eps.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getEps()));
 	}
 	
 	/**
@@ -303,6 +291,9 @@ public class StockDetailsController extends ParentController implements Initiali
 		initMarketCap();
 		initPriceEarnRatio();
 		initEarnPerShare();
+		// One month is default interval for line chart when
+		// user first opens Stock Details page
+		handleOptionSelected(oneMonthLB);
 		
 		// Buying stock options
 		stockCodeLB.setText(yahooStock.getSymbol());
