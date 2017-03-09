@@ -39,7 +39,7 @@ import main.java.utility.AlertGenerator;
 import main.java.utility.Screen;
 import yahoofinance.YahooFinance;
 
-public class PortfolioController extends ParentController implements Initializable {
+public class PortfolioController extends BaseController implements Initializable {
 	@FXML private Pagination portfolioPagination;
 	@FXML private Pagination transactionHistoryPagination;
 	@FXML private JFXButton sellStockButton;

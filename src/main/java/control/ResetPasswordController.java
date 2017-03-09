@@ -13,7 +13,7 @@ import main.java.model.User;
 import main.java.utility.Screen;
 import main.java.utility.ValidationUtil;
 
-public class ResetPasswordController extends ParentController {
+public class ResetPasswordController extends BaseController {
 	@FXML private AnchorPane resetPasswordAP;
 	@FXML private JFXTextField usernameTF;
 	@FXML private JFXPasswordField passwordPF;

@@ -18,7 +18,7 @@ import main.java.utility.Screen;
 import main.java.utility.Utility;
 import main.java.utility.ValidationUtil;
 
-public class SettingsController extends ParentController implements Initializable {
+public class SettingsController extends BaseController implements Initializable {
 	// User information fields
 	@FXML private JFXTextField firstNameTF;
 	@FXML private JFXTextField lastNameTF;

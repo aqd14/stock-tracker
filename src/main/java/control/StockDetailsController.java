@@ -53,7 +53,7 @@ import yahoofinance.histquotes.HistoricalQuote;
  * @author doquocanh-macbook
  *
  */
-public class StockDetailsController extends ParentController implements Initializable {
+public class StockDetailsController extends BaseController implements Initializable {
 	
 	@FXML private Label companyLB;
 	@FXML private Label stockCodeAndTimeLB;

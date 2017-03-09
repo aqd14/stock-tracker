@@ -50,7 +50,7 @@ import yahoofinance.YahooFinance;
  * @author doquocanh-macbook
  *
  */
-public class HomeController extends ParentController implements Initializable {
+public class HomeController extends BaseController implements Initializable {
 	@FXML private AnchorPane homeAP;
 	@FXML private JFXTreeTableView<Stock> stockTableView;
 	

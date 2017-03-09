@@ -50,7 +50,7 @@ import main.java.model.User;
 import main.java.utility.Screen;
 import main.java.utility.Utility;
  
-public class LoginController extends ParentController implements Initializable {
+public class LoginController extends BaseController implements Initializable {
     @FXML private Text loginError;
 	@FXML private TextField usernameTF;
     @FXML private PasswordField passwordPF;

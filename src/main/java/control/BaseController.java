@@ -17,7 +17,7 @@ import main.java.model.User;
 import main.java.model.UserStock;
 import main.java.utility.Screen;
 
-public abstract class ParentController {
+public abstract class BaseController {
 	
 	protected User user;
 	protected UserManager<User> userManager;
@@ -25,7 +25,7 @@ public abstract class ParentController {
 	protected UserStockManager<UserStock> userStockManager;
 	protected TransactionManager<Transaction> transactionManager;
 	
-	public ParentController() {
+	public BaseController() {
 		// TODO Auto-generated constructor stub
 		 userManager = new UserManager<User>();
 		 stockManager = new StockManager<Stock>();

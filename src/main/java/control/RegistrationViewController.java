@@ -16,7 +16,7 @@ import main.java.model.User;
 import main.java.utility.Screen;
 import main.java.utility.ValidationUtil;
 
-public class RegistrationViewController extends ParentController {
+public class RegistrationViewController extends BaseController {
 	// TextField objects for user information
 	@FXML private TextField firstNameTF;
 	@FXML private TextField lastNameTF;

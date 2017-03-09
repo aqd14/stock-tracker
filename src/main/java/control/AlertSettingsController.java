@@ -27,7 +27,7 @@ import main.java.utility.Screen;
  * @author doquocanh-macbook
  *
  */
-public class AlertSettingsController extends ParentController implements Initializable {
+public class AlertSettingsController extends BaseController implements Initializable {
 	// Button ON/OFF
 	@FXML private JFXToggleButton valueAlert;
 	@FXML private JFXToggleButton combinedValueAlert;
