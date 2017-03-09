@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import main.java.model.Stock;
 import main.java.model.UserStock;
 import main.java.utility.HibernateUtil;
 
@@ -68,46 +67,50 @@ public class UserStockManager implements IManager {
 		}
 	}
 	
-	/**
-	 * Find list of stock current use owns given stock code
-	 * @param userId
-	 * @param stockCode
-	 * @return
-	 */
-	public List<Stock> findStocks(Integer userId, String stockCode) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
-		try {
-			String hql = "SELECT stock FROM Stock stock INNER JOIN UserStock us"
-					+ " ON stock.id = us.id.stockId AND us.id.userId = :userID AND stock.stockCode = :stockCode";
-			@SuppressWarnings("unchecked")
-			Query<Stock> query = session.createQuery(hql);
-			query.setParameter("userID", userId);
-			query.setParameter("stockCode", stockCode);
-			List<Stock> stocks = (List<Stock>)query.getResultList();
-			session.close();
-			return stocks;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			session.close();
-		}
-	}
+//	/**
+//	 * Find list of stock current use owns given stock code
+//	 * @param userId
+//	 * @param stockCode
+//	 * @return
+//	 */
+//	public List<Stock> findStocks(Integer userId, String stockCode) {
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		session.beginTransaction();
+//		try {
+//			String hql = "SELECT stock FROM Stock stock INNER JOIN UserStock us"
+//					+ " ON stock.id = us.id.stockId AND us.id.userId = :userID AND stock.stockCode = :stockCode";
+//			@SuppressWarnings("unchecked")
+//			Query<Stock> query = session.createQuery(hql);
+//			query.setParameter("userID", userId);
+//			query.setParameter("stockCode", stockCode);
+//			List<Stock> stocks = (List<Stock>)query.getResultList();
+//			session.close();
+//			return stocks;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		} finally {
+//			session.close();
+//		}
+//	}
 	
 	/**
-	 * Check if user currently owns certain stock
+	 * Check if user currently owns or settings alert for certain stock
 	 * @param userId	User ID
 	 * @param stockCode Stock code that is checked
 	 * @return <code>true</code> if users own that stock. Otherwise returns <code>false</code>
 	 */
 	public boolean hasStock(Integer userId, String stockCode) {
-		List<Stock> stocks = findStocks(userId, stockCode);
-		return (null != stocks && stocks.size() > 0);
+		List<UserStock> us = findUserStock(userId, stockCode);
+		return (null != us && us.size() > 0);
 	}
 	
 	/**
-	 * Find UserStock instance in database that matches user's id and stock's id
+	 * <p>
+	 * Find UserStock instance in database that matches user's id and stock's id.
+	 * This own is used when user try to sell owned stock. So this function will return an UserStock instance
+	 * in which user owns stock.
+	 * </p>
 	 * @param userId
 	 * @param stockId
 	 * @return
@@ -116,8 +119,12 @@ public class UserStockManager implements IManager {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		try {
-			String hql = "SELECT us FROM UserStock us WHERE"
-					+ " us.id.userId = :userID AND us.id.stockId = :stockID";
+			String hql = "SELECT us FROM UserStock us "
+					+ "INNER JOIN Stock stock "
+					+ "ON us.id.userId = :userID "
+					+ "AND us.id.stockId = :stockID "
+					+ "AND stock.id = :stockID "
+					+ "AND stock.transaction is not null";
 			@SuppressWarnings("unchecked")
 			Query<UserStock> query = session.createQuery(hql);
 			query.setParameter("userID", userId);
@@ -136,14 +143,16 @@ public class UserStockManager implements IManager {
 	
 	/**
 	 * <p>
-	 * Find UserStock instance in database that matches user'id and stock code.
-	 * Avoid using stock's id because transactions include same stocks with different id.
 	 * 
-	 * @see {@link #findUserStock(Integer, Integer)} 
+	 * Find UserStock instance in database that matches user'id and stock code.
+	 * Avoid using stock's id because when user settings alert, 
+	 * selected stock is not existed in database so it doesn't have <code>id</code>
+	 * 
+	 * @see {@link #findUserStock(Integer, Integer)} if looking for owned relationship.
 	 * </p>
 	 * @param userId
 	 * @param stockCode
-	 * @return List of UserStock instances in which there is relationship between user and stocks
+	 * @return List of UserStock instances in which there is relationship between user and stocks. It is not necessary to be owned relationship
 	 */
 	public List<UserStock> findUserStock(Integer userId, String stockCode) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
