@@ -3,69 +3,67 @@ package main.java.dao;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import main.java.model.UserStock;
 import main.java.utility.HibernateUtil;
 
-public class UserStockManager implements IManager {
-	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+public class UserStockManager<T> extends BaseManager<T> {
+//	private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-	@Override
-	public void add(Object obj) {
-		UserStock manager = (UserStock) obj;
-		Session session = null;
-		try {
-			session = sessionFactory.getCurrentSession();
-			Transaction tx = session.beginTransaction();
-			session.save(manager);
-			tx.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-	}
-	
-	@Override
-	public void remove(Object obj) {
-		UserStock manager = (UserStock) obj;
-		Session session = null;
-		try {
-			session = sessionFactory.getCurrentSession();
-			Transaction tx = session.beginTransaction();
-			session.delete(manager);
-			tx.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-	}
-
-	@Override
-	public void update(Object obj) {
-		UserStock manager = (UserStock) obj;
-		Session session = null;
-		try {
-			session = sessionFactory.getCurrentSession();
-			Transaction tx = session.beginTransaction();
-			session.update(manager);
-			tx.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-	}
+//	@Override
+//	public void add(Object obj) {
+//		UserStock manager = (UserStock) obj;
+//		Session session = null;
+//		try {
+//			session = sessionFactory.getCurrentSession();
+//			Transaction tx = session.beginTransaction();
+//			session.save(manager);
+//			tx.commit();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (session != null) {
+//				session.close();
+//			}
+//		}
+//	}
+//	
+//	@Override
+//	public void remove(Object obj) {
+//		UserStock manager = (UserStock) obj;
+//		Session session = null;
+//		try {
+//			session = sessionFactory.getCurrentSession();
+//			Transaction tx = session.beginTransaction();
+//			session.delete(manager);
+//			tx.commit();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (session != null) {
+//				session.close();
+//			}
+//		}
+//	}
+//
+//	@Override
+//	public void update(Object obj) {
+//		UserStock manager = (UserStock) obj;
+//		Session session = null;
+//		try {
+//			session = sessionFactory.getCurrentSession();
+//			Transaction tx = session.beginTransaction();
+//			session.update(manager);
+//			tx.commit();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (session != null) {
+//				session.close();
+//			}
+//		}
+//	}
 	
 //	/**
 //	 * Find list of stock current use owns given stock code

@@ -32,7 +32,7 @@ public class ResetPasswordController extends ParentController {
 		System.out.println("Reset password.");
 		if (ValidationUtil.validateOriginalPassword(passwordPF, errorT) &&
 			ValidationUtil.validateConfirmedPassword(passwordPF, confirmPasswordPF, errorT)) {
-			UserManager userManager = new UserManager();
+			UserManager<User> userManager = new UserManager<User>();
 			User user = userManager.findByUsernameOrEmail(usernameTF.getText(), null);
 			if (user == null) {
 				ValidationUtil.displayErrorMessage(errorT, CommonDefine.USER_NOT_EXIST);

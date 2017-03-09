@@ -11,23 +11,26 @@ import main.java.dao.StockManager;
 import main.java.dao.TransactionManager;
 import main.java.dao.UserManager;
 import main.java.dao.UserStockManager;
+import main.java.model.Stock;
+import main.java.model.Transaction;
 import main.java.model.User;
+import main.java.model.UserStock;
 import main.java.utility.Screen;
 
 public abstract class ParentController {
 	
 	protected User user;
-	protected UserManager userManager;
-	protected StockManager stockManager;
-	protected UserStockManager userStockManager;
-	protected TransactionManager transactionManager;
+	protected UserManager<User> userManager;
+	protected StockManager<Stock> stockManager;
+	protected UserStockManager<UserStock> userStockManager;
+	protected TransactionManager<Transaction> transactionManager;
 	
 	public ParentController() {
 		// TODO Auto-generated constructor stub
-		 userManager = new UserManager();
-		 stockManager = new StockManager();
-		 userStockManager = new UserStockManager();
-		 transactionManager = new TransactionManager();
+		 userManager = new UserManager<User>();
+		 stockManager = new StockManager<Stock>();
+		 userStockManager = new UserStockManager<UserStock>();
+		 transactionManager = new TransactionManager<Transaction>();
 	}
 	
 	public void setUser(User user) {

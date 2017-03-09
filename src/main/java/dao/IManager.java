@@ -7,14 +7,14 @@ package main.java.dao;
  * @author doquocanh-macbook
  *
  */
-public interface IManager {
+public interface IManager<T> {
 	/**
 	 * Add new persistence object to database via <code>Hibernate</code>
 	 * @param obj
 	 */
-	public void add(Object obj);
+	public boolean add(T obj);
 	
-	public void remove(Object obj);
+	public boolean remove(T obj);
 	
-	public void update(Object obj);
+	public boolean update(T obj);
 }

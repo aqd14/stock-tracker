@@ -13,7 +13,7 @@ import main.java.model.User;
 
 public class ValidationUtil {
 	
-	static UserManager userManager = new UserManager();
+	static UserManager<User> userManager = new UserManager<User>();
 	
 	public ValidationUtil() {
 		// TODO Auto-generated constructor stub

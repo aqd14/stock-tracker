@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import main.java.model.Stock;
@@ -17,16 +15,16 @@ import main.java.utility.HibernateUtil;
  * @see .Transaction
  * @author aqd14
  */
-public class TransactionManager implements IManager {
+public class TransactionManager<T> extends BaseManager<T> {
 
-private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	
 	/**
 	 * Add new stock to database
 	 * @param stock
 	 * @return False if user already existed or something went wrong with transaction
 	 */
-	@Override
+/*	@Override
 	public void add(Object obj) {
 		main.java.model.Transaction trans = (main.java.model.Transaction) obj;
 		Session session = null;
@@ -61,7 +59,7 @@ private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Transaction tx = session.beginTransaction();
 		session.update(trans);
 		tx.commit();
-	}
+	}*/
 	
 	/**
 	 * <p>

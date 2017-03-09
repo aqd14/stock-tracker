@@ -7,7 +7,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import main.java.model.User;
@@ -18,7 +17,7 @@ import main.java.utility.HibernateUtil;
  * @see .User
  * @author aqd14
  */
-public class UserManager implements IManager {
+public class UserManager<T> extends BaseManager<T> {
 	
 	private static final Log log = LogFactory.getLog(UserManager.class);
 
@@ -29,7 +28,7 @@ public class UserManager implements IManager {
 	 * @param user
 	 * @return False if user already existed or something went wrong with transaction
 	 */
-	@Override
+/*	@Override
 	public void add(Object obj) {
 		User user = (User) obj;
 		Session session = null;
@@ -83,7 +82,7 @@ public class UserManager implements IManager {
 				session.close();
 			}
 		}
-	}
+	}*/
 	
 	public void persist(User transientInstance) {
 		log.debug("persisting User instance");
