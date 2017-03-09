@@ -9,7 +9,7 @@
             <generator class="identity" />
         </id>
         <many-to-one name="transaction" class="main.java.model.Transaction" fetch="select">
-            <column name="transaction_id" not-null="true" />
+            <column name="transaction_id" not-null="false" />
         </many-to-one>
         <property name="stockName" type="string">
             <column name="stock_name" length="45" not-null="true" />

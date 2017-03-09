@@ -33,10 +33,11 @@ public class UserStock implements java.io.Serializable {
 		this.netProfitThreshold = new BigDecimal(-1);
 	}
 
-	public UserStock(UserStockId id, Stock stock, User user, BigDecimal combinedValueThreshold, BigDecimal netProfitThreshold) {
+	public UserStock(UserStockId id, Stock stock, User user, BigDecimal valueThreshold, BigDecimal combinedValueThreshold, BigDecimal netProfitThreshold) {
 		this.id = id;
 		this.stock = stock;
 		this.user = user;
+		this.valueThreshold = valueThreshold;
 		this.combinedValueThreshold = combinedValueThreshold;
 		this.netProfitThreshold = netProfitThreshold;
 	}

@@ -22,6 +22,7 @@ public class CommonDefine {
 	public static final String REMOVE_STOCK_SMS = "You owned this stock. Do you really want to remove it?";
 	public static final String SELL_STOCK_SMS = "Are you sure you really want to sell these stocks?";
 	public static final String BUY_STOCK_SUCCESSFUL_SMS = "Your transaction is successful!";
+	public static final String UPDATE_ALERT_SETTINGS_SMS = "You've updated alert settings successfully!";
 	
 	/**
 	 * Interval for display stock data.

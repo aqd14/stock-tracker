@@ -3,6 +3,7 @@
  */
 package main.java.control;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -13,8 +14,13 @@ import com.jfoenix.controls.JFXToggleButton;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import main.java.common.CommonDefine;
 import main.java.model.Stock;
 import main.java.model.UserStock;
+import main.java.model.UserStockId;
+import main.java.utility.AlertGenerator;
 import main.java.utility.Screen;
 
 /**
@@ -49,21 +55,52 @@ public class AlertSettingsController extends ParentController implements Initial
 	public void initialize(URL location, ResourceBundle resources) {
 		// Save alert settings to database
 		saveAlertSettingsButton.setOnAction(eventHandler -> {
-			List<UserStock> us = userStockManager.findUserStock(user.getId(), selectedStock.getStockCode());
-			if (us != null) {
-				if (!valueThreshold.getText().isEmpty()) {
-					
+			BigDecimal valueTh = new BigDecimal(-1);
+			BigDecimal combinedTh = new BigDecimal(-1);
+			BigDecimal netProfitTh = new BigDecimal(-1); 
+			// Flag to check if use change any settings
+			boolean isSettingsUpdated = false;
+			
+			// This method doesn't verify user's input. Should be handled whenever user enter something on text field
+			System.out.println("User owned stock: " + selectedStock.getStockCode());
+			if (!valueThreshold.getText().isEmpty()) {
+				isSettingsUpdated = true;
+				valueTh = new BigDecimal(valueThreshold.getText());
+			}
+			
+			if (!combinedValueThreshold.getText().isEmpty()) {
+				isSettingsUpdated = true;
+				combinedTh = new BigDecimal(combinedValueThreshold.getText());
+			}
+			
+			if (!netProfitThreshold.getText().isEmpty()) {
+				isSettingsUpdated = true;
+				netProfitTh = new BigDecimal(netProfitThreshold.getText());
+			}
+			
+			if (isSettingsUpdated) {
+				List<UserStock> userStocks = userStockManager.findUserStock(user.getId(), selectedStock.getStockCode());
+				if (userStocks != null && !userStocks.isEmpty()) {
+					for (UserStock us : userStocks) {
+						if (valueTh.compareTo(BigDecimal.ZERO) > 0)
+							us.setValueThreshold(valueTh);
+						if (combinedTh.compareTo(BigDecimal.ZERO) > 0) 
+							us.setCombinedValueThreshold(combinedTh);
+						if (netProfitTh.compareTo(BigDecimal.ZERO) > 0)
+							us.setNetProfitThreshold(netProfitTh);
+						// Update to db
+						userStockManager.update(us);
+					}
+				} else { // Create new UserStock instance in database but user doesn't own this stock
+					System.out.println("User doesn't own stock: " + selectedStock.getStockCode());
+					stockManager.add(selectedStock);
+					UserStockId userStockId = new UserStockId(selectedStock.getId(), user.getId());
+					UserStock userStock = new UserStock(userStockId, selectedStock, user, valueTh, combinedTh, netProfitTh);
+					userStockManager.add(userStock);
 				}
-				
-				if (!combinedValueThreshold.getText().isEmpty()) {
-					
-				}
-				
-				if (!netProfitAlert.getText().isEmpty()) {
-					
-				}
-			} else { // Create new UserStock instance in database but user doesn't own this stock
-				
+				// Display successful message to user
+				Alert alert = AlertGenerator.generateAlert(AlertType.INFORMATION, CommonDefine.UPDATE_ALERT_SETTINGS_SMS);
+				alert.showAndWait();
 			}
 		});
 	}

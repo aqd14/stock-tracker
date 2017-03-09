@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock` (
   `stock_code` VARCHAR(45) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `previous_price` DECIMAL(10,2) NOT NULL,
-  `transaction_id` INT NOT NULL,
+  `transaction_id` INT NULL,
   `amount` INT NULL,
   `owned` INT NULL,
   PRIMARY KEY (`id`),

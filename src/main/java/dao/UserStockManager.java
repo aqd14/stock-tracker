@@ -135,10 +135,15 @@ public class UserStockManager implements IManager {
 	}
 	
 	/**
-	 * Find UserStock instance in database that matches user'id and stock code
+	 * <p>
+	 * Find UserStock instance in database that matches user'id and stock code.
+	 * Avoid using stock's id because transactions include same stocks with different id.
+	 * 
+	 * @see {@link #findUserStock(Integer, Integer)} 
+	 * </p>
 	 * @param userId
 	 * @param stockCode
-	 * @return
+	 * @return List of UserStock instances in which there is relationship between user and stocks
 	 */
 	public List<UserStock> findUserStock(Integer userId, String stockCode) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -152,7 +157,7 @@ public class UserStockManager implements IManager {
 			@SuppressWarnings("unchecked")
 			Query<UserStock> query = session.createQuery(hql);
 			query.setParameter("userID", userId);
-			query.setParameter("stockID", stockCode);
+			query.setParameter("stockCode", stockCode);
 			List<UserStock> userStocks = query.getResultList();
 			return userStocks;
 		} catch (Exception e) {
