@@ -35,8 +35,9 @@ import main.java.common.CommonDefine;
 import main.java.model.Stock;
 import main.java.model.TransactionWrapper;
 import main.java.model.UserStock;
-import main.java.utility.AlertGenerator;
+import main.java.utility.AlertFactory;
 import main.java.utility.Screen;
+import main.java.utility.StageFactory;
 import yahoofinance.YahooFinance;
 
 public class PortfolioController extends BaseController implements Initializable {
@@ -86,7 +87,7 @@ public class PortfolioController extends BaseController implements Initializable
 			sellStockButton.setOnAction(event -> {
 				// Only display alert when user select some stocks
 				if (selectedStock != null && selectedStock.size() > 0) {
-					Alert alert = AlertGenerator.generateAlert(AlertType.CONFIRMATION, CommonDefine.SELL_STOCK_SMS);
+					Alert alert = AlertFactory.generateAlert(AlertType.CONFIRMATION, CommonDefine.SELL_STOCK_SMS);
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.isPresent() && result.get() == ButtonType.OK) {
 						sellStock(selectedStock);
@@ -302,9 +303,6 @@ public class PortfolioController extends BaseController implements Initializable
 
 	@Override
 	protected void makeNewStage(Screen target, String stageTitle, String url) {
-		// TODO Auto-generated method stub
-		Stage newStage = new Stage();
-		newStage.setTitle(stageTitle);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
 		Parent root = null;
 		try {
@@ -335,9 +333,8 @@ public class PortfolioController extends BaseController implements Initializable
 			default:
 				return; // Move to undefined target. Should throw some exception?
 		}
-		
+		Stage newStage = StageFactory.generateStage(stageTitle);
 		newStage.setScene(new Scene(root));
-		newStage.setResizable(false);
 		newStage.show();
 	}
 }

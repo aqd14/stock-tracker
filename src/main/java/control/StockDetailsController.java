@@ -44,7 +44,7 @@ import main.java.model.Stock;
 import main.java.model.Transaction;
 import main.java.model.UserStock;
 import main.java.model.UserStockId;
-import main.java.utility.AlertGenerator;
+import main.java.utility.AlertFactory;
 import main.java.utility.Screen;
 import main.java.utility.Utility;
 import yahoofinance.histquotes.HistoricalQuote;
@@ -190,10 +190,13 @@ public class StockDetailsController extends BaseController implements Initializa
 	public void setStock(yahoofinance.Stock stock) {
 		this.yahooStock = stock;
 		// Real-time update starts when user select a Stock
-		service.setStockCode(this.yahooStock.getSymbol());
-		service.start();
+		service.setStockCode(stock);
+		if (stock == null && service != null) {
+			service.cancel();
+		} else {
+			service.start();
+		}
 		service.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-
 			@Override
 			public void handle(WorkerStateEvent event) {
 				System.out.println("Update new stock changes...");
@@ -410,7 +413,7 @@ public class StockDetailsController extends BaseController implements Initializa
 	 * Update GUI elements after buying stocks successfully
 	 */
 	private void setupAfterBuyingStock() {
-		Alert alert = AlertGenerator.generateAlert(AlertType.INFORMATION, CommonDefine.BUY_STOCK_SUCCESSFUL_SMS);
+		Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.BUY_STOCK_SUCCESSFUL_SMS);
 		alert.showAndWait();
 		// After 
 		quantityCB.getSelectionModel().clearSelection();
@@ -432,10 +435,10 @@ public class StockDetailsController extends BaseController implements Initializa
 	}
 	
 	private static class RealTimeUpdateService extends ScheduledService<yahoofinance.Stock> {
-		private String stockCode;
+		private yahoofinance.Stock stock;
 		
-		public void setStockCode(String stockCode) {
-			this.stockCode = stockCode;
+		public void setStockCode(yahoofinance.Stock stock) {
+			this.stock = stock;
 		}
 		
 		@Override
@@ -443,8 +446,8 @@ public class StockDetailsController extends BaseController implements Initializa
 			return new Task<yahoofinance.Stock>() {
 				@Override
 				protected yahoofinance.Stock call() throws IOException {
-					System.out.println("Start getting data stock: " + stockCode + " ...");
-					return yahoofinance.YahooFinance.get(stockCode);
+					System.out.println("Start getting data stock: " + stock.getSymbol() + " ...");
+					return yahoofinance.YahooFinance.get(stock.getSymbol());
 				}
 			};
 		}

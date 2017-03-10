@@ -3,9 +3,9 @@ package main.java.utility;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class AlertGenerator {
+public class AlertFactory {
 
-	private AlertGenerator() {
+	private AlertFactory() {
 		// No constructor is needed
 	}
 

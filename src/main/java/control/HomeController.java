@@ -41,8 +41,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.java.common.CommonDefine;
 import main.java.model.Stock;
-import main.java.utility.AlertGenerator;
+import main.java.utility.AlertFactory;
 import main.java.utility.Screen;
+import main.java.utility.StageFactory;
 import main.java.utility.Utility;
 import yahoofinance.YahooFinance;
 
@@ -137,7 +138,7 @@ public class HomeController extends BaseController implements Initializable {
 		    	String stockCode = row.getItem().getStockCode();
 		    	if (userStockManager.hasStock(user.getId(), stockCode)) {
 		    		// Display alert to notify user before removing an owned stock
-		    		Alert alert = AlertGenerator.generateAlert(AlertType.CONFIRMATION, CommonDefine.REMOVE_STOCK_SMS);
+		    		Alert alert = AlertFactory.generateAlert(AlertType.CONFIRMATION, CommonDefine.REMOVE_STOCK_SMS);
 		    		Optional<ButtonType> result = alert.showAndWait();
 		    		if (!result.isPresent() || result.get() == ButtonType.CANCEL) {
 		    			// User cancels removing
@@ -176,8 +177,7 @@ public class HomeController extends BaseController implements Initializable {
 	
 	@Override
 	protected void makeNewStage(Screen target, String stageTitle, String url) {
-		Stage newStage = new Stage();
-		newStage.setTitle(stageTitle);
+		Stage newStage = StageFactory.generateStage(stageTitle);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
 		Parent root = null;
 		try {
@@ -221,13 +221,15 @@ public class HomeController extends BaseController implements Initializable {
 				}
 				stockController.setStock(yahooStock);
 				stockController.updateStockData();
+				// Stop updating stock data in Stock Detail view whenever user closes view
+				newStage.setOnCloseRequest(eventHandler -> {
+					stockController.setStock(null);
+				});
 				break;
 			default:
 				return;
 		}
-		
 		newStage.setScene(new Scene(root));
-		newStage.setResizable(false);
 		newStage.show();
 	}
 	

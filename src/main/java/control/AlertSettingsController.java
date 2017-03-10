@@ -20,7 +20,7 @@ import main.java.common.CommonDefine;
 import main.java.model.Stock;
 import main.java.model.UserStock;
 import main.java.model.UserStockId;
-import main.java.utility.AlertGenerator;
+import main.java.utility.AlertFactory;
 import main.java.utility.Screen;
 
 /**
@@ -99,7 +99,7 @@ public class AlertSettingsController extends BaseController implements Initializ
 					userStockManager.add(userStock);
 				}
 				// Display successful message to user
-				Alert alert = AlertGenerator.generateAlert(AlertType.INFORMATION, CommonDefine.UPDATE_ALERT_SETTINGS_SMS);
+				Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.UPDATE_ALERT_SETTINGS_SMS);
 				alert.showAndWait();
 			}
 		});
