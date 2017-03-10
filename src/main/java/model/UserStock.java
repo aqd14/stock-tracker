@@ -17,10 +17,14 @@ public class UserStock implements java.io.Serializable {
 	private UserStockId id;
 	private Stock stock;
 	private User user;
-	private BigDecimal valueThreshold; // Threshold when the price of a certain stock X reaches level Y
-	private BigDecimal combinedValueThreshold;
-	private BigDecimal netProfitThreshold;
-
+	private BigDecimal valueThreshold; 			// Threshold when the price of a certain stock X reaches level Y
+	private BigDecimal combinedValueThreshold;	// Threshold when the total price of a certain owned stock X reaches level Y
+	private BigDecimal netProfitThreshold;		// Threshold when the total price of a certain owned stock X switch from having profit to loss or vice versa
+	// Some wrapper variables for display purpose
+	private BigDecimal currentValueThreshold;
+	private BigDecimal currentCombinedValueThreshold;
+	private BigDecimal currentNetProfitThreshold;
+	
 	public UserStock() {
 	}
 
@@ -72,7 +76,7 @@ public class UserStock implements java.io.Serializable {
 	public BigDecimal getValueThreshold() {
 		return valueThreshold;
 	}
-
+	
 	/**
 	 * @param valueThreshold the valueThreshold to set
 	 */
@@ -94,5 +98,71 @@ public class UserStock implements java.io.Serializable {
 
 	public void setNetProfitThreshold(BigDecimal netProfitThreshold) {
 		this.netProfitThreshold = netProfitThreshold;
+	}
+	
+	public String getValueThresholdString() {
+		return valueThreshold.compareTo(new BigDecimal(-1)) == 0 ? "N/A" : String.valueOf(valueThreshold);
+	}
+	
+	public String getCombinedValueThresholdString() {
+		return combinedValueThreshold.compareTo(new BigDecimal(-1)) == 0 ? "N/A" : String.valueOf(combinedValueThreshold);
+	}
+	
+	public String getNetProfitThresholdString() {
+		return netProfitThreshold.compareTo(new BigDecimal(-1)) == 0 ? "N/A" : String.valueOf(netProfitThreshold);
+	}
+
+	/**
+	 * @return the currentValueThreshold
+	 */
+	public BigDecimal getCurrentValueThreshold() {
+		return currentValueThreshold;
+	}
+
+	/**
+	 * @param currentValueThreshold the currentValueThreshold to set
+	 */
+	public void setCurrentValueThreshold(BigDecimal currentValueThreshold) {
+		this.currentValueThreshold = currentValueThreshold;
+	}
+
+	/**
+	 * @return the currentCombinedValueThreshold
+	 */
+	public BigDecimal getCurrentCombinedValueThreshold() {
+		return currentCombinedValueThreshold;
+	}
+
+	/**
+	 * @param currentCombinedValueThreshold the currentCombinedValueThreshold to set
+	 */
+	public void setCurrentCombinedValueThreshold(BigDecimal currentCombinedValueThreshold) {
+		this.currentCombinedValueThreshold = currentCombinedValueThreshold;
+	}
+
+	/**
+	 * @return the currentNetProfitThreshold
+	 */
+	public BigDecimal getCurrentNetProfitThreshold() {
+		return currentNetProfitThreshold;
+	}
+
+	/**
+	 * @param currentNetProfitThreshold the currentNetProfitThreshold to set
+	 */
+	public void setCurrentNetProfitThreshold(BigDecimal currentNetProfitThreshold) {
+		this.currentNetProfitThreshold = currentNetProfitThreshold;
+	}
+	
+	public String getCurrentValueThresholdString() {
+		return currentValueThreshold == null ? "N/A" : String.valueOf(currentValueThreshold);
+	}
+	
+	public String getCurrentCombinedValueThresholdString() {
+		return currentCombinedValueThreshold == null ? "N/A" : String.valueOf(currentCombinedValueThreshold);
+	}
+	
+	public String getCurrentNetProfitThresholdString() {
+		return currentNetProfitThreshold == null ? "N/A" : String.valueOf(currentNetProfitThreshold);
 	}
 }

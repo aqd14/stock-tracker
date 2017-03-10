@@ -12,7 +12,7 @@
                 <column name="user_id" />
             </key-property>
         </composite-id>
-        <many-to-one name="stock" class="main.java.model.Stock" update="false" insert="false" fetch="select">
+        <many-to-one name="stock" class="main.java.model.Stock" update="false" insert="false" lazy="false" fetch="select">
             <column name="stock_id" not-null="true" />
         </many-to-one>
         <many-to-one name="user" class="main.java.model.User" update="false" insert="false" fetch="select">

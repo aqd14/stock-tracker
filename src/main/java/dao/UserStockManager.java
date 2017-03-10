@@ -174,4 +174,36 @@ public class UserStockManager<T> extends BaseManager<T> {
 			session.close();
 		}
 	}
+	
+	/**
+	 * Get all UserStock instances that have at least one of alert settings threshold set.
+	 * There are cases where returned list includes both same owned stocks and public stocks,
+	 * this method will only pick owned stock (if any) of same stock
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<UserStock> findWithAlertSettingsOn() {
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
+			String hql = "SELECT us FROM UserStock us "
+					+ "WHERE us.valueThreshold != -1 "
+					+ "OR us.combinedValueThreshold != -1 "
+					+ "OR us.netProfitThreshold != -1 "
+					+ "GROUP BY us.stock.stockName"; // Only select one instance for each stock. 
+													 //	TODO: Think about the way to get only owned stock (if any)
+			Query<UserStock> query = session.createQuery(hql);
+			List<UserStock> userStocks = query.getResultList();
+			return userStocks;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
 }
