@@ -153,10 +153,7 @@ public class SettingsController extends BaseController implements Initializable 
 			// Do nothing
 		} else {
 			try {
-//				NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
-				String balance = newBalanceTF.getText().replace("$", "").replace(",", "");
-				System.out.println("Formatted balance: " + balance);
-				double newBalance = Double.parseDouble(balance); //(double) nf.parse(newBalanceTF.getText());
+				double newBalance = Utility.parseCurrencyDouble(newBalanceTF.getText());
 				user.getAccount().setBalance(newBalance);
 				anyChange = true;
 			} catch (NumberFormatException ex) {

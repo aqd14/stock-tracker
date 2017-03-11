@@ -21,7 +21,9 @@ import main.java.model.Stock;
 import main.java.model.UserStock;
 import main.java.model.UserStockId;
 import main.java.utility.AlertFactory;
+import main.java.utility.CurrencyFormatter;
 import main.java.utility.Screen;
+import main.java.utility.Utility;
 
 /**
  * @author doquocanh-macbook
@@ -42,6 +44,9 @@ public class AlertSettingsController extends BaseController implements Initializ
 	boolean valueAlertSwitchOn = false;
 	boolean combinedValueAlertSwitchOn = false;
 	boolean netProfitAlertSwitchOn = false;
+	
+	final String DEFAULT_THRESHOLD = "$0.00";
+	
 	// Code of selected stock
 	private Stock selectedStock;
 	/**
@@ -53,29 +58,40 @@ public class AlertSettingsController extends BaseController implements Initializ
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// Text formatting handler for threshold
+		valueThreshold.setTextFormatter(new CurrencyFormatter());
+		combinedValueThreshold.setTextFormatter(new CurrencyFormatter());
+		netProfitThreshold.setTextFormatter(new CurrencyFormatter());
+		
 		// Save alert settings to database
 		saveAlertSettingsButton.setOnAction(eventHandler -> {
 			BigDecimal valueTh = new BigDecimal(-1);
 			BigDecimal combinedTh = new BigDecimal(-1);
 			BigDecimal netProfitTh = new BigDecimal(-1); 
-			// Flag to check if use change any settings
+			// Flag to check if user changed any settings
 			boolean isSettingsUpdated = false;
 			
 			// This method doesn't verify user's input. Should be handled whenever user enter something on text field
 			System.out.println("User owned stock: " + selectedStock.getStockCode());
-			if (!valueThreshold.getText().isEmpty()) {
+			if (!valueAlert.isDisabled() && !valueThreshold.getText().equals(DEFAULT_THRESHOLD)) {
 				isSettingsUpdated = true;
-				valueTh = new BigDecimal(valueThreshold.getText());
+				Double value = Utility.parseCurrencyDouble(valueThreshold.getText());
+				if (value != null)
+					valueTh = new BigDecimal(value);
 			}
 			
-			if (!combinedValueThreshold.getText().isEmpty()) {
+			if (!combinedValueAlert.isDisabled() && !combinedValueThreshold.getText().equals(DEFAULT_THRESHOLD)) {
 				isSettingsUpdated = true;
-				combinedTh = new BigDecimal(combinedValueThreshold.getText());
+				Double value = Utility.parseCurrencyDouble(combinedValueThreshold.getText());
+				if (value != null)
+					combinedTh = new BigDecimal(value);
 			}
 			
-			if (!netProfitThreshold.getText().isEmpty()) {
+			if (!netProfitAlert.isDisabled() && !netProfitThreshold.getText().equals(DEFAULT_THRESHOLD)) {
 				isSettingsUpdated = true;
-				netProfitTh = new BigDecimal(netProfitThreshold.getText());
+				Double value = Utility.parseCurrencyDouble(netProfitThreshold.getText());
+				if (value != null)
+					netProfitTh = new BigDecimal(value);
 			}
 			
 			if (isSettingsUpdated) {
@@ -130,10 +146,7 @@ public class AlertSettingsController extends BaseController implements Initializ
 		// Event handler when user clicks on [Value Alert] toggle
 		valueAlert.setOnAction(eventHandler -> {
 			if (valueAlertSwitchOn) {
-				System.out.println("Turning OFF Value Alert.");
-				valueThreshold.clear(); // Remove threshold when user turns off alert
-			} else {
-				System.out.println("Turning ON Value Alert.");
+				valueThreshold.setText(DEFAULT_THRESHOLD);; // Remove threshold when user turns off alert
 			}
 			valueAlertSwitchOn = !valueAlertSwitchOn;
 			valueThreshold.setEditable(valueAlertSwitchOn);
@@ -142,10 +155,7 @@ public class AlertSettingsController extends BaseController implements Initializ
 		// Event handler when user clicks on [Combined Value Alert] toggle
 		combinedValueAlert.setOnAction(eventHandler -> {
 			if (combinedValueAlertSwitchOn) {
-				System.out.println("Turning OFF Combined Value Alert.");
-				combinedValueThreshold.clear(); // Remove threshold when user turns off alert
-			} else {
-				System.out.println("Turning ON Combined Value Alert.");
+				combinedValueThreshold.setText(DEFAULT_THRESHOLD);; // Remove threshold when user turns off alert
 			}
 			combinedValueAlertSwitchOn = !combinedValueAlertSwitchOn;
 			combinedValueThreshold.setEditable(combinedValueAlertSwitchOn);
@@ -154,10 +164,7 @@ public class AlertSettingsController extends BaseController implements Initializ
 		// Event handler when user clicks on [Combined Value Alert] toggle
 		netProfitAlert.setOnAction(eventHandler -> {
 			if (netProfitAlertSwitchOn) {
-				System.out.println("Turning OFF Net Profit Alert.");
-				netProfitThreshold.clear(); // Remove threshold when user turns off alert
-			} else {
-				System.out.println("Turning ON Net Profit Alert.");
+				netProfitThreshold.setText(DEFAULT_THRESHOLD);; // Remove threshold when user turns off alert
 			}
 			netProfitAlertSwitchOn = !netProfitAlertSwitchOn;
 			netProfitThreshold.setEditable(netProfitAlertSwitchOn);

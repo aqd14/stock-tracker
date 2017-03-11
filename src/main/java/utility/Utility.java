@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -189,5 +190,16 @@ public class Utility {
 	public static String formatCurrencyDouble(double number) {
 		DecimalFormat df = new DecimalFormat("####,###,###.00"); 
 		return df.format(number);
+	}
+	
+	public static Double parseCurrencyDouble(String number) {
+		Double value = null;
+		try {
+			value = new Double(NumberFormat.getNumberInstance(java.util.Locale.US).parse(number.replace("$", "")).doubleValue());
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return value;
 	}
 }
