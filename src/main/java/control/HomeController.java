@@ -50,6 +50,7 @@ import javafx.util.Duration;
 import main.java.common.CommonDefine;
 import main.java.dao.UserStockManager;
 import main.java.model.Stock;
+import main.java.model.User;
 import main.java.model.UserStock;
 import main.java.utility.AlertFactory;
 import main.java.utility.Screen;
@@ -84,14 +85,26 @@ public class HomeController extends BaseController implements Initializable {
 	private final int REAL_TIME_UPDATE_STOCK_DURATION = 2;   // Download real-time stock data for each 2 minutes
 	private final int ALERT_SETTINGS_CHECKING_DURATION = 30; // Check alert settings thresholds crossed for each 30 minutes
 	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// List of 30 stocks that will be displayed in Home page
-		final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT",
-													"TM", "KO", "HPQ", "FB", "F", "MSFT", 
-													"BRK-A", "AMZN", "XOM", "JPM", "WFC", "GE",
-													"BAC", "T", "BABA", "PG", "CVX", "V",
-													"VZ", "HD", "DIS", "INTC", "ORCL", "HSBC"};
+	// List of 30 stocks that will be displayed in Home page
+	final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT",
+												"TM", "KO", "HPQ", "FB", "F", "MSFT", 
+												"BRK-A", "AMZN", "XOM", "JPM", "WFC", "GE",
+												"BAC", "T", "BABA", "PG", "CVX", "V",
+												"VZ", "HD", "DIS", "INTC", "ORCL", "HSBC"};
+	
+	@Override 
+	public void setUser(User user) {
+		// TODO Auto-generated method stub
+		super.setUser(user);
+		startScheduleService();
+	}
+	
+	/**
+	 * Start background services including:
+	 * <li> Downloading real-time stock data </li>
+	 * <li> Periodically check alert threshold reached or not </li>
+	 */
+	private void startScheduleService() {
 		// Background service to pull out real-time stock data
 		RealTimeUpdateService service = new RealTimeUpdateService(stockSymbols);
 		service.setPeriod(Duration.minutes(REAL_TIME_UPDATE_STOCK_DURATION));
@@ -107,7 +120,7 @@ public class HomeController extends BaseController implements Initializable {
 		});
 		
 		// Background service to check alert settings status
-		AlertSettingsCheckingService alertSettingsService = new AlertSettingsCheckingService(userStockManager);
+		AlertSettingsCheckingService alertSettingsService = new AlertSettingsCheckingService(user.getId(), userStockManager);
 		alertSettingsService.setPeriod(Duration.minutes(ALERT_SETTINGS_CHECKING_DURATION));
 		alertSettingsService.start();
 		alertSettingsService.setOnSucceeded(event -> {
@@ -115,7 +128,10 @@ public class HomeController extends BaseController implements Initializable {
 			ObservableList<UserStock> userStocks = alertSettingsService.getValue();
 			showAlertStage(userStocks);
 		});
-		
+	}
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 		// Initialize GUI
 		stocks = FXCollections.observableArrayList();
 		TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
@@ -463,9 +479,28 @@ public class HomeController extends BaseController implements Initializable {
 	private static class AlertSettingsCheckingService extends ScheduledService<ObservableList<UserStock>> {
 		
 		private UserStockManager<UserStock> usManager;
+		private Integer userID;
 		
-		public AlertSettingsCheckingService(UserStockManager<UserStock> usManager) {
+		public AlertSettingsCheckingService(Integer userID, UserStockManager<UserStock> usManager) {
+			this.userID = userID;
 			this.usManager = usManager;
+		}
+		
+		/**
+		 * Search database for list of stocks then calculate combined value threshold.
+		 * @param stock Current stock that needs to calculate combined threshold
+		 * @return
+		 */
+		private BigDecimal calculateCombinedValueThreshold(yahoofinance.Stock stock) {
+			List<Stock> stocks = usManager.findStocks(userID, stock.getSymbol());
+			if (stocks != null && stocks.size() > 0) {
+				BigDecimal total = new BigDecimal(0);
+				for (Stock s : stocks) {
+					total = total.add(s.getPrice().multiply(BigDecimal.valueOf(s.getAmount())));
+				}
+				return total;
+			}
+			return new BigDecimal(-1);
 		}
 		
 		@Override
@@ -473,7 +508,7 @@ public class HomeController extends BaseController implements Initializable {
 			return new Task<ObservableList<UserStock>>() {
 				@Override
 				protected ObservableList<UserStock> call() throws IOException {
-					List<UserStock> userStocks = usManager.findWithAlertSettingsOn();
+					List<UserStock> userStocks = usManager.findWithAlertSettingsOn(userID);
 					if (userStocks == null) {
 						return null;
 					}
@@ -493,7 +528,7 @@ public class HomeController extends BaseController implements Initializable {
 						}
 						
 						// Check combined value threshold crossed
-						BigDecimal combinedValue = curPrice.multiply(BigDecimal.valueOf(stock.getAmount()));
+						BigDecimal combinedValue = calculateCombinedValueThreshold(yahooStock);
 						if (us.getCombinedValueThreshold().compareTo(defaultThreshold) > 0 && us.getCombinedValueThreshold().compareTo(combinedValue) < 0) {
 							thresholdCrossed = true;
 						}

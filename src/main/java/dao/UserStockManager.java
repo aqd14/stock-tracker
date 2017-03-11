@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import main.java.model.Stock;
 import main.java.model.UserStock;
 import main.java.utility.HibernateUtil;
 
@@ -65,32 +66,41 @@ public class UserStockManager<T> extends BaseManager<T> {
 //		}
 //	}
 	
-//	/**
-//	 * Find list of stock current use owns given stock code
-//	 * @param userId
-//	 * @param stockCode
-//	 * @return
-//	 */
-//	public List<Stock> findStocks(Integer userId, String stockCode) {
-//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//		session.beginTransaction();
-//		try {
-//			String hql = "SELECT stock FROM Stock stock INNER JOIN UserStock us"
-//					+ " ON stock.id = us.id.stockId AND us.id.userId = :userID AND stock.stockCode = :stockCode";
-//			@SuppressWarnings("unchecked")
-//			Query<Stock> query = session.createQuery(hql);
-//			query.setParameter("userID", userId);
-//			query.setParameter("stockCode", stockCode);
-//			List<Stock> stocks = (List<Stock>)query.getResultList();
-//			session.close();
-//			return stocks;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		} finally {
-//			session.close();
-//		}
-//	}
+	/**
+	 * <p>
+	 * 
+	 * Find list of stock in which there is a relationship with user. The relationship doesn't have to
+	 * be "owned". It can also include "setting-alert", which user doesn't own but has set some threshold for
+	 * that stock.
+	 * 
+	 * </p>
+	 * @param userId
+	 * @param stockCode
+	 * @return
+	 */
+	public List<Stock> findStocks(Integer userId, String stockCode) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		try {
+			String hql = "SELECT stock FROM Stock stock "
+						+ "INNER JOIN UserStock us "
+						+ "ON stock.id = us.id.stockId "
+						+ "AND us.id.userId = :userID "
+						+ "AND stock.stockCode = :stockCode";
+			@SuppressWarnings("unchecked")
+			Query<Stock> query = session.createQuery(hql);
+			query.setParameter("userID", userId);
+			query.setParameter("stockCode", stockCode);
+			List<Stock> stocks = (List<Stock>)query.getResultList();
+			session.close();
+			return stocks;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
 	
 	/**
 	 * Check if user currently owns or settings alert for certain stock
@@ -183,18 +193,20 @@ public class UserStockManager<T> extends BaseManager<T> {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<UserStock> findWithAlertSettingsOn() {
+	public List<UserStock> findWithAlertSettingsOn(Integer userID) {
 		Session session = null;
 		try {
 			session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
 			String hql = "SELECT us FROM UserStock us "
-					+ "WHERE us.valueThreshold != -1 "
+					+ "WHERE us.id.userId = :userID "
+					+ "AND (us.valueThreshold != -1 "
 					+ "OR us.combinedValueThreshold != -1 "
-					+ "OR us.netProfitThreshold != -1";
-//					+ "GROUP BY us.stock.stockName"; // Only select one instance for each stock. 
+					+ "OR us.netProfitThreshold != -1) "
+					+ "GROUP BY us.stock.stockName"; // Only select one instance for each stock. 
 													 //	TODO: Think about the way to get only owned stock (if any)
 			Query<UserStock> query = session.createQuery(hql);
+			query.setParameter("userID", userID);
 			List<UserStock> userStocks = query.getResultList();
 			return userStocks;
 		} catch (Exception e) {
