@@ -62,7 +62,7 @@ import yahoofinance.YahooFinance;
  * @author doquocanh-macbook
  *
  */
-public class HomeController extends BaseController implements Initializable {
+public class HomeController extends BaseController implements Initializable, Observer {
 	@FXML private AnchorPane homeAP;
 	@FXML private JFXTreeTableView<Stock> stockTableView;
 	
@@ -79,11 +79,7 @@ public class HomeController extends BaseController implements Initializable {
 	@FXML private JFXSpinner spinner;
 	
 	private Stock stock; // The selected stock for alert
-	
 	private ObservableList<Stock> stocks;
-	
-	private final int REAL_TIME_UPDATE_STOCK_DURATION = 2;   // Download real-time stock data for each 2 minutes
-	private final int ALERT_SETTINGS_CHECKING_DURATION = 30; // Check alert settings thresholds crossed for each 30 minutes
 	
 	// List of 30 stocks that will be displayed in Home page
 	final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT",
@@ -91,6 +87,19 @@ public class HomeController extends BaseController implements Initializable {
 												"BRK-A", "AMZN", "XOM", "JPM", "WFC", "GE",
 												"BAC", "T", "BABA", "PG", "CVX", "V",
 												"VZ", "HD", "DIS", "INTC", "ORCL", "HSBC"};
+	
+	RealTimeUpdateService stockUpdateService;
+	AlertSettingsCheckingService alertSettingsService;
+	
+	/**
+	 * Update schedule service period whenever there is update from user's settings
+	 */
+	@Override public void update() {
+		if (stockUpdateService != null)
+			stockUpdateService.setPeriod(Duration.minutes(user.getStockUpdateTime()));
+		if (alertSettingsService != null)
+			alertSettingsService.setPeriod(Duration.minutes(user.getAlertTime()));
+	}
 	
 	@Override 
 	public void setUser(User user) {
@@ -106,12 +115,12 @@ public class HomeController extends BaseController implements Initializable {
 	 */
 	private void startScheduleService() {
 		// Background service to pull out real-time stock data
-		RealTimeUpdateService service = new RealTimeUpdateService(stockSymbols);
-		service.setPeriod(Duration.minutes(REAL_TIME_UPDATE_STOCK_DURATION));
-		service.start();
-		service.setOnSucceeded(event -> {
+		stockUpdateService = new RealTimeUpdateService(stockSymbols);
+		stockUpdateService.setPeriod(Duration.minutes(user.getStockUpdateTime()));
+		stockUpdateService.start();
+		stockUpdateService.setOnSucceeded(event -> {
 			System.out.println("Continue update...");
-			stocks = service.getValue();
+			stocks = stockUpdateService.getValue();
 			 TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
 			 stockTableView.setRoot(root);
 			// Finish loading, hide spinner
@@ -120,8 +129,8 @@ public class HomeController extends BaseController implements Initializable {
 		});
 		
 		// Background service to check alert settings status
-		AlertSettingsCheckingService alertSettingsService = new AlertSettingsCheckingService(user.getId(), userStockManager);
-		alertSettingsService.setPeriod(Duration.minutes(ALERT_SETTINGS_CHECKING_DURATION));
+		alertSettingsService = new AlertSettingsCheckingService(user.getId(), userStockManager);
+		alertSettingsService.setPeriod(Duration.minutes(user.getAlertTime()));
 		alertSettingsService.start();
 		alertSettingsService.setOnSucceeded(event -> {
 			System.out.println("Checking alert settings...");
@@ -243,6 +252,8 @@ public class HomeController extends BaseController implements Initializable {
 				SettingsController settingsController = loader.<SettingsController>getController();
 				settingsController.setUser(user);
 				settingsController.initUserInfo();
+				// Subscribe to get updates from user's settings
+				settingsController.register(this);
 				break;
 			case STOCK_DETAILS:
 				StockDetailsController stockController = loader.<StockDetailsController>getController();

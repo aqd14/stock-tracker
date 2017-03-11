@@ -1,10 +1,14 @@
 package main.java.control;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +22,7 @@ import main.java.utility.Screen;
 import main.java.utility.Utility;
 import main.java.utility.ValidationUtil;
 
-public class SettingsController extends BaseController implements Initializable {
+public class SettingsController extends BaseController implements Initializable, Subject {
 	// User information fields
 	@FXML private JFXTextField firstNameTF;
 	@FXML private JFXTextField lastNameTF;
@@ -42,6 +46,11 @@ public class SettingsController extends BaseController implements Initializable 
 	@FXML private Label accountName;
 	@FXML private Text successfulMessage;
 	
+	@FXML private JFXComboBox<Integer> alertCheckingTime;
+	@FXML private JFXComboBox<Integer> stockUpdateTime;
+	
+	private ArrayList<Observer> observers = new ArrayList<>();
+	
 	public SettingsController() {
 		// TODO Auto-generated constructor stub
 	}
@@ -59,17 +68,6 @@ public class SettingsController extends BaseController implements Initializable 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// Set balance validation
-//		Pattern validDoubleText = Pattern.compile("((\\d*)|(\\d+\\.\\d*))");
-//        TextFormatter<Double> textFormatter = new TextFormatter<Double>(new DoubleStringConverter(), 0.0, 
-//            change -> {
-//                String newText = change.getControlNewText() ;
-//                if (validDoubleText.matcher(newText).matches())
-//                    return change;
-//                else 
-//                	return null;
-//        });
-
 		newBalanceTF.setTextFormatter(new CurrencyFormatter());
 		// Set successful sms invisible
 		successfulMessage.setVisible(false);
@@ -97,6 +95,24 @@ public class SettingsController extends BaseController implements Initializable 
 //			}
 //			
 //		});
+		
+//		alertCheckingTime.textProperty().addListener(new ChangeListener<String>() {
+//	        @Override
+//	        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//	            if (!newValue.matches("\\d*")) {
+//            		alertCheckingTime.setText(newValue.replaceAll("[^\\d]", ""));
+//	            }
+//	            
+//	            if (newValue.length() > 2) {
+//	            	alertCheckingTime.setText(oldValue);
+//	            }
+//	            
+//	        }
+//	    });
+		
+		ObservableList<Integer> options = FXCollections.observableArrayList(1, 2, 5, 10, 20, 30, 60, 120);
+		alertCheckingTime.setItems(options);
+		stockUpdateTime.setItems(options);
 	}
 	
 	@FXML private void saveChanges(ActionEvent e) {
@@ -162,9 +178,23 @@ public class SettingsController extends BaseController implements Initializable 
 			}
 		}
 		
+		// Update alert checking time
+		if (!alertCheckingTime.getSelectionModel().isEmpty()) {
+			user.setAlertTime(alertCheckingTime.getSelectionModel().getSelectedItem());
+			anyChange = true;
+		}
+		
+		// Update stock update time
+		if (!stockUpdateTime.getSelectionModel().isEmpty()) {
+			user.setStockUpdateTime(stockUpdateTime.getSelectionModel().getSelectedItem());
+			anyChange = true;
+		}
+		
+		
 		// Update to database if there is any change and all others are valid
 		if (anyChange) {
 			userManager.update(user);
+			notifyObservers();
 			System.out.println("Update succesfully...");
 			updateSettingFields();
 			// Display successful message for 2s.
@@ -183,8 +213,6 @@ public class SettingsController extends BaseController implements Initializable 
 				}
 			};
 			new Thread(sleeper).start();
-		} else {
-			System.out.println("Something invalid.. Please check again!");
 		}
 	}
 	
@@ -206,5 +234,26 @@ public class SettingsController extends BaseController implements Initializable 
 	protected void makeNewStage(Screen target, String stageTitle, String url) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void register(Observer o) {
+		if (observers.indexOf(o) == -1) {
+			observers.add(o);
+		}
+	}
+
+	@Override
+	public void remove(Observer o) {
+		if (observers.indexOf(o) != -1) {
+			observers.remove(o);
+		}
+	}
+
+	@Override
+	public void notifyObservers() {
+		for (Observer o : observers) {
+			o.update();
+		}
 	}
 }

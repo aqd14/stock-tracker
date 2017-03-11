@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
@@ -16,9 +17,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="387.0" prefWidth="406.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SettingsController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="387.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SettingsController">
    <children>
-      <VBox layoutX="7.0" layoutY="6.0" prefHeight="370.0" prefWidth="389.0">
+      <VBox layoutX="7.0" layoutY="6.0" prefHeight="370.0" prefWidth="441.0">
          <children>
             <HBox prefHeight="29.0" prefWidth="395.0">
                <children>
@@ -232,6 +233,41 @@
                         </AnchorPane>
                     </content>
                   </Tab>
+                  <Tab text="Alert">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutX="7.0" layoutY="32.0" prefHeight="220.0" prefWidth="248.0">
+                                 <children>
+                                    <Label text="New Alert Checking Period">
+                                       <font>
+                                          <Font name="Georgia" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXComboBox fx:id="alertCheckingTime">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXComboBox>
+                                    <Label text="New Stock Update Period">
+                                       <font>
+                                          <Font name="Georgia" size="14.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="40.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <JFXComboBox fx:id="stockUpdateTime">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXComboBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
               </tabs>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -242,7 +278,7 @@
                   <Font name="Helvetica" size="14.0" />
                </font>
                <VBox.margin>
-                  <Insets left="250.0" top="10.0" />
+                  <Insets left="300.0" top="10.0" />
                </VBox.margin>
             </JFXButton>
          </children>

@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS `stock`.`user` (
   `last_name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `birthday` DATETIME NOT NULL,
+  `alert_time` INT NULL,
+  `stock_update_time` INT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `user_id_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;

@@ -21,9 +21,14 @@ public class User implements java.io.Serializable {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private int alertTime;
+	private int stockUpdateTime;
 	private Date birthday;
 	private Account account;
 	private Set<UserStock> userStocks = new HashSet<UserStock>(0);
+	
+	final int DEFAULT_STOCK_UPDATE_TIME = 2;
+	final int DEFAULT_ALERT_TIME = 30;
 
 	public User() {
 	}
@@ -35,6 +40,8 @@ public class User implements java.io.Serializable {
 		this.lastName = lastName;
 		this.email = email;
 		this.birthday = birthday;
+		alertTime = DEFAULT_ALERT_TIME;
+		stockUpdateTime = DEFAULT_STOCK_UPDATE_TIME;
 	}
 
 	public User(String username, String password, String firstName, String lastName, String email, Date birthday,
@@ -47,6 +54,8 @@ public class User implements java.io.Serializable {
 		this.birthday = birthday;
 		this.account = account;
 		this.userStocks = userStocks;
+		alertTime = DEFAULT_ALERT_TIME;
+		stockUpdateTime = DEFAULT_STOCK_UPDATE_TIME;
 	}
 
 	public Integer getId() {
@@ -121,6 +130,28 @@ public class User implements java.io.Serializable {
 		this.account = account;
 	}
 	
+	public void setAlertTime(int alertTime) {
+		this.alertTime = alertTime;
+	}
+	
+	public int getAlertTime() {
+		return alertTime;
+	}
+	
+	/**
+	 * @return the stockUpdateTime
+	 */
+	public int getStockUpdateTime() {
+		return stockUpdateTime;
+	}
+
+	/**
+	 * @param stockUpdateTime the stockUpdateTime to set
+	 */
+	public void setStockUpdateTime(int stockUpdateTime) {
+		this.stockUpdateTime = stockUpdateTime;
+	}
+
 	@Override
 	public String toString() {
 		String userToString = "User instance: \n" + 
@@ -129,7 +160,9 @@ public class User implements java.io.Serializable {
 							"first name: " + this.firstName + "\n" +
 							"last name: " + this.lastName + "\n" +
 							"email: " + this.email + "\n" +
-							"dob: " + this.birthday + "\n";
+							"dob: " + this.birthday + "\n" +
+							"alert time: " + this.alertTime + "\n" + 
+							"stock update time: " + this.stockUpdateTime + "\n";
 		return userToString;
 	}
 

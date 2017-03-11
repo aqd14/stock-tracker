@@ -26,6 +26,12 @@
         <property name="birthday" type="timestamp">
             <column name="birthday" length="19" not-null="true" />
         </property>
+        <property name="alertTime" type="int">
+            <column name="alert_time"/>
+        </property>
+        <property name="stockUpdateTime" type="int">
+            <column name="stock_update_time"/>
+        </property>
         <set name="userStocks" table="user_stock" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="user_id" not-null="true" />
