@@ -191,8 +191,8 @@ public class UserStockManager<T> extends BaseManager<T> {
 			String hql = "SELECT us FROM UserStock us "
 					+ "WHERE us.valueThreshold != -1 "
 					+ "OR us.combinedValueThreshold != -1 "
-					+ "OR us.netProfitThreshold != -1 "
-					+ "GROUP BY us.stock.stockName"; // Only select one instance for each stock. 
+					+ "OR us.netProfitThreshold != -1";
+//					+ "GROUP BY us.stock.stockName"; // Only select one instance for each stock. 
 													 //	TODO: Think about the way to get only owned stock (if any)
 			Query<UserStock> query = session.createQuery(hql);
 			List<UserStock> userStocks = query.getResultList();
