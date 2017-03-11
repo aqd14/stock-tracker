@@ -400,8 +400,17 @@ public class StockDetailsController extends BaseController implements Initializa
 			// Create new instance and relationship in database
 			Stock boughtStock = extractStock();
 			stockManager.add(boughtStock);
+			// Create new UserStock instance
 			UserStockId userStockId = new UserStockId(boughtStock.getId(), user.getId());
+			// Get existing UserStock instance to update alert threshold for all same stocks
+			List<UserStock> userStocks = userStockManager.findUserStock(user.getId(), boughtStock.getStockCode());
 			UserStock userStock = new UserStock(userStockId, boughtStock, user);
+			if (userStocks != null && !userStocks.isEmpty()) {
+				UserStock us = userStocks.get(0);
+				userStock.setValueThreshold(us.getValueThreshold());
+				userStock.setCombinedValueThreshold(us.getCombinedValueThreshold());
+				userStock.setNetProfitThreshold(us.getNetProfitThreshold());
+			}
 			userStockManager.add(userStock);
 		} else {
 			// Display error message for user
