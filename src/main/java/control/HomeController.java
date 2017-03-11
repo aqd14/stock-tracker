@@ -107,7 +107,6 @@ public class HomeController extends BaseController implements Initializable {
 		});
 		
 		// Background service to check alert settings status
-//		userStockManager.findWithAlertSettingsOn();
 		AlertSettingsCheckingService alertSettingsService = new AlertSettingsCheckingService(userStockManager);
 		alertSettingsService.setPeriod(Duration.minutes(ALERT_SETTINGS_CHECKING_DURATION));
 		alertSettingsService.start();
@@ -478,7 +477,7 @@ public class HomeController extends BaseController implements Initializable {
 					if (userStocks == null) {
 						return null;
 					}
-//					BigDecimal defaultThreshold = new BigDecimal(-1);
+					BigDecimal defaultThreshold = new BigDecimal(-1);
 					// Get current quotes of list of stocks to check thresholds reached or not
 					// If reached, initialize current values for those threshold. If not, 
 					// remove from UserStock list
@@ -489,13 +488,13 @@ public class HomeController extends BaseController implements Initializable {
 						yahoofinance.Stock yahooStock = YahooFinance.get(stock.getStockCode());
 						BigDecimal curPrice = yahooStock.getQuote().getPrice();
 						// Check value threshold crossed
-						if (us.getValueThreshold().compareTo(curPrice) < 0) {
+						if (us.getValueThreshold().compareTo(defaultThreshold) > 0 && us.getValueThreshold().compareTo(curPrice) < 0) {
 							thresholdCrossed = true;
 						}
 						
 						// Check combined value threshold crossed
 						BigDecimal combinedValue = curPrice.multiply(BigDecimal.valueOf(stock.getAmount()));
-						if (us.getCombinedValueThreshold().compareTo(combinedValue) < 0) {
+						if (us.getCombinedValueThreshold().compareTo(defaultThreshold) > 0 && us.getCombinedValueThreshold().compareTo(combinedValue) < 0) {
 							thresholdCrossed = true;
 						}
 						
