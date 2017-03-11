@@ -190,6 +190,9 @@ public class SettingsController extends BaseController implements Initializable,
 		newPasswordPF.clear();
 		confirmPasswordPF.clear();
 		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
+		// Clear combobox selection
+		alertCheckingTime.getSelectionModel().clearSelection();
+		stockUpdateTime.getSelectionModel().clearSelection();
 	}
 
 	@Override
