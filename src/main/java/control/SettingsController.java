@@ -71,45 +71,7 @@ public class SettingsController extends BaseController implements Initializable,
 		newBalanceTF.setTextFormatter(new CurrencyFormatter());
 		// Set successful sms invisible
 		successfulMessage.setVisible(false);
-		
-//        textFormatter.valueProperty().addListener((obs, oldValue, newValue) -> {
-//            System.out.println("New double value "+newValue);
-//        });
-		
-//		newBalanceTF.textProperty().addListener(new ChangeListener<String>() {
-//			@Override
-//			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//				if (ValidationUtil.containOnlyNumber(newValue)) {
-//					// Add "," to the balance of at least $1,000
-////					if (newValue.length() == 4) {
-////						newValue = new StringBuilder(newValue).insert(1, ",").toString();
-////					}
-////					// Add dollar sign
-////					newValue = "$" + newValue;
-//					newBalanceTF.setText(newValue);
-//					return;
-//				} else {
-//					newBalanceTF.setText(oldValue);
-//					return;
-//				}
-//			}
-//			
-//		});
-		
-//		alertCheckingTime.textProperty().addListener(new ChangeListener<String>() {
-//	        @Override
-//	        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//	            if (!newValue.matches("\\d*")) {
-//            		alertCheckingTime.setText(newValue.replaceAll("[^\\d]", ""));
-//	            }
-//	            
-//	            if (newValue.length() > 2) {
-//	            	alertCheckingTime.setText(oldValue);
-//	            }
-//	            
-//	        }
-//	    });
-		
+		// Initialize options for period settings
 		ObservableList<Integer> options = FXCollections.observableArrayList(1, 2, 5, 10, 20, 30, 60, 120);
 		alertCheckingTime.setItems(options);
 		stockUpdateTime.setItems(options);

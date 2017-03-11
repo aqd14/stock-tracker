@@ -15,48 +15,6 @@ public class StockManager<T> extends BaseManager<T> {
 
 	private static final Log log = LogFactory.getLog(StockManager.class);
 
-//	/**
-//	 * Add new stock to database
-//	 * @param stock
-//	 * @return False if user already existed or something went wrong with transaction
-//	 */
-//	@Override
-//	public void add(Object obj) {
-//		Stock stock = (Stock) obj;
-//		Session session = null;
-//		try {
-//			session = sessionFactory.getCurrentSession();
-//			Transaction tx = session.beginTransaction();
-//			session.save(stock);
-//			tx.commit();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			if (session != null) {
-//				session.close();
-//			}
-//		}
-//	}
-	
-//	@Override
-//	public void remove(Object obj) {
-//		// TODO Auto-generated method stub
-//		Stock stock = (Stock) obj;
-//		Session session = sessionFactory.getCurrentSession();
-//		Transaction tx = session.beginTransaction();
-//		session.delete(stock);
-//		tx.commit();
-//	}
-
-//	@Override
-//	public void update(Object obj) {
-//		Stock stock = (Stock) obj;
-//		Session session = sessionFactory.getCurrentSession();
-//		Transaction tx = session.beginTransaction();
-//		session.update(stock);
-//		tx.commit();
-//	}
-	
 	public void persist(Stock transientInstance) {
 		log.debug("persisting Stock instance");
 		try {
