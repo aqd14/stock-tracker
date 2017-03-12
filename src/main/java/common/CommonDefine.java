@@ -17,6 +17,7 @@ public class CommonDefine {
 	public static final String EMAIL_TAKEN_ERR = "This email is taken. Try another.";
 	public static final String USER_NOT_EXIST = "Given username or email is not exist. Try another.";
 	public static final String CURRENT_PASSWORD_INCORRECT = "Current password is incorrect. Try again.";
+	public static final String INVALID_PHONE_NUMBER = "Invalid phone number. Please try again.";
 	
 	// Alert message
 	public static final String REMOVE_STOCK_SMS = "You owned this stock. Do you really want to remove it?";

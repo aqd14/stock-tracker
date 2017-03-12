@@ -215,19 +215,19 @@ public class ValidationUtil {
 	 *  <li> Is email already existing on database?
 	 *  <ul><p>
 	 */
-	public static boolean validatePhoneNumber(TextField phoneNumberTF) {
+	public static boolean validatePhoneNumber(TextField phoneNumberTF, Text phoneNumberError) {
 		if (isTextFieldEmpty(phoneNumberTF)) {
-//			displayErrorMessage(phoneNumberError, CommonDefine.EMPTY_FIELD_ERR);
+			displayErrorMessage(phoneNumberError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		}
 		
 		if (!isPhoneNumberValid(phoneNumberTF.getText())) {
-//			displayErrorMessage(phoneNumberError, CommonDefine.INVALID_EMAIL_ERR);
+			displayErrorMessage(phoneNumberError, CommonDefine.INVALID_PHONE_NUMBER);
 			return false;
 		}
 		
 		// Passed all validations
-//		hideErrorMessage(phoneNumberError);
+		hideErrorMessage(phoneNumberError);
 		return true;
 	}
 	

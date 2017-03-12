@@ -36,6 +36,7 @@ public class RegistrationViewController extends BaseController {
 	@FXML private Text passwordError;
 	@FXML private Text confirmPasswordError;
 	@FXML private Text emailError;
+	@FXML private Text phoneNumberError;
 	@FXML private Text dobError;
 	
 	@FXML private GridPane registerGP;
@@ -91,8 +92,8 @@ public class RegistrationViewController extends BaseController {
 		        && ValidationUtil.validateOriginalPassword(passwordPF, confirmPasswordError)
 		        && ValidationUtil.validateConfirmedPassword(passwordPF, confirmPasswordPF, confirmPasswordError) 
 		        && ValidationUtil.validateEmail(emailTF, emailError) 
-		        && ValidationUtil.validateDoB(dateOfBirthDP, dobError)
-				&& ValidationUtil.validatePhoneNumber(phoneNumberTF);
+				&& ValidationUtil.validatePhoneNumber(phoneNumberTF, phoneNumberError)
+		        && ValidationUtil.validateDoB(dateOfBirthDP, dobError);
 	}
 
 	@Override
