@@ -18,7 +18,7 @@ import main.java.utility.PhoneNumberFormatter;
 import main.java.utility.Screen;
 import main.java.utility.ValidationUtil;
 
-public class RegistrationViewController extends BaseController {
+public class RegistrationController extends BaseController {
 	// TextField objects for user information
 	@FXML private JFXTextField firstNameTF;
 	@FXML private JFXTextField lastNameTF;

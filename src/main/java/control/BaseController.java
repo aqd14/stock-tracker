@@ -58,7 +58,7 @@ public abstract class BaseController {
 				case REGISTER:
 					FXMLLoader ld = new FXMLLoader(getClass().getResource("../../../main/java/view/UserRegistration.fxml"));
 					root = ld.load();
-					RegistrationViewController controller = ld.<RegistrationViewController>getController();
+					RegistrationController controller = ld.<RegistrationController>getController();
 					controller.setPhoneNumberFormatter();
 					break;
 				case RESET_PASSWORD:
