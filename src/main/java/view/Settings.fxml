@@ -55,7 +55,7 @@
                                        <children>
                                           <HBox prefHeight="40.0" prefWidth="376.0">
                                              <children>
-                                                <Label prefHeight="27.0" prefWidth="87.0" text="First Name">
+                                                <Label prefHeight="25.0" prefWidth="110.0" text="First Name">
                                                    <HBox.margin>
                                                       <Insets top="5.0" />
                                                    </HBox.margin>
@@ -68,14 +68,14 @@
                                                    </HBox.margin></JFXTextField>
                                              </children>
                                           </HBox>
-                                          <Text fx:id="firstNameError" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="377.0" />
+                                          <Text fx:id="firstNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="377.0" />
                                        </children>
                                     </VBox>
                                     <VBox prefHeight="76.0" prefWidth="376.0">
                                        <children>
                                           <HBox prefHeight="43.0" prefWidth="376.0">
                                              <children>
-                                                <Label prefHeight="27.0" prefWidth="87.0" text="Last Name">
+                                                <Label prefHeight="27.0" prefWidth="110.0" text="Last Name">
                                                    <HBox.margin>
                                                       <Insets top="5.0" />
                                                    </HBox.margin>
@@ -88,21 +88,36 @@
                                                    </HBox.margin></JFXTextField>
                                              </children>
                                           </HBox>
-                                          <Text fx:id="lastNameError" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.21875" />
+                                          <Text fx:id="lastNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.21875" />
                                        </children>
                                     </VBox>
                                     <VBox prefHeight="83.0" prefWidth="376.0">
                                        <children>
                                           <HBox prefHeight="39.0" prefWidth="376.0">
                                              <children>
-                                                <Label prefHeight="27.0" prefWidth="87.0" text="Email">
+                                                <Label prefHeight="27.0" prefWidth="110.0" text="Email">
                                                    <font>
                                                       <Font name="Georgia" size="14.0" />
                                                    </font></Label>
                                                 <JFXTextField fx:id="emailTF" prefHeight="25.0" prefWidth="189.0" />
                                              </children>
                                           </HBox>
-                                          <Text fx:id="emailError" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.0" />
+                                          <Text fx:id="emailError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="83.0" prefWidth="376.0">
+                                       <children>
+                                          <HBox prefHeight="39.0" prefWidth="376.0">
+                                             <children>
+                                                <Label prefHeight="27.0" prefWidth="110.0" text="Phone Number">
+                                                   <font>
+                                                      <Font name="Georgia" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <JFXTextField fx:id="phoneNumberTF" prefHeight="25.0" prefWidth="189.0" />
+                                             </children>
+                                          </HBox>
+                                          <Text fx:id="phoneNumberError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.0" />
                                        </children>
                                     </VBox>
                                  </children>

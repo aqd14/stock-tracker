@@ -16,8 +16,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.text.Text;
 import main.java.utility.CurrencyFormatter;
+import main.java.utility.PhoneNumberFormatter;
 import main.java.utility.Utils;
 import main.java.utility.ValidationUtil;
 
@@ -26,6 +28,7 @@ public class SettingsController extends BaseController implements Initializable,
 	@FXML private JFXTextField firstNameTF;
 	@FXML private JFXTextField lastNameTF;
 	@FXML private JFXTextField emailTF;
+	@FXML private JFXTextField phoneNumberTF;
 	
 	// New password
 	@FXML private PasswordField currentPasswordPF;
@@ -39,6 +42,7 @@ public class SettingsController extends BaseController implements Initializable,
 	@FXML private Text currentPasswordError;
 	@FXML private Text passwordError;
 	@FXML private Text confirmPasswordError;
+	@FXML private Text phoneNumberError;
 	
 	@FXML private JFXTextField currentBalanceTF;
 	@FXML private TextField newBalanceTF;
@@ -62,12 +66,13 @@ public class SettingsController extends BaseController implements Initializable,
 		currentBalanceTF.setText("$" + Utils.formatCurrencyDouble(user.getAccount().getBalance()));
 		firstNameTF.setText(user.getFirstName());
 		lastNameTF.setText(user.getLastName());
-		emailTF.setText(user.getEmail());
+//		emailTF.setText(user.getEmail());
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		newBalanceTF.setTextFormatter(new CurrencyFormatter());
+		phoneNumberTF.setTextFormatter(new TextFormatter<>(PhoneNumberFormatter::addPhoneNumberMask));
 		// Set successful sms invisible
 		successfulMessage.setVisible(false);
 		// Initialize options for period settings
@@ -110,6 +115,13 @@ public class SettingsController extends BaseController implements Initializable,
 			} else {
 				anyChange = false;
 			}
+		}
+		
+		if (ValidationUtil.validatePhoneNumber(phoneNumberTF, phoneNumberError)) {
+			user.setPhoneNumber(phoneNumberTF.getText());
+			anyChange = true;
+		} else {
+			anyChange = false;
 		}
 		
 		if (currentPasswordPF.getText().equals("") && newPasswordPF.getText().equals("") && confirmPasswordPF.getText().equals("")) {
@@ -183,6 +195,7 @@ public class SettingsController extends BaseController implements Initializable,
 		emailError.setVisible(false);
 		firstNameError.setVisible(false);
 		lastNameError.setVisible(false);
+		phoneNumberError.setVisible(false);
 		currentPasswordError.setVisible(false);
 		// Clear passwords
 		currentPasswordPF.clear();

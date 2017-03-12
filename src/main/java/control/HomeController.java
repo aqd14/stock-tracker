@@ -215,7 +215,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 			public void handle(MouseEvent mouseEvent) {
 //				System.out.println("Current number of rows: " + stockTableView.getCurrentItemsCount());
 				if (mouseEvent.getClickCount() == 2 && stockTableView.getCurrentItemsCount() > 0) { // Double click
-					makeNewStage(Screen.STOCK_DETAILS, "Stock Details", "../view/StockDetails.fxml");
+					makeNewStage(Screen.STOCK_DETAILS, CommonDefine.STOCK_DETAILS_TITLE, "../view/StockDetails.fxml");
 //					TreeItem<Stock> item = stockTableView.getSelectionModel().getSelectedItem();
 //					System.out.println("Selected stock: " + item.getValue().getStockName());
 				}
