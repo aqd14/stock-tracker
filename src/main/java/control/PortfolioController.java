@@ -40,7 +40,7 @@ import main.java.utility.Screen;
 import main.java.utility.StageFactory;
 import yahoofinance.YahooFinance;
 
-public class PortfolioController extends BaseController implements Initializable {
+public class PortfolioController extends BaseController implements Initializable, IController {
 	@FXML private Pagination portfolioPagination;
 	@FXML private Pagination transactionHistoryPagination;
 	@FXML private JFXButton sellStockButton;
@@ -301,8 +301,10 @@ public class PortfolioController extends BaseController implements Initializable
         return new BorderPane(historyTable);
     }
 
-	@Override
-	protected void makeNewStage(Screen target, String stageTitle, String url) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override public void makeNewStage(Screen target, String stageTitle, String url) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
 		Parent root = null;
 		try {
@@ -336,5 +338,11 @@ public class PortfolioController extends BaseController implements Initializable
 		Stage newStage = StageFactory.generateStage(stageTitle);
 		newStage.setScene(new Scene(root));
 		newStage.show();
+	}
+
+	@Override
+	public void switchScreen(Screen target, String title, String url) {
+		// TODO Auto-generated method stub
+		
 	}
 }

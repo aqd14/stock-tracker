@@ -18,7 +18,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import main.java.utility.CurrencyFormatter;
-import main.java.utility.Screen;
 import main.java.utility.Utils;
 import main.java.utility.ValidationUtil;
 
@@ -195,11 +194,6 @@ public class SettingsController extends BaseController implements Initializable,
 		stockUpdateTime.getSelectionModel().clearSelection();
 	}
 
-	@Override
-	protected void makeNewStage(Screen target, String stageTitle, String url) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void register(Observer o) {

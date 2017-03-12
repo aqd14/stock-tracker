@@ -63,7 +63,7 @@ import yahoofinance.YahooFinance;
  * @author doquocanh-macbook
  *
  */
-public class HomeController extends BaseController implements Initializable, Observer {
+public class HomeController extends BaseController implements Initializable, Observer, IController {
 	@FXML private AnchorPane homeAP;
 	@FXML private JFXTreeTableView<Stock> stockTableView;
 	
@@ -224,8 +224,10 @@ public class HomeController extends BaseController implements Initializable, Obs
 		});
 	}
 	
-	@Override
-	protected void makeNewStage(Screen target, String stageTitle, String url) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override public void makeNewStage(Screen target, String stageTitle, String url) {
 		Stage newStage = StageFactory.generateStage(stageTitle);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
 		Parent root = null;
@@ -590,5 +592,12 @@ public class HomeController extends BaseController implements Initializable, Obs
 				}
 			};
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override public void switchScreen(Screen target, String title, String url) {
+		// TODO: Switch to login screen when user logs out
 	}
 }

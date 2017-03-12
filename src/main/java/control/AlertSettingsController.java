@@ -22,7 +22,6 @@ import main.java.model.UserStock;
 import main.java.model.UserStockId;
 import main.java.utility.AlertFactory;
 import main.java.utility.CurrencyFormatter;
-import main.java.utility.Screen;
 import main.java.utility.Utils;
 
 /**
@@ -169,11 +168,5 @@ public class AlertSettingsController extends BaseController implements Initializ
 			netProfitAlertSwitchOn = !netProfitAlertSwitchOn;
 			netProfitThreshold.setEditable(netProfitAlertSwitchOn);
 		});
-	}
-
-	@Override
-	protected void makeNewStage(Screen target, String stageTitle, String url) {
-		// TODO Auto-generated method stub
-		
 	}
 }

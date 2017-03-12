@@ -25,6 +25,15 @@ public class CommonDefine {
 	public static final String BUY_STOCK_SUCCESSFUL_SMS = "Your transaction is successful!";
 	public static final String UPDATE_ALERT_SETTINGS_SMS = "You've updated alert settings successfully!";
 	
+	// Stage title
+	public static final String HOME_TITLE = "Stock Tracker";
+	public static final String LOGIN_TITLE = "Login";
+	public static final String REGISTRATION_TITLE = "Registration";
+	public static final String RESET_PASSWORD_TITLE = "Reset Password";
+	public static final String USER_SETTINGS_TITLE = "Settings";
+	public static final String STOCK_DETAILS_TITLE = "Stock Details";
+	public static final String ALERT_SETTINGS_TITLE = "Alert Settings";
+	
 	/**
 	 * Interval for display stock data.
 	 * @author doquocanh-macbook

@@ -1,5 +1,6 @@
 package main.java.control;
 
+import java.io.IOException;
 import java.sql.Date;
 
 import com.jfoenix.controls.JFXDatePicker;
@@ -8,17 +9,22 @@ import com.jfoenix.controls.JFXTextField;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import main.java.common.CommonDefine;
 import main.java.model.Account;
 import main.java.model.User;
 import main.java.utility.PhoneNumberFormatter;
 import main.java.utility.Screen;
 import main.java.utility.ValidationUtil;
 
-public class RegistrationController extends BaseController {
+public class RegistrationController extends BaseController implements IController {
 	// TextField objects for user information
 	@FXML private JFXTextField firstNameTF;
 	@FXML private JFXTextField lastNameTF;
@@ -77,12 +83,12 @@ public class RegistrationController extends BaseController {
 			userManager.add(user);
 			// Register successfully. Switch to Login page
 			Thread.sleep(2000);
-			switchScreen(registerGP, Screen.LOGIN);
+			switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, "../../../main/java/view/Login.fxml");
 		}
 	}
 	
 	@FXML private void back(MouseEvent e) {
-		switchScreen(registerGP, Screen.LOGIN);
+		switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, "../../../main/java/view/Login.fxml");
 	}
 	
 	private boolean validateUserInput() {
@@ -96,8 +102,32 @@ public class RegistrationController extends BaseController {
 		        && ValidationUtil.validateDoB(dateOfBirthDP, dobError);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override public void switchScreen(Screen target, String title, String url) {
+        Parent root = null;
+		try {
+			switch (target) {
+				case LOGIN:
+					root = new FXMLLoader(getClass().getResource("../../../main/java/view/Login.fxml")).load();
+					break;
+				default:
+					return;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+	  	Stage curStage = (Stage)registerGP.getScene().getWindow();
+        curStage.setTitle(title);
+        curStage.setScene(new Scene(root));
+        curStage.setResizable(false);
+        curStage.show();
+	}
+
 	@Override
-	protected void makeNewStage(Screen target, String stageTitle, String url) {
+	public void makeNewStage(Screen target, String title, String url) {
 		// TODO Auto-generated method stub
 		
 	}
