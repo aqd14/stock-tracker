@@ -17,6 +17,11 @@ public class ValidationUtil {
 	
 	static UserManager<User> userManager = new UserManager<User>();
 	
+	
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	
+	public static final Pattern VALID_CHARACTERS_REGEX = Pattern.compile("^[a-zA-Z]+$");
+	
 	public static final Pattern PHONE_NUMBER_REGEX = Pattern.compile("^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$");
 	
 	public ValidationUtil() {
@@ -38,12 +43,12 @@ public class ValidationUtil {
 	 */
 	public static boolean validateFirstName(TextField firstNameTF, Text firstNameError) {
 		// Validate first name's empty
-		if (Utility.isTextFieldEmpty(firstNameTF)) {
+		if (isTextFieldEmpty(firstNameTF)) {
 			displayErrorMessage(firstNameError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		} 
 		
-		if (!Utility.isNameValid(firstNameTF.getText())) {
+		if (!isNameValid(firstNameTF.getText())) {
 			displayErrorMessage(firstNameError, CommonDefine.INVALID_NAME_ERR);
 			return false;
 		}
@@ -59,12 +64,12 @@ public class ValidationUtil {
 	 */
 	public static boolean validateLastName(TextField lastNameTF, Text lastNameError) {
 		// Validate first name
-		if (Utility.isTextFieldEmpty(lastNameTF)) {
+		if (isTextFieldEmpty(lastNameTF)) {
 			displayErrorMessage(lastNameError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		} 
 		
-		if (!Utility.isNameValid(lastNameTF.getText())) {
+		if (!isNameValid(lastNameTF.getText())) {
 			displayErrorMessage(lastNameError, CommonDefine.INVALID_NAME_ERR);
 			return false;
 		}
@@ -76,7 +81,7 @@ public class ValidationUtil {
 	
 	public static boolean validateUsername(TextField usernameTF, Text usernameError) {
 		// Validate first name
-		if (Utility.isTextFieldEmpty(usernameTF)) {
+		if (isTextFieldEmpty(usernameTF)) {
 			displayErrorMessage(usernameError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		}
@@ -131,7 +136,7 @@ public class ValidationUtil {
 	 */
 	public static boolean validateOriginalPassword(PasswordField passwordPF, Text passwordError) {
 		// Validate empty
-		if (Utility.isTextFieldEmpty(passwordPF)) {
+		if (isTextFieldEmpty(passwordPF)) {
 			passwordError.setText(CommonDefine.EMPTY_FIELD_ERR);
 			passwordError.setVisible(true);
 			return false;
@@ -155,7 +160,7 @@ public class ValidationUtil {
 	 * @return
 	 */
 	public static boolean validateConfirmedPassword(PasswordField passwordPF, PasswordField confirmPasswordPF, Text confirmPasswordError) {
-		if (Utility.isTextFieldEmpty(confirmPasswordPF)) {
+		if (isTextFieldEmpty(confirmPasswordPF)) {
 			displayErrorMessage(confirmPasswordError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		}
@@ -182,12 +187,12 @@ public class ValidationUtil {
 	 *  <ul><p>
 	 */
 	public static boolean validateEmail(TextField emailTF, Text emailError) {
-		if (Utility.isTextFieldEmpty(emailTF)) {
+		if (isTextFieldEmpty(emailTF)) {
 			displayErrorMessage(emailError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		}
 		
-		if (!Utility.isValidEmail(emailTF.getText())) {
+		if (!isValidEmail(emailTF.getText())) {
 			displayErrorMessage(emailError, CommonDefine.INVALID_EMAIL_ERR);
 			return false;
 		}
@@ -211,7 +216,7 @@ public class ValidationUtil {
 	 *  <ul><p>
 	 */
 	public static boolean validatePhoneNumber(TextField phoneNumberTF) {
-		if (Utility.isTextFieldEmpty(phoneNumberTF)) {
+		if (isTextFieldEmpty(phoneNumberTF)) {
 //			displayErrorMessage(phoneNumberError, CommonDefine.EMPTY_FIELD_ERR);
 			return false;
 		}
@@ -264,6 +269,38 @@ public class ValidationUtil {
 	 */
 	public static boolean isPhoneNumberValid(String instance) {
 		Matcher matcher = PHONE_NUMBER_REGEX.matcher(instance);
+		return matcher.find();
+	}
+	
+	/**
+	 * Verify if the given text field is empty or not
+	 * @param tf Given TextField instance
+	 * @return True if not empty, otherwise returns False
+	 */
+	public static boolean isTextFieldEmpty(TextField tf) {
+		if (tf == null) {
+			return true;
+		}
+		return tf.getText().equals("");
+	}
+	
+	/**
+	 * Validate email address by using regular expression
+	 * @param email
+	 * @return True if email is valid, otherwise return False
+	 */
+	public static boolean isValidEmail(String email) {
+	        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+	        return matcher.find();
+	}
+	
+	/**
+	 * User's name should only contains alphabetical characters
+	 * @param instance
+	 * @return
+	 */
+	public static boolean isNameValid(String instance) {
+		Matcher matcher = VALID_CHARACTERS_REGEX.matcher(instance);
 		return matcher.find();
 	}
 }
