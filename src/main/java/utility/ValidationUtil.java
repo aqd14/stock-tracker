@@ -1,6 +1,8 @@
 package main.java.utility;
 
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.jfoenix.controls.JFXDatePicker;
 
@@ -14,6 +16,8 @@ import main.java.model.User;
 public class ValidationUtil {
 	
 	static UserManager<User> userManager = new UserManager<User>();
+	
+	public static final Pattern PHONE_NUMBER_REGEX = Pattern.compile("^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$");
 	
 	public ValidationUtil() {
 		// TODO Auto-generated constructor stub
@@ -198,6 +202,30 @@ public class ValidationUtil {
 		return true;
 	}
 	
+	/**
+	 * Validate email address:
+	 * <p><ul>
+	 * 	<li> Is email empty?
+	 *  <li> Is email valid (contains only alphabets, underscore, and period)
+	 *  <li> Is email already existing on database?
+	 *  <ul><p>
+	 */
+	public static boolean validatePhoneNumber(TextField phoneNumberTF) {
+		if (Utility.isTextFieldEmpty(phoneNumberTF)) {
+//			displayErrorMessage(phoneNumberError, CommonDefine.EMPTY_FIELD_ERR);
+			return false;
+		}
+		
+		if (!isPhoneNumberValid(phoneNumberTF.getText())) {
+//			displayErrorMessage(phoneNumberError, CommonDefine.INVALID_EMAIL_ERR);
+			return false;
+		}
+		
+		// Passed all validations
+//		hideErrorMessage(phoneNumberError);
+		return true;
+	}
+	
 	public static boolean validateDoB(JFXDatePicker dateOfBirthDP, Text dobError) {
 		LocalDate dob = dateOfBirthDP.getValue();
 		if (null == dob) {
@@ -227,5 +255,15 @@ public class ValidationUtil {
 	
 	public static void hideErrorMessage(Text instance) {
 		instance.setVisible(false);   
+	}
+	
+	/**
+	 * User's name should only contains alphabetical characters
+	 * @param instance
+	 * @return
+	 */
+	public static boolean isPhoneNumberValid(String instance) {
+		Matcher matcher = PHONE_NUMBER_REGEX.matcher(instance);
+		return matcher.find();
 	}
 }

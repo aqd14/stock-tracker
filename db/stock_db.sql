@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`user` (
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
+  `phone_number` VARCHAR(45) NOT NULL,
   `birthday` DATETIME NOT NULL,
   `alert_time` INT NULL,
   `stock_update_time` INT NULL,

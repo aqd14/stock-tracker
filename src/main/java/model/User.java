@@ -23,6 +23,7 @@ public class User implements java.io.Serializable {
 	private String email;
 	private int alertTime;
 	private int stockUpdateTime;
+	private String phoneNumber;
 	private Date birthday;
 	private Account account;
 	private Set<UserStock> userStocks = new HashSet<UserStock>(0);
@@ -33,29 +34,23 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
-	public User(String username, String password, String firstName, String lastName, String email, Date birthday) {
+	public User(String username, String password, String firstName, String lastName, String email, String phoneNumber, Date birthday) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.phoneNumber = phoneNumber;
 		this.birthday = birthday;
 		alertTime = DEFAULT_ALERT_TIME;
 		stockUpdateTime = DEFAULT_STOCK_UPDATE_TIME;
 	}
 
-	public User(String username, String password, String firstName, String lastName, String email, Date birthday,
+	public User(String username, String password, String firstName, String lastName, String email, String phoneNumber, Date birthday,
 			Account account, Set<UserStock> userStocks) {
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.birthday = birthday;
+		this(username, password, firstName, lastName, email, phoneNumber, birthday);
 		this.account = account;
 		this.userStocks = userStocks;
-		alertTime = DEFAULT_ALERT_TIME;
-		stockUpdateTime = DEFAULT_STOCK_UPDATE_TIME;
 	}
 
 	public Integer getId() {
@@ -150,6 +145,20 @@ public class User implements java.io.Serializable {
 	 */
 	public void setStockUpdateTime(int stockUpdateTime) {
 		this.stockUpdateTime = stockUpdateTime;
+	}
+
+	/**
+	 * @return the phoneNumber
+	 */
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	/**
+	 * @param phoneNumber the phoneNumber to set
+	 */
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	@Override

@@ -3,27 +3,30 @@ package main.java.control;
 import java.sql.Date;
 
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import main.java.model.Account;
 import main.java.model.User;
+import main.java.utility.PhoneNumberFormatter;
 import main.java.utility.Screen;
 import main.java.utility.ValidationUtil;
 
 public class RegistrationViewController extends BaseController {
 	// TextField objects for user information
-	@FXML private TextField firstNameTF;
-	@FXML private TextField lastNameTF;
-	@FXML private TextField usernameTF;
-	@FXML private PasswordField passwordPF;
-	@FXML private PasswordField confirmPasswordPF;
-	@FXML private TextField emailTF;
+	@FXML private JFXTextField firstNameTF;
+	@FXML private JFXTextField lastNameTF;
+	@FXML private JFXTextField usernameTF;
+	@FXML private JFXPasswordField passwordPF;
+	@FXML private JFXPasswordField confirmPasswordPF;
+	@FXML private JFXTextField emailTF;
+	@FXML private JFXTextField phoneNumberTF;
 	@FXML private JFXDatePicker dateOfBirthDP;
 	
 	// Text objects for displaying error message when user input is invalid
@@ -42,6 +45,12 @@ public class RegistrationViewController extends BaseController {
 		user = new User();
 	}*/
 	
+	public void setPhoneNumberFormatter() {
+		// Set phone number formatter for text field
+		TextFormatter<String> formatter = new TextFormatter<>(PhoneNumberFormatter::addPhoneNumberMask);
+		phoneNumberTF.setTextFormatter(formatter);
+	}
+	
 	/**
 	 * Validate user input when user clicks on [Register] button
 	 * 
@@ -57,8 +66,9 @@ public class RegistrationViewController extends BaseController {
 			String firstName = firstNameTF.getText();
 			String lastName = lastNameTF.getText();
 			String email = emailTF.getText();
+			String phoneNumber = phoneNumberTF.getText().replaceAll("-", "");
 			Date birthday = Date.valueOf(dateOfBirthDP.getValue());
-			User user = new User(username, password, firstName, lastName, email, birthday);
+			User user = new User(username, password, firstName, lastName, email, phoneNumber, birthday);
 			// Create account for new user
 			Account account = new Account(user, 1000, user.getFirstName() + " " + user.getLastName(), null);
 			user.setAccount(account);
@@ -75,9 +85,14 @@ public class RegistrationViewController extends BaseController {
 	}
 	
 	private boolean validateUserInput() {
-		return ValidationUtil.validateFirstName(firstNameTF, firstNameError) && ValidationUtil.validateLastName(lastNameTF, lastNameError) && 
-				ValidationUtil.validateUsername(usernameTF, usernameError) && ValidationUtil.validateOriginalPassword(passwordPF, confirmPasswordError) && 
-				ValidationUtil.validateConfirmedPassword(passwordPF, confirmPasswordPF, confirmPasswordError) && ValidationUtil.validateEmail(emailTF, emailError) && ValidationUtil.validateDoB(dateOfBirthDP, dobError);
+		return ValidationUtil.validateFirstName(firstNameTF, firstNameError)
+		        && ValidationUtil.validateLastName(lastNameTF, lastNameError)
+		        && ValidationUtil.validateUsername(usernameTF, usernameError)
+		        && ValidationUtil.validateOriginalPassword(passwordPF, confirmPasswordError)
+		        && ValidationUtil.validateConfirmedPassword(passwordPF, confirmPasswordPF, confirmPasswordError) 
+		        && ValidationUtil.validateEmail(emailTF, emailError) 
+		        && ValidationUtil.validateDoB(dateOfBirthDP, dobError)
+				&& ValidationUtil.validatePhoneNumber(phoneNumberTF);
 	}
 
 	@Override

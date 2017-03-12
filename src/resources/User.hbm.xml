@@ -23,6 +23,9 @@
         <property name="email" type="string">
             <column name="email" length="45" not-null="true" />
         </property>
+		<property name="phoneNumber" type="string">
+            <column name="phone_number" length="45" not-null="true" />
+        </property>
         <property name="birthday" type="timestamp">
             <column name="birthday" length="19" not-null="true" />
         </property>

@@ -53,6 +53,7 @@ import main.java.model.Stock;
 import main.java.model.User;
 import main.java.model.UserStock;
 import main.java.utility.AlertFactory;
+import main.java.utility.CommunicationUtils;
 import main.java.utility.Screen;
 import main.java.utility.StageFactory;
 import main.java.utility.Utility;
@@ -135,7 +136,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 		alertSettingsService.setOnSucceeded(event -> {
 			System.out.println("Checking alert settings...");
 			ObservableList<UserStock> userStocks = alertSettingsService.getValue();
-			showAlertStage(userStocks);
+			notifyAlertToUser(userStocks);
 		});
 	}
 	
@@ -335,23 +336,52 @@ public class HomeController extends BaseController implements Initializable, Obs
 	}
 	
 	/**
+	 * Notify user about some updates in alert settings. 
+	 * Some threshold might have been crossed.
+	 * 
+	 * @param userStocks
+	 */
+	private void notifyAlertToUser(ObservableList<UserStock> userStocks) {
+		if (userStocks != null && userStocks.size() > 0) {
+			showAlertStage(userStocks);
+			sendMessageToUser(userStocks);
+		}
+	}
+	
+	/**
+	 * Send a message that contains a list of Stocks whose some thresholds have been crossed.
+	 * 
+	 * @param userStocks
+	 */
+	private void sendMessageToUser(ObservableList<UserStock> userStocks) {
+		StringBuilder builder = new StringBuilder("Here is the list of stocks which have thresholds crossed: ");
+		for (int i = 0; i < userStocks.size(); i ++) {
+			UserStock us = userStocks.get(i);
+			builder.append(us.getStock().getStockCode());
+			// Format message sent to user's phone
+			if (i != userStocks.size() - 1) {
+				builder.append(", ");
+			}
+		}
+		CommunicationUtils.sendMessage(builder.toString(), user.getPhoneNumber());
+	}
+	
+	/**
 	 * Create a list of stocks whole values crossed threshold
 	 * @param stocks
 	 */
 	private void showAlertStage(ObservableList<UserStock> userStocks) {
-		if (userStocks != null && userStocks.size() > 0) {
-			TableView<UserStock> alertTable = createAlertTable(userStocks);
-	        final VBox vbox = new VBox();
-	        vbox.setSpacing(5);
-	        vbox.setPadding(new Insets(10, 0, 0, 10));
-	        vbox.getChildren().add(alertTable);
-			Stage stage = StageFactory.generateStage("Stock Alert");
-			stage.setScene(new Scene(vbox));
-			stage.show();
-			stage.setOnCloseRequest(event -> { // Clean up database when user close stage
-				clean(userStocks);
-			});
-		}
+		TableView<UserStock> alertTable = createAlertTable(userStocks);
+        final VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 0, 0, 10));
+        vbox.getChildren().add(alertTable);
+		Stage stage = StageFactory.generateStage("Stock Alert");
+		stage.setScene(new Scene(vbox));
+		stage.show();
+		stage.setOnCloseRequest(event -> { // Clean up database when user close stage
+			clean(userStocks);
+		});
 	}
 	
 	@SuppressWarnings("unchecked")

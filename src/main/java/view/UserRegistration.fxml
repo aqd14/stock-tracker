@@ -77,7 +77,7 @@
             	</Text>
                   
                   <Label text="Confirm Password" GridPane.rowIndex="13" />
-                  <JFXPasswordField fx:id="confirmPasswordPF" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                  <JFXPasswordField fx:id="confirmPasswordPF" prefWidth="216.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
                  	<Text fx:id="confirmPasswordError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="14">
             		<font>
             			<Font name="Arial" size="14.0" />
@@ -95,10 +95,16 @@
             			<Font name="Arial" size="14.0" />
             		</font>
             	</Text>
+                  <Label text="Phone Number" GridPane.rowIndex="19" />
+                  <JFXTextField fx:id="phoneNumberTF" GridPane.columnIndex="1" GridPane.rowIndex="19">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXTextField>
                   
-                  <Label text="Date of Birth" GridPane.rowIndex="19" />
-                  <JFXDatePicker fx:id="dateOfBirthDP" prefHeight="28.0" prefWidth="215.0" GridPane.columnIndex="1" GridPane.rowIndex="19" />
-            		<Text fx:id="dobError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="20">
+                  <Label text="Date of Birth" GridPane.rowIndex="22" />
+                  <JFXDatePicker fx:id="dateOfBirthDP" prefHeight="28.0" prefWidth="215.0" GridPane.columnIndex="1" GridPane.rowIndex="22" />
+            		<Text fx:id="dobError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="215.13671875" GridPane.columnIndex="1" GridPane.rowIndex="22">
             		<font>
             			<Font name="Arial" size="14.0" />
             		</font> 
@@ -134,6 +140,8 @@
                   <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
                </rowConstraints>
             </GridPane>
             <HBox prefHeight="57.0" prefWidth="358.0">
