@@ -40,7 +40,7 @@ public class User implements java.io.Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.phoneNumber = phoneNumber;
+		setPhoneNumber(phoneNumber);
 		this.birthday = birthday;
 		alertTime = DEFAULT_ALERT_TIME;
 		stockUpdateTime = DEFAULT_STOCK_UPDATE_TIME;
@@ -158,7 +158,7 @@ public class User implements java.io.Serializable {
 	 * @param phoneNumber the phoneNumber to set
 	 */
 	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+		this.phoneNumber = phoneNumber.replaceAll("-", "");
 	}
 
 	@Override

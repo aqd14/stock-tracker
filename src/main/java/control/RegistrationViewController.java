@@ -67,7 +67,7 @@ public class RegistrationViewController extends BaseController {
 			String firstName = firstNameTF.getText();
 			String lastName = lastNameTF.getText();
 			String email = emailTF.getText();
-			String phoneNumber = phoneNumberTF.getText().replaceAll("-", "");
+			String phoneNumber = phoneNumberTF.getText();
 			Date birthday = Date.valueOf(dateOfBirthDP.getValue());
 			User user = new User(username, password, firstName, lastName, email, phoneNumber, birthday);
 			// Create account for new user
