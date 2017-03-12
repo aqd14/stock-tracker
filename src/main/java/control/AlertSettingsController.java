@@ -23,7 +23,7 @@ import main.java.model.UserStockId;
 import main.java.utility.AlertFactory;
 import main.java.utility.CurrencyFormatter;
 import main.java.utility.Screen;
-import main.java.utility.Utility;
+import main.java.utility.Utils;
 
 /**
  * @author doquocanh-macbook
@@ -75,21 +75,21 @@ public class AlertSettingsController extends BaseController implements Initializ
 			System.out.println("User owned stock: " + selectedStock.getStockCode());
 			if (!valueAlert.isDisabled() && !valueThreshold.getText().equals(DEFAULT_THRESHOLD)) {
 				isSettingsUpdated = true;
-				Double value = Utility.parseCurrencyDouble(valueThreshold.getText());
+				Double value = Utils.parseCurrencyDouble(valueThreshold.getText());
 				if (value != null)
 					valueTh = new BigDecimal(value);
 			}
 			
 			if (!combinedValueAlert.isDisabled() && !combinedValueThreshold.getText().equals(DEFAULT_THRESHOLD)) {
 				isSettingsUpdated = true;
-				Double value = Utility.parseCurrencyDouble(combinedValueThreshold.getText());
+				Double value = Utils.parseCurrencyDouble(combinedValueThreshold.getText());
 				if (value != null)
 					combinedTh = new BigDecimal(value);
 			}
 			
 			if (!netProfitAlert.isDisabled() && !netProfitThreshold.getText().equals(DEFAULT_THRESHOLD)) {
 				isSettingsUpdated = true;
-				Double value = Utility.parseCurrencyDouble(netProfitThreshold.getText());
+				Double value = Utils.parseCurrencyDouble(netProfitThreshold.getText());
 				if (value != null)
 					netProfitTh = new BigDecimal(value);
 			}

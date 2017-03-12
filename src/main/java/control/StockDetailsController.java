@@ -46,7 +46,7 @@ import main.java.model.UserStock;
 import main.java.model.UserStockId;
 import main.java.utility.AlertFactory;
 import main.java.utility.Screen;
-import main.java.utility.Utility;
+import main.java.utility.Utils;
 import yahoofinance.histquotes.HistoricalQuote;
 
 /**
@@ -124,8 +124,8 @@ public class StockDetailsController extends BaseController implements Initializa
 					// Disable [Buy] button if the remaining balance is negative
 					buyStockButton.setDisable(remainingBalance < 0);
 					// Set corresponding balance and sub total
-					subTotalTF.setText("- $" + Utility.formatCurrencyDouble(price));
-					remainBalanceTF.setText("$" + Utility.formatCurrencyDouble(remainingBalance));
+					subTotalTF.setText("- $" + Utils.formatCurrencyDouble(price));
+					remainBalanceTF.setText("$" + Utils.formatCurrencyDouble(remainingBalance));
 				}
 			}
 		});
@@ -256,27 +256,27 @@ public class StockDetailsController extends BaseController implements Initializa
 	}
 	
 	private void initDayLow() {
-		dayLow.setText(Utility.formatCurrencyNumber(yahooStock.getQuote().getDayLow()));
+		dayLow.setText(Utils.formatCurrencyNumber(yahooStock.getQuote().getDayLow()));
 	}
 	
 	private void initDayHigh() {
-		dayHigh.setText(Utility.formatCurrencyNumber(yahooStock.getQuote().getDayHigh()));
+		dayHigh.setText(Utils.formatCurrencyNumber(yahooStock.getQuote().getDayHigh()));
 	}
 	
 	private void initVolume() {
-		volume.setText(Utility.formatCurrencyNumber(new BigDecimal(yahooStock.getQuote().getVolume())));
+		volume.setText(Utils.formatCurrencyNumber(new BigDecimal(yahooStock.getQuote().getVolume())));
 	}
 	
 	private void initMarketCap() {
-		marketCapValue.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getMarketCap()));
+		marketCapValue.setText(Utils.formatCurrencyNumber(yahooStock.getStats().getMarketCap()));
 	}
 	
 	private void initPriceEarnRatio() {
-		peRatio.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getPe()));
+		peRatio.setText(Utils.formatCurrencyNumber(yahooStock.getStats().getPe()));
 	}
 	
 	private void initEarnPerShare() {
-		eps.setText(Utility.formatCurrencyNumber(yahooStock.getStats().getEps()));
+		eps.setText(Utils.formatCurrencyNumber(yahooStock.getStats().getEps()));
 	}
 	
 	/**
@@ -304,7 +304,7 @@ public class StockDetailsController extends BaseController implements Initializa
 		buyPriceLB.setText(yahooStock.getQuote().getPrice().toString());
 		ObservableList<Integer> options = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		quantityCB.setItems(options);
-		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
+		currentBalanceTF.setText("$" + Utils.formatCurrencyDouble(user.getAccount().getBalance()));
 	}
 	
 	/**
@@ -393,7 +393,7 @@ public class StockDetailsController extends BaseController implements Initializa
 		double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
 		
 		// Check if current balance is enough to buy stock
-		double subtraction = Utility.round(curBal - quantity*price, 2);
+		double subtraction = Utils.round(curBal - quantity*price, 2);
 		if (subtraction > 0) {
 			user.getAccount().setBalance(subtraction);
 			userManager.update(user);
@@ -428,7 +428,7 @@ public class StockDetailsController extends BaseController implements Initializa
 		quantityCB.getSelectionModel().clearSelection();
 		subTotalTF.setText("");
 		remainBalanceTF.setText("");
-		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
+		currentBalanceTF.setText("$" + Utils.formatCurrencyDouble(user.getAccount().getBalance()));
 	}
 	
 	private Stock extractStock() {

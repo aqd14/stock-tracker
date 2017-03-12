@@ -53,10 +53,10 @@ import main.java.model.Stock;
 import main.java.model.User;
 import main.java.model.UserStock;
 import main.java.utility.AlertFactory;
-import main.java.utility.CommunicationUtils;
+import main.java.utility.CommunicationUtil;
 import main.java.utility.Screen;
 import main.java.utility.StageFactory;
-import main.java.utility.Utility;
+import main.java.utility.Utils;
 import yahoofinance.YahooFinance;
 
 /**
@@ -363,7 +363,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 				builder.append(", ");
 			}
 		}
-		CommunicationUtils.sendMessage(builder.toString(), user.getPhoneNumber());
+		CommunicationUtil.sendMessage(builder.toString(), user.getPhoneNumber());
 	}
 	
 	/**
@@ -503,7 +503,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 			return new Task<ObservableList<Stock>>() {
 				@Override
 				protected ObservableList<Stock> call() throws IOException {
-					 return Utility.getMultipleStockData(stockSymbols);
+					 return Utils.getMultipleStockData(stockSymbols);
 				}
 			};
 		}

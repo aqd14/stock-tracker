@@ -48,7 +48,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import main.java.model.User;
 import main.java.utility.Screen;
-import main.java.utility.Utility;
+import main.java.utility.Utils;
  
 public class LoginController extends BaseController implements Initializable {
     @FXML private Text loginError;
@@ -70,9 +70,9 @@ public class LoginController extends BaseController implements Initializable {
         	// Save current username to file if user selects remember me
         	// Otherwise, empty file's content
         	if (rememberMeCB.isSelected()) {
-            	Utility.writeFile(usernameTF.getText());
+            	Utils.writeFile(usernameTF.getText());
         	} else {
-        		Utility.writeFile("");
+        		Utils.writeFile("");
         	}
         } else {
         	loginError.setText("Incorrect username or password. Try again.");
@@ -95,7 +95,7 @@ public class LoginController extends BaseController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// Set initial username based on last time saved
-		String username = Utility.readFile();
+		String username = Utils.readFile();
 		rememberMeCB.setSelected(!(null == username || username.equals("")));
 		usernameTF.setText(username);
 //		// Action listener

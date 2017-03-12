@@ -19,7 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import main.java.utility.CurrencyFormatter;
 import main.java.utility.Screen;
-import main.java.utility.Utility;
+import main.java.utility.Utils;
 import main.java.utility.ValidationUtil;
 
 public class SettingsController extends BaseController implements Initializable, Subject {
@@ -60,7 +60,7 @@ public class SettingsController extends BaseController implements Initializable,
 	 */
 	public void initUserInfo() {
 		accountName.setText(user.getAccount().getAccountName());
-		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
+		currentBalanceTF.setText("$" + Utils.formatCurrencyDouble(user.getAccount().getBalance()));
 		firstNameTF.setText(user.getFirstName());
 		lastNameTF.setText(user.getLastName());
 		emailTF.setText(user.getEmail());
@@ -131,7 +131,7 @@ public class SettingsController extends BaseController implements Initializable,
 			// Do nothing
 		} else {
 			try {
-				double newBalance = Utility.parseCurrencyDouble(newBalanceTF.getText());
+				double newBalance = Utils.parseCurrencyDouble(newBalanceTF.getText());
 				user.getAccount().setBalance(newBalance);
 				anyChange = true;
 			} catch (NumberFormatException ex) {
@@ -189,7 +189,7 @@ public class SettingsController extends BaseController implements Initializable,
 		currentPasswordPF.clear();
 		newPasswordPF.clear();
 		confirmPasswordPF.clear();
-		currentBalanceTF.setText("$" + Utility.formatCurrencyDouble(user.getAccount().getBalance()));
+		currentBalanceTF.setText("$" + Utils.formatCurrencyDouble(user.getAccount().getBalance()));
 		// Clear combobox selection
 		alertCheckingTime.getSelectionModel().clearSelection();
 		stockUpdateTime.getSelectionModel().clearSelection();

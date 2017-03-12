@@ -26,7 +26,7 @@ import yahoofinance.quotes.stock.StockQuote;
  * @author aqd14
  *
  */
-public class Utility {
+public class Utils {
 	
 	/** Store username to avoid user from entering username or email whenever user:
 	 *  	+ selects [Remember Me]
@@ -39,7 +39,7 @@ public class Utility {
 	/**
 	 * 
 	 */
-	public Utility() {
+	public Utils() {
 		// TODO Auto-generated constructor stub
 	}
 	

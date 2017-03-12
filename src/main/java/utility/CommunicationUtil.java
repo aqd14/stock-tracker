@@ -4,13 +4,13 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
-public class CommunicationUtils {
+public class CommunicationUtil {
 	
 	private static final String ACCOUNT_SID = "AC252e8acc74b966d2ff5d408cdea35981";
 	private static final String AUTH_TOKEN = "36108bb859e6735abb943b8f6b7ca528";
 	private static final String fromNumber = "+16625243364";
 	
-	private CommunicationUtils() {
+	private CommunicationUtil() {
 
 	}
 	
