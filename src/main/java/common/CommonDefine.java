@@ -33,6 +33,7 @@ public class CommonDefine {
 	public static final String USER_SETTINGS_TITLE = "Settings";
 	public static final String STOCK_DETAILS_TITLE = "Stock Details";
 	public static final String ALERT_SETTINGS_TITLE = "Alert Settings";
+	public static final String PORTFOLIO_TITLE = "Portfolio and Transaction History";
 	
 	/**
 	 * Interval for display stock data.

@@ -178,7 +178,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 		    };
 		    alertSettingsItem.setOnAction(evt -> {
 		        stock = row.getItem();
-		        makeNewStage(Screen.ALERT_SETTINGS, "Alert Settings", "../view/AlertSettings.fxml");
+		        makeNewStage(Screen.ALERT_SETTINGS, CommonDefine.ALERT_SETTINGS_TITLE, "../view/AlertSettings.fxml");
 		    });
 		    // event handlers for other menu items...
 		    removeItem.setOnAction(evt -> {
@@ -291,11 +291,11 @@ public class HomeController extends BaseController implements Initializable, Obs
 	 * @param event Capture the action user performed. 
 	 */
 	@FXML private void openAccountSettings(ActionEvent event) {
-		makeNewStage(Screen.SETTINGS, "Settings", "../view/Settings.fxml");
+		makeNewStage(Screen.SETTINGS, CommonDefine.USER_SETTINGS_TITLE, "../view/Settings.fxml");
 	}
 	
 	@FXML private void openPorfolio(ActionEvent event) {
-		makeNewStage(Screen.PORFOLIO, "My Porfolio", "../view/Portfolio.fxml");
+		makeNewStage(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, "../view/Portfolio.fxml");
 	}
 
 	/**
