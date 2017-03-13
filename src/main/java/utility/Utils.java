@@ -89,13 +89,11 @@ public class Utils {
 	 * @return
 	 */
 	public static String readFile() {
-		FileReader fileReader;
-		try {
-			fileReader = new FileReader(REMEMBER_ME_FILE);
-			BufferedReader reader = new BufferedReader(fileReader);
-		    String line = null;
-		    line = reader.readLine();
-	        reader.close();
+//		FileReader fileReader;
+		try (FileReader fileReader = new FileReader(REMEMBER_ME_FILE); 
+			 BufferedReader reader = new BufferedReader(fileReader);){
+//			fileReader = 
+		    String line = reader.readLine();
 	        return line;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -103,7 +101,7 @@ public class Utils {
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
 		}
-		return "";
+		return null;
 	}
 	
 	/**

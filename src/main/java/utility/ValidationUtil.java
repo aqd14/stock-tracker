@@ -48,7 +48,7 @@ public class ValidationUtil {
 			return false;
 		} 
 		
-		if (!isNameValid(firstNameTF.getText())) {
+		if (!isValidName(firstNameTF.getText())) {
 			displayErrorMessage(firstNameError, CommonDefine.INVALID_NAME_ERR);
 			return false;
 		}
@@ -69,7 +69,7 @@ public class ValidationUtil {
 			return false;
 		} 
 		
-		if (!isNameValid(lastNameTF.getText())) {
+		if (!isValidName(lastNameTF.getText())) {
 			displayErrorMessage(lastNameError, CommonDefine.INVALID_NAME_ERR);
 			return false;
 		}
@@ -86,8 +86,8 @@ public class ValidationUtil {
 			return false;
 		}
 		
-		boolean userAlreadyExisted = false;
-		if (userAlreadyExisted) {
+		User user = userManager.findByUsernameOrEmail(usernameTF.getText());
+		if (user != null) {
 			// Search through all database to find if user already existed
 			// Print warning message
 			return false;
@@ -197,7 +197,7 @@ public class ValidationUtil {
 			return false;
 		}
 		
-		User user = userManager.findByEmail(emailTF.getText());
+		User user = userManager.findByUsernameOrEmail(emailTF.getText());
 		if (null != user) {
 			displayErrorMessage(emailError, CommonDefine.EMAIL_TAKEN_ERR);
 			return false;
@@ -299,7 +299,7 @@ public class ValidationUtil {
 	 * @param instance
 	 * @return
 	 */
-	public static boolean isNameValid(String instance) {
+	public static boolean isValidName(String instance) {
 		Matcher matcher = VALID_CHARACTERS_REGEX.matcher(instance);
 		return matcher.find();
 	}

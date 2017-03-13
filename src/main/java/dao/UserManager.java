@@ -96,19 +96,19 @@ public class UserManager<T> extends BaseManager<T> {
 	}
 	
 	/**
-	 * Find user in database with given email
-	 * @param email
+	 * Find user in database with given username or email
+	 * @param identity
 	 * @return NULL if not found
 	 */
-	public User findByEmail(String email) {
-		log.debug("getting User instance with email: " + email);
+	public User findByUsernameOrEmail(String identity) {
 		Session session = null;
 		try {
 			session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
-			String searchEmailHQL = "FROM User WHERE email = '" + email + "'";
+			String searchEmailHQL = "FROM User WHERE email = :identity OR username = :identity";
 			@SuppressWarnings("unchecked")
 			Query<User> query = session.createQuery(searchEmailHQL);//.setParameter("email", email);
+			query.setParameter("identity", identity);
 			List<User> users = query.getResultList();
 			if (users == null || users.size() == 0) {
 				log.debug("get successful, no instance found");

@@ -51,6 +51,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.java.common.CommonDefine;
+import main.java.dao.UserManager;
 import main.java.utility.Screen;
 import main.java.utility.Utils;
  
@@ -64,7 +65,8 @@ public class LoginController extends BaseController implements Initializable, IC
     
     @FXML protected void login(ActionEvent e) throws IOException {
     	// Check if given username and password matched with records in database
-    	user = userManager.findByUsernameOrEmail(usernameTF.getText(), passwordPF.getText());
+    	if (user == null)
+    		user = userManager.findByUsernameOrEmail(usernameTF.getText(), passwordPF.getText());
         if (user != null) {
         	System.out.println("Login successfully!");
         	// Initialize array to pass optional argument
@@ -97,14 +99,25 @@ public class LoginController extends BaseController implements Initializable, IC
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// Set initial username based on last time saved
-		String username = Utils.readFile();
-		rememberMeCB.setSelected(!(null == username || username.equals("")));
-		usernameTF.setText(username);
-//		// Action listener
-//		rememberMeCB.setOnAction(event -> {
-//			rememberMe = !rememberMe;
-//		});
+		// Initialize username and password based on last save
+		setupRememberMe();
+	}
+	
+	/**
+	 * Check if the last time user checked [Remember Me]. 
+	 * If he did, load username and password from config file and database
+	 */
+	public void setupRememberMe() {
+		String identity = Utils.readFile(); // Could be either username or email
+		if (identity != null && !identity.equals("")) {
+			userManager = new UserManager<>();
+			user = userManager.findByUsernameOrEmail(identity);
+			if (user != null) {
+				usernameTF.setText(identity);
+				passwordPF.setText(user.getPassword());
+			}
+			rememberMeCB.setSelected(true);
+		}
 	}
 
 	/**
