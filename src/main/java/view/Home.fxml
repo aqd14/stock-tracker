@@ -30,7 +30,7 @@
                            <menus>
                               <Menu mnemonicParsing="true" text="_File">
                                  <items>
-                                    <MenuItem mnemonicParsing="false" text="Exit" />
+                                    <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
                                  </items>
                               </Menu>
                               <Menu mnemonicParsing="true" text="_Settings">

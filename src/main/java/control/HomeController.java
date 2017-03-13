@@ -42,7 +42,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -64,7 +63,7 @@ import yahoofinance.YahooFinance;
  *
  */
 public class HomeController extends BaseController implements Initializable, Observer, IController {
-	@FXML private AnchorPane homeAP;
+	@FXML private StackPane homeSP;
 	@FXML private JFXTreeTableView<Stock> stockTableView;
 	
 	@FXML private TreeTableColumn<Stock, String> stockCodeCol;
@@ -296,6 +295,16 @@ public class HomeController extends BaseController implements Initializable, Obs
 	
 	@FXML private void openPorfolio(ActionEvent event) {
 		makeNewStage(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, "../view/Portfolio.fxml");
+	}
+	
+	@FXML private void exit(ActionEvent event) {
+		Alert alert = AlertFactory.generateAlert(AlertType.CONFIRMATION, "Do you really want to exit?");
+		Optional<ButtonType> selection = alert.showAndWait();
+		if (selection.isPresent() && selection.get().equals(ButtonType.OK)) {
+			switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, "../../../main/java/view/Login.fxml");
+		} else {
+			// Stay in Home page
+		}
 	}
 
 	/**
@@ -598,6 +607,23 @@ public class HomeController extends BaseController implements Initializable, Obs
 	 * {@inheritDoc}
 	 */
 	@Override public void switchScreen(Screen target, String title, String url) {
-		// TODO: Switch to login screen when user logs out
+        Parent root = null;
+		try {
+			switch (target) {
+				case LOGIN:
+					root = new FXMLLoader(getClass().getResource(url)).load();
+					break;
+				default:
+					return;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+	  	Stage curStage = (Stage)homeSP.getScene().getWindow();
+        curStage.setTitle(title);
+        curStage.setScene(new Scene(root));
+        curStage.setResizable(false);
+        curStage.show();
 	}
 }

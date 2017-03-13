@@ -110,7 +110,7 @@ public class RegistrationController extends BaseController implements IControlle
 		try {
 			switch (target) {
 				case LOGIN:
-					root = new FXMLLoader(getClass().getResource("../../../main/java/view/Login.fxml")).load();
+					root = new FXMLLoader(getClass().getResource(url)).load();
 					break;
 				default:
 					return;
