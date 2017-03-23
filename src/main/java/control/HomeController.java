@@ -540,10 +540,11 @@ public class HomeController extends BaseController implements Initializable, Obs
 		
 		/**
 		 * Search database for list of stocks then calculate combined value threshold.
+		 * 
 		 * @param stock Current stock that needs to calculate combined threshold
 		 * @return
 		 */
-		private BigDecimal calculateCombinedValueThreshold(yahoofinance.Stock stock) {
+		private BigDecimal calculatePreviousCombinedValueThreshold(yahoofinance.Stock stock) {
 			List<Stock> stocks = usManager.findStocks(userID, stock.getSymbol());
 			if (stocks != null && stocks.size() > 0) {
 				BigDecimal total = new BigDecimal(0);
@@ -553,6 +554,100 @@ public class HomeController extends BaseController implements Initializable, Obs
 				return total;
 			}
 			return new BigDecimal(-1);
+		}
+		
+		/**
+		 * Calculate combined value of stock with current price
+		 * 
+		 * @param stock
+		 * @return
+		 */
+		private BigDecimal calculateCurrentCombinedValueThreshold(yahoofinance.Stock stock) {
+			List<Stock> stocks = usManager.findStocks(userID, stock.getSymbol());
+			BigDecimal total = new BigDecimal(-1);
+			if (stocks != null && stocks.size() > 0) {
+				int totalAmount = 0;
+				for (Stock s : stocks) {
+					totalAmount += s.getAmount();
+				}
+				total = stock.getQuote().getPrice().multiply(BigDecimal.valueOf(totalAmount));
+			}
+			return total;
+		}
+		
+
+		/**
+		 * <p>
+		 * Check if threshold is crossed or not. There are two possibilities:
+		 * 
+		 * <li>
+		 * 1. At the time when user set threshold, the stock price is higher than threshold value,
+		 * which means user was looking for the alert when stock price went down
+		 * </li>
+		 * 
+		 * <li>
+		 * 2. Conversely, if the stock price was lower than threshold value when user setting, 
+		 * he is looking for the alert when price raising
+		 * </li>
+		 * </p>
+		 *
+		 * 
+		 * @param threshold			The threshold value
+		 * @param previousPrice		The price at the moment user settings
+		 * @param curPrice			Current price of stock
+		 * @return	<code>True</code> if the price went below or above threshold. Otherwise, returns <code>False</code> 
+		 */
+		private boolean isThresholdCrossed(BigDecimal threshold, BigDecimal previousPrice, BigDecimal curPrice) {
+			// At the time user set threshold, the value of threshold is lesser than the stock price
+			// So, we check if the current price went down below threshold or not
+			if (threshold.compareTo(previousPrice) < 0) {
+				if (threshold.compareTo(curPrice) > 0) {
+					return true;
+				}
+			} else {
+				if (threshold.compareTo(curPrice) < 0) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		/**
+		 * <p>
+		 * Check if threshold is crossed or not. There are two possibilities:
+		 * 
+		 * <li>
+		 * 1. At the time when user set threshold, the stock price is higher than threshold value,
+		 * which means user was looking for the alert when stock price went down
+		 * </li>
+		 * 
+		 * <li>
+		 * 2. Conversely, if the stock price was lower than threshold value when user setting, 
+		 * he is looking for the alert when price raising
+		 * </li>
+		 * </p>
+		 *
+		 * 
+		 * @param threshold			The threshold value
+		 * @param previousPrice		The price at the moment user settings
+		 * @param curPrice			Current price of stock
+		 * @return	<code>True</code> if the price went below or above threshold. Otherwise, returns <code>False</code> 
+		 */
+		private boolean isNetThresholdCrossed(BigDecimal threshold, BigDecimal previousPrice, BigDecimal curPrice) {
+			// TODO: Need to find a way to check if user wants to check net profit or net loss
+			BigDecimal difference = curPrice.subtract(previousPrice);
+			if (difference.compareTo(BigDecimal.ZERO) > 0) { // User is earning money
+				if (threshold.compareTo(difference) < 0) {	 // Therefore, user probably wants to check net profit
+					return true;
+				}
+			} else { // User is losing money, he might want to check net loss
+				BigDecimal minusOne = new BigDecimal(-1);
+				// Reverse value of difference than compare with threshold value
+				if (threshold.compareTo(difference.multiply(minusOne)) < 0) {
+					return true;
+				}
+			}
+			return false;
 		}
 		
 		@Override
@@ -575,19 +670,25 @@ public class HomeController extends BaseController implements Initializable, Obs
 						yahoofinance.Stock yahooStock = YahooFinance.get(stock.getStockCode());
 						BigDecimal curPrice = yahooStock.getQuote().getPrice();
 						// Check value threshold crossed
-						if (us.getValueThreshold().compareTo(defaultThreshold) > 0 && us.getValueThreshold().compareTo(curPrice) < 0) {
-							thresholdCrossed = true;
+						if (us.getValueThreshold().compareTo(defaultThreshold) > 0) {
+							thresholdCrossed = thresholdCrossed || isThresholdCrossed(us.getValueThreshold(), us.getStock().getPrice(), curPrice);
 						}
 						
 						// Check combined value threshold crossed
-						BigDecimal combinedValue = calculateCombinedValueThreshold(yahooStock);
-						if (us.getCombinedValueThreshold().compareTo(defaultThreshold) > 0 && us.getCombinedValueThreshold().compareTo(combinedValue) < 0) {
-							thresholdCrossed = true;
+						BigDecimal previousCombinedValue = calculatePreviousCombinedValueThreshold(yahooStock);
+						BigDecimal curCombinedValue = calculateCurrentCombinedValueThreshold(yahooStock);
+						if (us.getCombinedValueThreshold().compareTo(defaultThreshold) > 0) {
+							thresholdCrossed = thresholdCrossed || isThresholdCrossed(us.getCombinedValueThreshold(), previousCombinedValue, curCombinedValue);
 						}
 						
-						// Set current value for UserStock
+						// Check net gain/net loss
+						if (us.getNetProfitThreshold().compareTo(defaultThreshold) > 0) {
+							thresholdCrossed = thresholdCrossed || isNetThresholdCrossed(us.getNetProfitThreshold(), previousCombinedValue, curCombinedValue);
+						}
+						
+						// Set threshold values for display purpose later
 						us.setCurrentValueThreshold(curPrice);
-						us.setCurrentCombinedValueThreshold(combinedValue);
+//						us.setCurrentCombinedValueThreshold(curr);
 						
 						if (thresholdCrossed) { // Reset threshold in database
 //							usManager.update(us);
