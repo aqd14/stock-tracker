@@ -128,7 +128,7 @@
             </Pane>
             <HBox prefHeight="55.0" prefWidth="464.0">
                <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#back" prefHeight="30.0" prefWidth="75.0" ripplerFill="WHITE" style="-fx-background-color: #6e757a;" text="Back" textFill="WHITE">
+                  <JFXButton buttonType="RAISED" onMouseClicked="#back" prefHeight="32.0" prefWidth="90.0" ripplerFill="WHITE" styleClass="back_button" text="Back">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -136,12 +136,12 @@
                         <Insets left="30.0" />
                      </HBox.margin>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" onAction="#register" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: #1887cc;" text="Register" textFill="WHITE">
+                  <JFXButton buttonType="RAISED" onAction="#register" prefHeight="32.0" prefWidth="90.0" styleClass="custom_button" text="Register" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="250.0" />
+                        <Insets left="220.0" />
                      </HBox.margin>
                   </JFXButton>
                </children>
@@ -152,4 +152,7 @@
          </children>
       </VBox>
    </children>
+   <stylesheets>
+    	<URL value="@../../resources/css/style.css" />
+	</stylesheets>
 </AnchorPane>

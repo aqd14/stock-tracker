@@ -13,7 +13,7 @@
          <children>
             <JFXTextField fx:id="usernameTF" focusColor="#0f79d9" layoutX="64.0" layoutY="28.0" prefHeight="25.0" prefWidth="238.0" promptText="Username or Email" />
             <JFXPasswordField fx:id="passwordPF" focusColor="#0f79d9" layoutX="64.0" layoutY="92.0" prefHeight="25.0" prefWidth="238.0" promptText="Password" />
-            <JFXButton buttonType="RAISED" layoutX="196.0" layoutY="158.0" onAction="#login" prefHeight="37.0" prefWidth="106.0" style="-fx-background-color: #2196f3;" styleClass="custom_button" text="Login">
+            <JFXButton buttonType="RAISED" layoutX="196.0" layoutY="158.0" onAction="#login" prefHeight="37.0" prefWidth="106.0" styleClass="custom_button" text="Login">
                <font>
                   <Font size="16.0" />
                </font></JFXButton>
@@ -42,6 +42,6 @@
       </Label>
    </children>
 	<stylesheets>
-    	<URL value="@../../resources/css/login.css" />
+    	<URL value="@../../resources/css/style.css" />
 	</stylesheets>
 </AnchorPane>

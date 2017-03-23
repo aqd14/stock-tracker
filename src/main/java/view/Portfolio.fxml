@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import java.net.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.PortfolioController">
    <children>
@@ -16,7 +17,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Pagination fx:id="portfolioPagination" prefHeight="335.0" prefWidth="759.0" AnchorPane.topAnchor="10.0" />
-                        <JFXButton fx:id="sellStockButton" buttonType="RAISED" layoutX="605.0" layoutY="322.0" prefHeight="31.0" prefWidth="65.0" ripplerFill="WHITE" style="-fx-background-color: #18bc6a;" text="Sell" textFill="WHITE">
+                        <JFXButton fx:id="sellStockButton" buttonType="RAISED" layoutX="605.0" layoutY="322.0" prefHeight="31.0" prefWidth="65.0" ripplerFill="WHITE" styleClass="sell_button" text="Sell">
                            <font>
                               <Font name="Segoe UI" size="16.0" />
                            </font>
@@ -37,4 +38,7 @@
         </tabs>
       </TabPane>
    </children>
+   <stylesheets>
+    	<URL value="@../../resources/css/style.css" />
+	</stylesheets>
 </AnchorPane>

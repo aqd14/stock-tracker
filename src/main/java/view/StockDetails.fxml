@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import java.net.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.StockDetailsController">
    <children>
@@ -409,7 +410,7 @@
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
                                  </children>
                               </HBox>
-                              <JFXButton fx:id="buyStockButton" buttonType="RAISED" onAction="#buyStock" prefHeight="37.0" prefWidth="106.0" style="-fx-background-color: #2196f3;" styleClass="custom_button" text="Buy" textFill="#f1f1f1">
+                              <JFXButton fx:id="buyStockButton" buttonType="RAISED" onAction="#buyStock" prefHeight="37.0" prefWidth="106.0" styleClass="custom_button" text="Buy">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
@@ -435,4 +436,7 @@
          </children>
       </VBox>
    </children>
+   <stylesheets>
+    	<URL value="@../../resources/css/style.css" />
+	</stylesheets>
 </AnchorPane>
