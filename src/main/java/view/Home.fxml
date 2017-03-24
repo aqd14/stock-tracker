@@ -82,7 +82,7 @@
                               <TreeTableColumn fx:id="companyCol" editable="false" prefWidth="230" resizable="false" text="Company" />
                               <TreeTableColumn fx:id="priceCol" editable="false" prefWidth="120" resizable="false" text="Price" />
                               <TreeTableColumn fx:id="lastPriceCol" editable="false" prefWidth="140" resizable="false" text="Last Price" />
-                              <TreeTableColumn fx:id="changeCol" editable="false" prefWidth="120" resizable="false" text="Change" />
+                              <TreeTableColumn fx:id="priceChangeCol" editable="false" prefWidth="120" resizable="false" text="Change" />
                               <TreeTableColumn fx:id="percentChangeCol" editable="false" prefWidth="140" resizable="false" text="\% Change" />
                               <!-- <JFXTreeTableColumn fx:id="stockBuyCol" editable="true" prefWidth="120" resizable="false" text="Stock Buy" /> -->
                            </columns>

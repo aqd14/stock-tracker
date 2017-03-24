@@ -39,11 +39,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableRow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.java.common.CommonDefine;
@@ -70,7 +72,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 	@FXML private TreeTableColumn<Stock, String> companyCol;
 	@FXML private TreeTableColumn<Stock, String> priceCol;
 	@FXML private TreeTableColumn<Stock, String> lastPriceCol;
-	@FXML private TreeTableColumn<Stock, String> changeCol;
+	@FXML private TreeTableColumn<Stock, String> priceChangeCol;
 	@FXML private TreeTableColumn<Stock, String> percentChangeCol;
 //	@FXML private JFXTreeTableColumn<Integer, String> stockBuyCol;
 	
@@ -338,7 +340,33 @@ public class HomeController extends BaseController implements Initializable, Obs
 	}
 	
 	private void setCellFactoryPriceChange() {
-		changeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getPriceChangeString()));
+		priceChangeCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getPriceChangeString()));
+		// Update cell color based on price change
+		priceChangeCol.setCellFactory(param -> new TreeTableCell<Stock, String>() {
+			@Override
+			protected void updateItem(String item, boolean empty) {
+				if (!empty) {
+					super.updateItem(item, empty);
+					item = item.replaceAll(",", "");
+					StringBuilder bd = new StringBuilder();
+					double priceChange = Double.valueOf(item);
+					// Price went down
+					if (priceChange < 0) {
+						setTextFill(Color.RED);
+						bd.append("- ").append(item.replace("-", ""));
+					} else if (priceChange > 0) { // Price went up
+						setTextFill(Color.GREEN);
+						bd.append("+ ").append(item);
+					} else {
+						// Price stays the same.
+						// Reset to black
+						setTextFill(Color.BLACK);
+						bd.append(item);
+					}
+					setText(bd.toString());
+				}
+			}
+		});
 	}
 	
 	private void setCellFactoryPercentageChange() {
