@@ -53,8 +53,9 @@ import main.java.dao.UserStockManager;
 import main.java.model.Stock;
 import main.java.model.User;
 import main.java.model.UserStock;
+import main.java.notification.EmailNotification;
+import main.java.notification.PhoneNotification;
 import main.java.utility.AlertFactory;
-import main.java.utility.CommunicationUtil;
 import main.java.utility.Screen;
 import main.java.utility.StageFactory;
 import main.java.utility.Utils;
@@ -92,6 +93,9 @@ public class HomeController extends BaseController implements Initializable, Obs
 	
 	RealTimeUpdateService stockUpdateService;
 	AlertSettingsCheckingService alertSettingsService;
+	
+	PhoneNotification phoneNotif = new PhoneNotification();
+	EmailNotification emailNotif = new EmailNotification();
 	
 	/**
 	 * Update schedule service period whenever there is update from user's settings
@@ -402,7 +406,10 @@ public class HomeController extends BaseController implements Initializable, Obs
 				builder.append(", ");
 			}
 		}
-		CommunicationUtil.sendMessage(builder.toString(), user.getPhoneNumber());
+//		CommunicationUtil.sendMessage(builder.toString(), user.getPhoneNumber());
+		String sms = builder.toString();
+		phoneNotif.notify(sms, user.getPhoneNumber());
+		emailNotif.notify(sms, user.getEmail());
 	}
 	
 	/**
