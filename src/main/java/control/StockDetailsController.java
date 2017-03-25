@@ -386,35 +386,43 @@ public class StockDetailsController extends BaseController implements Initializa
 	}
 
 	@FXML private void buyStock(ActionEvent e) {
-		// Subtract money from user's balance
-		double curBal= user.getAccount().getBalance();
-		int quantity = quantityCB.getSelectionModel().getSelectedItem();
-		double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
-		
-		// Check if current balance is enough to buy stock
-		double subtraction = Utils.round(curBal - quantity*price, 2);
-		if (subtraction > 0) {
-			user.getAccount().setBalance(subtraction);
-			userManager.update(user);
-			// Create new instance and relationship in database
-			Stock boughtStock = extractStock();
-			stockManager.add(boughtStock);
-			// Create new UserStock instance
-			UserStockId userStockId = new UserStockId(boughtStock.getId(), user.getId());
-			// Get existing UserStock instance to update alert threshold for all same stocks
-			List<UserStock> userStocks = userStockManager.findUserStock(user.getId(), boughtStock.getStockCode());
-			UserStock userStock = new UserStock(userStockId, boughtStock, user);
-			if (userStocks != null && !userStocks.isEmpty()) {
-				UserStock us = userStocks.get(0);
-				userStock.setValueThreshold(us.getValueThreshold());
-				userStock.setCombinedValueThreshold(us.getCombinedValueThreshold());
-				userStock.setNetProfitThreshold(us.getNetProfitThreshold());
-			}
-			userStockManager.add(userStock);
+		if (quantityCB.getSelectionModel().isEmpty()) { // User didn't select any amount
+			// Display warning message
+			Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.NOT_SELECT_STOCK_AMOUNT_SMS);
+			alert.showAndWait();
 		} else {
-			// Display error message for user
+			// Subtract money from user's balance
+			double curBal= user.getAccount().getBalance();
+			int quantity = quantityCB.getSelectionModel().getSelectedItem();
+			double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
+			
+			// Check if current balance is enough to buy stock
+			double subtraction = Utils.round(curBal - quantity*price, 2);
+			if (subtraction > 0) {
+				user.getAccount().setBalance(subtraction);
+				userManager.update(user);
+				// Create new instance and relationship in database
+				Stock boughtStock = extractStock();
+				stockManager.add(boughtStock);
+				// Create new UserStock instance
+				UserStockId userStockId = new UserStockId(boughtStock.getId(), user.getId());
+				// Get existing UserStock instance to update alert threshold for all same stocks
+				List<UserStock> userStocks = userStockManager.findUserStock(user.getId(), boughtStock.getStockCode());
+				UserStock userStock = new UserStock(userStockId, boughtStock, user);
+				if (userStocks != null && !userStocks.isEmpty()) {
+					UserStock us = userStocks.get(0);
+					userStock.setValueThreshold(us.getValueThreshold());
+					userStock.setCombinedValueThreshold(us.getCombinedValueThreshold());
+					userStock.setNetProfitThreshold(us.getNetProfitThreshold());
+				}
+				userStockManager.add(userStock);
+			} else {
+				// Display error message for user
+				Alert alert = AlertFactory.generateAlert(AlertType.WARNING, CommonDefine.NOT_ENOUGH_BALANCE_TO_BUY_SMS);
+				alert.showAndWait();
+			}
+			setupAfterBuyingStock();
 		}
-		setupAfterBuyingStock();
 	}
 	
 	/**

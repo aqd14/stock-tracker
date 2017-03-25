@@ -24,6 +24,9 @@ public class CommonDefine {
 	public static final String SELL_STOCK_SMS = "Are you sure you really want to sell these stocks?";
 	public static final String BUY_STOCK_SUCCESSFUL_SMS = "Your transaction is successful!";
 	public static final String UPDATE_ALERT_SETTINGS_SMS = "You've updated alert settings successfully!";
+	public static final String NOT_SELECT_ANY_STOCK_SMS = "You must choose at least one stock to sell!";
+	public static final String NOT_SELECT_STOCK_AMOUNT_SMS = "You haven't selected any stock amount to buy!";
+	public static final String NOT_ENOUGH_BALANCE_TO_BUY_SMS = "Your balance is not sufficient to perform transaction!";
 	
 	// Stage title
 	public static final String HOME_TITLE = "Stock Tracker";
