@@ -82,7 +82,7 @@ public class PortfolioController extends BaseController implements Initializable
 			portfolioPagination.setPageCount(portfolioTransactions.size()/rowsPerPage + 1);
 //			table = createTable();
 			portfolioTable = createPortfolioTable();
-			portfolioPagination.setPageFactory(this::createPage);
+			portfolioPagination.setPageFactory(this::createPortfolioPage);
 			// Sell stock when user click on button
 			sellStockButton.setOnAction(event -> {
 				// Only display alert when user select some stocks
@@ -98,6 +98,10 @@ public class PortfolioController extends BaseController implements Initializable
 					} else {
 						// User doesn't want to sell stock. Close alert and get back to portfolio page
 					}
+				} else {
+					// Show warning when user didn't choose any stock to sell
+					Alert alert = AlertFactory.generateAlert(AlertType.WARNING, CommonDefine.NOT_SELECT_ANY_STOCK_SMS);
+					alert.showAndWait();
 				}
 			});
 			// Open Stock Detail page when user select item on table view
@@ -119,7 +123,7 @@ public class PortfolioController extends BaseController implements Initializable
 			historyTransactions = transactionManager.findTransactions(user.getId(), false);
 			transactionHistoryPagination.setPageCount(historyTransactions.size()/rowsPerPage + 1);
 			historyTable = createHistoryTable();
-			transactionHistoryPagination.setPageFactory(this::createPage2);
+			transactionHistoryPagination.setPageFactory(this::createTransactionPage);
 		}
 	}
 	
@@ -133,7 +137,6 @@ public class PortfolioController extends BaseController implements Initializable
 	 */
 	private void sellStock(List<Stock> stocks) {
 		if (null == stocks || stocks.size() <= 0) {
-			// Show a dialog with error message for user
 			return;
 		}
 		// Sell stock one by one
@@ -160,44 +163,24 @@ public class PortfolioController extends BaseController implements Initializable
 	 * @param stock
 	 */
 	private void refreshTableView(List<Stock> stocks) {
-		// Remove transactions from portfolio
-		// Not so good using 2 nested loop
-		// Think about another way
-		for (Iterator<TransactionWrapper> iterator = portfolioTransactions.iterator(); iterator.hasNext();) {
-			TransactionWrapper t = iterator.next();
-			for (Stock s : stocks) {
-				if (t.getStock().equals(s)) {
-					portfolioTransactions.remove(t);
-					portfolioTable.getItems().remove(t);
+//		Platform.runLater(new Runnable() {
+//			@Override
+//			public void run() {
+				// Remove transactions from portfolio
+				// Not so good using 2 nested loop
+				// Think about another way
+				for (Iterator<TransactionWrapper> iterator = portfolioTransactions.iterator(); iterator.hasNext();) {
+					TransactionWrapper t = iterator.next();
+					for (Stock s : stocks) {
+						if (t.getStock().equals(s)) {
+							portfolioTable.getItems().remove(t);
+//							portfolioTransactions.remove(t);
+						}
+					}
 				}
-			}
-		}
+//			}
+//		});
 	}
-	
-//	@SuppressWarnings("unchecked")
-//	private TableView<Stock> createTable() {
-//
-//		TableView<Stock> table = new TableView<>();
-//
-//		TableColumn<Stock, String> stockCodeCol = new TableColumn<>("Stock Code");
-//		stockCodeCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStockCode()));
-//		stockCodeCol.setPrefWidth(80);
-//
-//		TableColumn<Stock, String> stockNameCol = new TableColumn<>("Company");
-//		stockNameCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStockName()));
-//		stockNameCol.setPrefWidth(250);
-//
-//		TableColumn<Stock, String> stockPriceCol = new TableColumn<>("Bought Price");
-//		stockPriceCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPriceString()));
-//		stockPriceCol.setPrefWidth(100);
-//		
-//		TableColumn<Stock, String> amountCol = new TableColumn<>("Quantity");
-//		amountCol.setCellValueFactory(param -> new SimpleStringProperty(String.valueOf(param.getValue().getAmount())));
-//		amountCol.setPrefWidth(100);
-//
-//		table.getColumns().addAll(stockCodeCol, stockNameCol, stockPriceCol, amountCol);
-//		return table;
-//	}
 	
 	@SuppressWarnings("unchecked")
 	private TableView<TransactionWrapper> createPortfolioTable() {
@@ -287,14 +270,14 @@ public class PortfolioController extends BaseController implements Initializable
 		return table;
 	}
 	
-	private Node createPage(int pageIndex) {
+	private Node createPortfolioPage(int pageIndex) {
         int fromIndex = pageIndex * rowsPerPage;
         int toIndex = Math.min(fromIndex + rowsPerPage, portfolioTransactions.size());
         portfolioTable.setItems(FXCollections.observableArrayList(portfolioTransactions.subList(fromIndex, toIndex)));
         return new BorderPane(portfolioTable);
     }
 	
-	private Node createPage2(int pageIndex) {
+	private Node createTransactionPage(int pageIndex) {
         int fromIndex = pageIndex * rowsPerPage;
         int toIndex = Math.min(fromIndex + rowsPerPage, historyTransactions.size());
         historyTable.setItems(FXCollections.observableArrayList(historyTransactions.subList(fromIndex, toIndex)));
