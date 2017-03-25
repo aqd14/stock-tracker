@@ -16,7 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import java.net.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="387.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SettingsController">
    <children>
@@ -289,12 +288,12 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </TabPane>
-            <JFXButton buttonType="RAISED" onAction="#saveChanges" prefHeight="30.0" prefWidth="116.0" styleClass="custom_button" text="Save Changes">
+            <JFXButton buttonType="RAISED" onAction="#saveChanges" prefHeight="32.0" prefWidth="131.0" styleClass="custom_button" text="Save Changes">
                <font>
                   <Font name="Helvetica" size="14.0" />
                </font>
                <VBox.margin>
-                  <Insets left="300.0" top="10.0" />
+                  <Insets bottom="5.0" left="300.0" />
                </VBox.margin>
             </JFXButton>
          </children>
