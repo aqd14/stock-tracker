@@ -156,6 +156,7 @@ public class PortfolioController extends BaseController implements Initializable
 		// Add up value to user account
 		double curBalance = user.getAccount().getBalance();
 		user.getAccount().setBalance(curBalance + earnedAmount);
+		userManager.update(user);
 	}
 	
 	/**
