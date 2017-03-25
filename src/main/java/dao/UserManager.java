@@ -1,5 +1,6 @@
 package main.java.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -166,6 +167,43 @@ public class UserManager<T> extends BaseManager<T> {
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
 			throw re;
+		} finally {
+			if(session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+	}
+	
+	/**
+	 * Enhance security. Only allow user to reset their password if they enter correct email and date of birth
+	 * 
+	 * @param email
+	 * @param dob
+	 * @return True if given email and date of birth exist in database. Otherwise, return False
+	 */
+	public User verifyResetPassword(String email, Date dob) {
+		log.debug("getting User instance with email: " + email + " and dob: " + dob);
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
+			String searchUserHQL = "FROM User user WHERE user.email = :email AND user.birthday = :dob";
+			@SuppressWarnings("unchecked")
+			Query<User> query = session.createQuery(searchUserHQL);//.setParameter("email", email);
+			query.setParameter("email", email);
+			query.setParameter("dob", dob);
+			
+			List<User> users = query.getResultList();
+			if (users == null || users.size() == 0) {
+				log.debug("get successful, no instance found");
+				return null;
+			} else {
+				log.debug("get successful, instance found");
+			}
+			return users.get(0);
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			return null;
 		} finally {
 			if(session != null && session.isOpen()) {
 				session.close();

@@ -15,7 +15,7 @@ public class CommonDefine {
 	public static final String PASSWORD_TOO_SHORT_ERR = "Password should include at least 8 characters.";
 	public static final String INVALID_USERNAME_LENGTH_ERR = "Please use between 6 and 15 characters.";
 	public static final String EMAIL_TAKEN_ERR = "This email is taken. Try another.";
-	public static final String USER_NOT_EXIST = "Given username or email is not exist. Try another.";
+	public static final String INCORRECT_INFORMATION_ERR = "Some of the information provided are not correct. Try again.";
 	public static final String CURRENT_PASSWORD_INCORRECT = "Current password is incorrect. Try again.";
 	public static final String INVALID_PHONE_NUMBER = "Invalid phone number. Please try again.";
 	
@@ -27,6 +27,7 @@ public class CommonDefine {
 	public static final String NOT_SELECT_ANY_STOCK_SMS = "You must choose at least one stock to sell!";
 	public static final String NOT_SELECT_STOCK_AMOUNT_SMS = "You haven't selected any stock amount to buy!";
 	public static final String NOT_ENOUGH_BALANCE_TO_BUY_SMS = "Your balance is not sufficient to perform transaction!";
+	public static final String RESET_PASSWORD_SUCCESSFULLY_SMS = "You've successfully reset your password! Click OK to switch to Login";
 	
 	// Stage title
 	public static final String HOME_TITLE = "Stock Tracker";
