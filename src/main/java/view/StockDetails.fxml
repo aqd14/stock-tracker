@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
@@ -10,11 +11,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import java.net.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.StockDetailsController">
    <children>
@@ -48,27 +49,24 @@
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label id="stockPriceLB" fx:id="currentPriceLB" alignment="BOTTOM_LEFT" prefHeight="52.0" prefWidth="104.0" text="136.23">
-                                             <font>
-                                                <Font name="Georgia" size="30.0" />
-                                             </font>
-                                          </Label>
-                                          <Label alignment="BOTTOM_LEFT" prefHeight="48.0" prefWidth="39.0" text="USD">
-                                             <HBox.margin>
-                                                <Insets bottom="4.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                          <Label fx:id="priceChangeLB" alignment="BOTTOM_LEFT" prefHeight="52.0" prefWidth="340.0" text="-0.45 (0.33%)" textFill="#f80000">
-                                             <font>
-                                                <Font name="Georgia" size="26.0" />
-                                             </font>
-                                             <opaqueInsets>
-                                                <Insets />
-                                             </opaqueInsets>
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
-                                          </Label>
+                                          <FlowPane prefHeight="104.0" prefWidth="462.0">
+                                             <children>
+                                                <Label id="stockPriceLB" fx:id="currentPriceLB" alignment="BOTTOM_LEFT" prefHeight="52.0" prefWidth="104.0" text="136.23">
+                                                   <font>
+                                                      <Font name="Georgia" size="30.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label alignment="BOTTOM_LEFT" prefHeight="48.0" prefWidth="39.0" text="USD" />
+                                                <Label fx:id="priceChangeLB" alignment="BOTTOM_LEFT" prefHeight="52.0" prefWidth="174.0" text="-0.45 (0.33%)" textFill="#f80000">
+                                                   <font>
+                                                      <Font name="Georgia" size="26.0" />
+                                                   </font>
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </Label>
+                                             </children>
+                                          </FlowPane>
                                        </children>
                                     </HBox>
                                  </children>

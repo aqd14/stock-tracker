@@ -36,7 +36,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import main.java.common.CommonDefine;
 import main.java.common.CommonDefine.Interval;
@@ -60,7 +62,7 @@ public class StockDetailsController extends BaseController implements Initializa
 	@FXML private Label priceChangeLB;
 	
 	@FXML private AnchorPane lineChartAP;
-	@FXML private LineChart<CategoryAxis, NumberAxis> stockLineChart;
+	@FXML private LineChart<String, Number> stockLineChart;
 	
 	RealTimeUpdateService service;
 	
@@ -105,12 +107,12 @@ public class StockDetailsController extends BaseController implements Initializa
 		service = new RealTimeUpdateService();
 		service.setPeriod(Duration.minutes(2));
 		// Auto change width of label based on current text length
-		currentPriceLB.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldVal, String newVal) {
-				currentPriceLB.setPrefWidth(currentPriceLB.getText().length()*22 - 100/currentPriceLB.getText().length());
-			}
-		});
+//		currentPriceLB.textProperty().addListener(new ChangeListener<String>() {
+//			@Override
+//			public void changed(ObservableValue<? extends String> observable, String oldVal, String newVal) {
+//				currentPriceLB.setPrefWidth(currentPriceLB.getText().length()*25 - 100/currentPriceLB.getText().length());
+//			}
+//		});
 		
 		// Add listener when user selects item in combobox
 		quantityCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
@@ -325,12 +327,6 @@ public class StockDetailsController extends BaseController implements Initializa
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void drawLineChart(Interval interval) {
 		if (yahooStock != null) {
-			// Remove data from last time
-			stockLineChart.getData().clear();
-			
-	        stockLineChart.getXAxis().setAutoRanging(true);
-	        stockLineChart.getYAxis().setAutoRanging(true);
-			
 			List<HistoricalQuote> historyQuotes = null;
 			// Get stock history within one year
 			Calendar from = Calendar.getInstance();
@@ -373,15 +369,52 @@ public class StockDetailsController extends BaseController implements Initializa
 			
 			XYChart.Series series = new XYChart.Series();
 			series.setName("Stock Price");
+			
+			// Get lower bound and upper bound for stock price
+			double lowerBound = Double.MAX_VALUE;
+			double upperBound = Double.MIN_VALUE;
 			// Reverse iteration because date appears as reverse order in List
 			for (int index = historyQuotes.size() - 1; index >= 0; index --) {
 				HistoricalQuote quote = historyQuotes.get(index);
 				String date = dfm.format(quote.getDate().getTime());
 				double price = quote.getOpen().doubleValue();
-				series.getData().add(new XYChart.Data<String, Number>(date, price));
+				// Get boundary values for stock price
+				if (price != 0 && lowerBound > price) {
+					lowerBound = price;
+				}
+				if (upperBound < price) {
+					upperBound = price;
+				}
+				// Hide points display in line chart
+				// by adding an invisible node into data
+				Rectangle rec = new Rectangle();
+				rec.setVisible(false);
+				XYChart.Data<String, Number> data = new XYChart.Data<String, Number>(date, price);
+				data.setNode(rec);
+				series.getData().add(data);
 			}
+			
+			System.out.println("Lower bound: " + lowerBound);
+			System.out.println("Upper bound: " + upperBound);
+			
+			// Initialize line chart
+			CategoryAxis xAxis = new CategoryAxis();
+			// Create boundary. Example followings:
+			// Original lower boundary: 45.62 -> 45 -> 25
+			// Original upper boundary: 55.23 -> 55 -> 75
+			lowerBound -= (lowerBound % 10);
+			lowerBound -= 20;
+			upperBound -= (upperBound % 10);
+			upperBound += 20;
+			double tickUnit = 10;
+			NumberAxis yAxis = new NumberAxis(lowerBound, upperBound, tickUnit);
+			
+			VBox parent = (VBox)stockLineChart.getParent();
+			parent.getChildren().remove(stockLineChart);
+			stockLineChart = new LineChart<String, Number>(xAxis, yAxis);
+//			stockLineChart.getYAxis().setAutoRanging(true);
 	        stockLineChart.getData().add(series);
-	        System.out.println("Data: " + stockLineChart.getData());
+	        parent.getChildren().add(stockLineChart);
 		}
 	}
 
