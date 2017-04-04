@@ -42,6 +42,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableRow;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -80,6 +81,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 	@FXML private JFXTextField searchTF;
 	@FXML private StackPane sp;
 	@FXML private JFXSpinner spinner;
+	@FXML private ImageView addStock;
 	
 	private Stock stock; // The selected stock for alert
 	private ObservableList<Stock> stocks;
@@ -147,6 +149,9 @@ public class HomeController extends BaseController implements Initializable, Obs
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		addStock.setOnMouseClicked(event -> {
+			makeNewStage(Screen.ADD_STOCK, "Add new stock", "../view/AddStock.fxml");
+		});
 		// Initialize GUI
 		stocks = FXCollections.observableArrayList();
 		TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
@@ -283,6 +288,8 @@ public class HomeController extends BaseController implements Initializable, Obs
 				newStage.setOnCloseRequest(eventHandler -> {
 					stockController.setStock(null);
 				});
+				break;
+			case ADD_STOCK:
 				break;
 			default:
 				return;

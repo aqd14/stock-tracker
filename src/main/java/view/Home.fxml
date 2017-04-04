@@ -71,11 +71,6 @@
                            <children>
                               <StackPane prefHeight="40.0" prefWidth="678.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <StackPane maxWidth="277.0" prefHeight="48.0" prefWidth="277.0" StackPane.alignment="CENTER_RIGHT">
-                                       <children>
-                                          <JFXTextField fx:id="searchTF" prefWidth="222.0" promptText="Search for stock codes, companies" />
-                                       </children>
-                                    </StackPane>
                                     <Label contentDisplay="CENTER" prefHeight="40.0" prefWidth="266.0" text="STOCK INFORMATION" underline="true" StackPane.alignment="CENTER_LEFT">
                                        <font>
                                           <Font name="Georgia" size="16.0" />
@@ -84,6 +79,19 @@
                                           <Insets left="10.0" top="10.0" />
                                        </StackPane.margin>
                                     </Label>
+                                    <ImageView fx:id="addStock" fitHeight="25.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <StackPane.margin>
+                                          <Insets left="320.0" />
+                                       </StackPane.margin>
+                                       <image>
+                                          <Image url="@../../resources/images/add_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                    <StackPane maxWidth="277.0" prefHeight="48.0" prefWidth="277.0" StackPane.alignment="CENTER_RIGHT">
+                                       <children>
+                                          <JFXTextField fx:id="searchTF" prefWidth="222.0" promptText="Search for stock codes, companies" />
+                                       </children>
+                                    </StackPane>
                                  </children>
                               </StackPane>
                            </children>
