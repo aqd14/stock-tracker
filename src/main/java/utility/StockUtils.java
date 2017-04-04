@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
@@ -50,11 +51,20 @@ public class StockUtils {
 			return null;
 		}
 		initStockList();
-		System.out.println("Query: " + query);
 		if (stockList != null) {
-			List<String> matchedResult = stockList.stream().filter(it -> it.contains(query)).collect(Collectors.toList());
+			List<String> matchedResult = stockList.stream().filter(it -> checkContainCaseInsensitive(it, query)).collect(Collectors.toList());
 			return FXCollections.observableArrayList(matchedResult);
 		}
 		else return FXCollections.observableArrayList("Unexpected error happed!");
+	}
+	
+	/**
+	 * Check if a string contains another string with case insensitive comparison
+	 * @param s1 Contained string
+	 * @param s2 Child string
+	 * @return
+	 */
+	public static boolean checkContainCaseInsensitive(String s1, String s2) {
+		return Pattern.compile(Pattern.quote(s2), Pattern.CASE_INSENSITIVE).matcher(s1).find();
 	}
 }
