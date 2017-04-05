@@ -28,6 +28,8 @@ public class CommonDefine {
 	public static final String NOT_SELECT_STOCK_AMOUNT_SMS = "You haven't selected any stock amount to buy!";
 	public static final String NOT_ENOUGH_BALANCE_TO_BUY_SMS = "Your balance is not sufficient to perform transaction!";
 	public static final String RESET_PASSWORD_SUCCESSFULLY_SMS = "You've successfully reset your password! Click OK to switch to Login";
+	public static final String ADDED_STOCK_SUCCESSFULLY_SMS = "Added stocks succesfully!";
+	public static final String ALREADY_HAD_STOCK_SMS = "You already had this stock!";
 	
 	// Stage title
 	public static final String HOME_TITLE = "Stock Tracker";

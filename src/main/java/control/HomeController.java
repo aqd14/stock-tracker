@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -87,17 +88,48 @@ public class HomeController extends BaseController implements Initializable, Obs
 	private ObservableList<Stock> stocks;
 	
 	// List of 30 stocks that will be displayed in Home page
-	final String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT",
+	private String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT",
 												"TM", "KO", "HPQ", "FB", "F", "MSFT", 
 												"BRK-A", "AMZN", "XOM", "JPM", "WFC", "GE",
 												"BAC", "T", "BABA", "PG", "CVX", "V",
 												"VZ", "HD", "DIS", "INTC", "ORCL", "HSBC"};
+	
+	private ArrayList<String> stockSymbolsArrayList = new ArrayList<String>(Arrays.asList(stockSymbols));
 	
 	RealTimeUpdateService stockUpdateService;
 	AlertSettingsCheckingService alertSettingsService;
 	
 	PhoneNotification phoneNotif = new PhoneNotification();
 	EmailNotification emailNotif = new EmailNotification();
+	
+	public ArrayList<String> getStocks() {
+		return this.stockSymbolsArrayList;
+	}
+	
+	/**
+	 * Keep track the list of stock symbols user are watching. 
+	 * Update table view when user added a new stock
+	 * 
+	 * @param stockSymbol
+	 */
+	public void populateData(String stockSymbol) {
+		synchronizeStockList();
+		String[] list = {stockSymbol};
+		try {
+			stocks.addAll(Utils.getMultipleStockData(list));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
+		stockTableView.setRoot(root);
+		System.out.println("Finish adding!");
+	}
+	
+	public void synchronizeStockList() {
+		stockSymbols = stockSymbolsArrayList.toArray(new String[0]);
+	}
 	
 	/**
 	 * Update schedule service period whenever there is update from user's settings
@@ -112,7 +144,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 	@Override 
 	public void setUser(User user) {
 		// TODO Auto-generated method stub
-		super.setUser(user);
+		this.user = user;
 		startScheduleService();
 	}
 	
@@ -203,8 +235,12 @@ public class HomeController extends BaseController implements Initializable, Obs
 		    			// User cancels removing
 		    			return;
 		    		}
+		    		stockSymbolsArrayList.remove(stockCode);
+		    		synchronizeStockList();
 		    	} else {
 		    		// Do nothing, just remove selected stock
+		    		stockSymbolsArrayList.remove(stockCode);
+		    		synchronizeStockList();
 		    	}
 		    	// Remove selected stock from table view
 		    	TreeItem<Stock> treeItem = row.getTreeItem();
@@ -290,6 +326,8 @@ public class HomeController extends BaseController implements Initializable, Obs
 				});
 				break;
 			case ADD_STOCK:
+				AddStockController addStockContrpller = loader.<AddStockController>getController();
+				addStockContrpller.setHomeController(this);
 				break;
 			default:
 				return;
