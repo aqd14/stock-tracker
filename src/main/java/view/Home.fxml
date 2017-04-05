@@ -79,12 +79,12 @@
                                           <Insets left="10.0" top="10.0" />
                                        </StackPane.margin>
                                     </Label>
-                                    <ImageView fx:id="addStock" fitHeight="25.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="addStock" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <StackPane.margin>
                                           <Insets left="320.0" />
                                        </StackPane.margin>
                                        <image>
-                                          <Image url="@../../resources/images/add_icon.png" />
+                                          <Image url="@../../resources/images/file_add.png" />
                                        </image>
                                     </ImageView>
                                     <StackPane maxWidth="277.0" prefHeight="48.0" prefWidth="277.0" StackPane.alignment="CENTER_RIGHT">
