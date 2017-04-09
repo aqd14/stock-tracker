@@ -137,6 +137,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`user_stock` (
   `value_threshold` DECIMAL(10,2) NULL,
   `combined_value_threshold` DECIMAL(10,2) NULL,
   `net_profit_threshold` DECIMAL(10,2) NULL,
+  `stock_type` INT NULL,
   PRIMARY KEY (`stock_id`, `user_id`),
   INDEX `fk_stock_has_user_user1_idx` (`user_id` ASC),
   INDEX `fk_stock_has_user_stock1_idx` (`stock_id` ASC),
