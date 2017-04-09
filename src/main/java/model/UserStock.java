@@ -2,6 +2,8 @@ package main.java.model;
 
 import java.math.BigDecimal;
 
+import main.java.common.CommonDefine;
+
 // default package
 // Generated Feb 9, 2017 11:38:22 PM by Hibernate Tools 5.2.0.CR1
 
@@ -25,16 +27,18 @@ public class UserStock implements java.io.Serializable {
 	private BigDecimal currentCombinedValueThreshold;
 	private BigDecimal currentNetProfitThreshold;
 	
+	private int stockType; // Indicate the relationship or status of user with current stock
 	public UserStock() {
 	}
 
-	public UserStock(UserStockId id, Stock stock, User user) {
+	public UserStock(UserStockId id, Stock stock, User user, int stockType) {
 		this.id = id;
 		this.stock = stock;
 		this.user = user;
 		this.valueThreshold = new BigDecimal(-1); // Default value for value threshold when user doesn't set any value
 		this.combinedValueThreshold = new BigDecimal(-1);
 		this.netProfitThreshold = new BigDecimal(-1);
+		this.setStockType(stockType);
 	}
 
 	public UserStock(UserStockId id, Stock stock, User user, BigDecimal valueThreshold, BigDecimal combinedValueThreshold, BigDecimal netProfitThreshold) {
@@ -164,5 +168,24 @@ public class UserStock implements java.io.Serializable {
 	
 	public String getCurrentNetProfitThresholdString() {
 		return currentNetProfitThreshold == null ? "N/A" : String.valueOf(currentNetProfitThreshold);
+	}
+
+	/**
+	 * @return the ownStock
+	 */
+	public int getStockType() {
+		return stockType;
+	}
+
+	/**
+	 * Flag to check if user owns stock or not.
+	 * Only accept two values: 0 or 1
+	 * @param ownStock the ownStock to set
+	 */
+	public void setStockType(int stockType) {
+		if (stockType != CommonDefine.SOLD_STOCK && stockType != CommonDefine.OWNED_STOCK && stockType != CommonDefine.INTERESTED_STOCK) {
+			stockType = CommonDefine.INTERESTED_STOCK; // Set default is interested stock
+		}
+		this.stockType = stockType;
 	}
 }

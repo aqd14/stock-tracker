@@ -27,5 +27,8 @@
         <property name="netProfitThreshold" type="java.math.BigDecimal">
             <column name="net_profit_threshold" precision="22" scale="0" />
         </property>
+		<property name="stockType" type="int">
+			<column name="stock_type" />
+		</property>
     </class>
 </hibernate-mapping>

@@ -87,14 +87,10 @@ public class HomeController extends BaseController implements Initializable, Obs
 	private Stock stock; // The selected stock for alert
 	private ObservableList<Stock> stocks;
 	
-	// List of 30 stocks that will be displayed in Home page
-	private String[] stockSymbols = new String[] {"INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT",
-												"TM", "KO", "HPQ", "FB", "F", "MSFT", 
-												"BRK-A", "AMZN", "XOM", "JPM", "WFC", "GE",
-												"BAC", "T", "BABA", "PG", "CVX", "V",
-												"VZ", "HD", "DIS", "INTC", "ORCL", "HSBC"};
+	private ArrayList<String> stockSymbolsArrayList;
+	private String[] stockSymbolsArray;
 	
-	private ArrayList<String> stockSymbolsArrayList = new ArrayList<String>(Arrays.asList(stockSymbols));
+	private boolean isFirstLogin;
 	
 	RealTimeUpdateService stockUpdateService;
 	AlertSettingsCheckingService alertSettingsService;
@@ -107,6 +103,33 @@ public class HomeController extends BaseController implements Initializable, Obs
 	}
 	
 	/**
+	 * <p>
+	 * Initialize list of stock that will be displayed in [Home] page
+	 * when user login into system.
+	 * 
+	 * Get the list of interested stocks in database. If the list is empty, using default stocks
+	 * to give user some suggestion. User can remove these stocks or add others later
+	 * </p>
+	 */
+	private void initializeStockList() {
+		// List of default 30 stocks that will be displayed in [Home] page
+		// if user doesn't add any stock into view list
+//		ArrayList<String> stockSymbolsArrayList;
+		List<UserStock> interestedStockList = userStockManager.findInterestedStockList(user.getId());
+		// Extract list of stock user is interested in
+		if (interestedStockList == null || interestedStockList.size() <= 0) {
+			isFirstLogin = true;
+			stockSymbolsArrayList = new ArrayList<>(Arrays.asList(CommonDefine.DEFAULT_INTERESTED_STOCKS));
+		} else {
+			isFirstLogin = false;
+			stockSymbolsArrayList = new ArrayList<String>();
+			for(UserStock us : interestedStockList) {
+				stockSymbolsArrayList.add(us.getStock().getStockCode());
+			}
+		}
+	}
+	
+	/**
 	 * Keep track the list of stock symbols user are watching. 
 	 * Update table view when user added a new stock
 	 * 
@@ -116,7 +139,12 @@ public class HomeController extends BaseController implements Initializable, Obs
 		synchronizeStockList();
 		String[] list = {stockSymbol};
 		try {
-			stocks.addAll(Utils.getMultipleStockData(list));
+			Stock newStock = (Stock) Utils.getMultipleStockData(list).get(0);
+			// Add new stock to interested list
+			stocks.add(newStock);
+			// Add new UserStock instance to db
+			stockManager.add(newStock);
+			userStockManager.add(user, newStock);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -128,7 +156,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 	}
 	
 	public void synchronizeStockList() {
-		stockSymbols = stockSymbolsArrayList.toArray(new String[0]);
+		stockSymbolsArray = stockSymbolsArrayList.toArray(new String[0]);
 	}
 	
 	/**
@@ -145,6 +173,13 @@ public class HomeController extends BaseController implements Initializable, Obs
 	public void setUser(User user) {
 		// TODO Auto-generated method stub
 		this.user = user;
+		// Initialize stock list
+		initializeStockList();
+		// Convert ArrayList to String array to pull out stock data
+		// YahooFinance APIs work only with String array
+		synchronizeStockList();
+//		stockSymbols = stockSymbolsArrayList.toArray(new String[0]);
+		// Start pulling out stock data
 		startScheduleService();
 	}
 	
@@ -154,20 +189,46 @@ public class HomeController extends BaseController implements Initializable, Obs
 	 * <li> Periodically check alert threshold reached or not </li>
 	 */
 	private void startScheduleService() {
+		startStockUpdateService();
+		startAlertSettingsService();
+	}
+	
+	/**
+	 * Only add list of interested in database when this is 
+	 * the first time user login into system.
+	 * 
+	 * @param isFirstLogin
+	 */
+	private void startStockUpdateService() {
 		// Background service to pull out real-time stock data
-		stockUpdateService = new RealTimeUpdateService(stockSymbols);
+		stockUpdateService = new RealTimeUpdateService(stockSymbolsArray);
 		stockUpdateService.setPeriod(Duration.minutes(user.getStockUpdateTime()));
 		stockUpdateService.start();
 		stockUpdateService.setOnSucceeded(event -> {
 			System.out.println("Continue update...");
+			spinner.setVisible(true);
 			stocks = stockUpdateService.getValue();
-			 TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
-			 stockTableView.setRoot(root);
+			TreeItem<Stock> root = new RecursiveTreeItem<Stock>(stocks, RecursiveTreeObject::getChildren);
+			stockTableView.setRoot(root);
 			// Finish loading, hide spinner
 			spinner.setVisible(false);
+			// If this is the first login, add list of default stock to database
+			// Else, don't need to do anything
+			if (isFirstLogin) {
+				System.out.println("This is the first time login!");
+				for (Stock s : stocks) {
+					// Add new interested stock and new user-stock instances to database
+					stockManager.add(s);
+					userStockManager.add(user, s);
+				}
+			} else {
+				System.out.println("This is not the first time login!");
+			}
 			System.out.println("Finish updating!");
 		});
-		
+	}
+	
+	private void startAlertSettingsService() {
 		// Background service to check alert settings status
 		alertSettingsService = new AlertSettingsCheckingService(user.getId(), userStockManager);
 		alertSettingsService.setPeriod(Duration.minutes(user.getAlertTime()));
@@ -227,21 +288,23 @@ public class HomeController extends BaseController implements Initializable, Obs
 		    	// Display dialog warning users
 		    	// when they try to remove an owned stock
 		    	String stockCode = row.getItem().getStockCode();
-		    	if (userStockManager.hasStock(user.getId(), stockCode)) {
+//		    	if (userStockManager.hasStock(user.getId(), stockCode)) {
 		    		// Display alert to notify user before removing an owned stock
-		    		Alert alert = AlertFactory.generateAlert(AlertType.CONFIRMATION, CommonDefine.REMOVE_STOCK_SMS);
-		    		Optional<ButtonType> result = alert.showAndWait();
-		    		if (!result.isPresent() || result.get() == ButtonType.CANCEL) {
-		    			// User cancels removing
-		    			return;
-		    		}
-		    		stockSymbolsArrayList.remove(stockCode);
-		    		synchronizeStockList();
-		    	} else {
-		    		// Do nothing, just remove selected stock
-		    		stockSymbolsArrayList.remove(stockCode);
-		    		synchronizeStockList();
-		    	}
+	    		Alert alert = AlertFactory.generateAlert(AlertType.CONFIRMATION, CommonDefine.REMOVE_STOCK_SMS);
+	    		Optional<ButtonType> result = alert.showAndWait();
+	    		if (!result.isPresent() || result.get() == ButtonType.CANCEL) {
+	    			// User cancels removing
+	    			return;
+	    		}
+//		    	} else {
+//		    		// Do nothing, just remove selected stock
+//		    	}
+	    		// Remove stock symbol from interested list
+	    		// to avoid real-time update it
+	    		stockSymbolsArrayList.remove(stockCode);
+	    		synchronizeStockList();
+	    		// Remove from database
+	    		userStockManager.remove(user.getId(), stockCode);
 		    	// Remove selected stock from table view
 		    	TreeItem<Stock> treeItem = row.getTreeItem();
 		    	treeItem.getParent().getChildren().remove(treeItem);
@@ -353,6 +416,9 @@ public class HomeController extends BaseController implements Initializable, Obs
 		Optional<ButtonType> selection = alert.showAndWait();
 		if (selection.isPresent() && selection.get().equals(ButtonType.OK)) {
 			switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, "../../../main/java/view/Login.fxml");
+			// Stop schedule services
+			stockUpdateService.cancel();
+			alertSettingsService.cancel();
 		} else {
 			// Stay in Home page
 		}

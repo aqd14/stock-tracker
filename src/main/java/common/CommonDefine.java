@@ -20,7 +20,7 @@ public class CommonDefine {
 	public static final String INVALID_PHONE_NUMBER = "Invalid phone number. Please try again.";
 	
 	// Alert message
-	public static final String REMOVE_STOCK_SMS = "You owned this stock. Do you really want to remove it?";
+	public static final String REMOVE_STOCK_SMS = "Do you really want to remove it?";
 	public static final String SELL_STOCK_SMS = "Are you sure you really want to sell these stocks?";
 	public static final String BUY_STOCK_SUCCESSFUL_SMS = "Your transaction is successful!";
 	public static final String UPDATE_ALERT_SETTINGS_SMS = "You've updated alert settings successfully!";
@@ -54,6 +54,13 @@ public class CommonDefine {
 		ONE_YEAR
 	}
 	
-	public static final int OWNED_STOCK = 1;
-	public static final int NOT_OWNED_STOCK = 0;
+	// Keep track the status of the stock with user preference
+	public static final int OWNED_STOCK = 1; // When user buys the stock, own_stock also means interested
+	public static final int INTERESTED_STOCK = 0; // When user only adds the stock to keep track of updates but doesn't buy
+	public static final int SOLD_STOCK = -1; // When user sold the stock
+	
+	// Default interested stock list
+	public static final String[] DEFAULT_INTERESTED_STOCKS = new String[] { "INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO",
+	        "HPQ", "FB", "F", "MSFT", "BRK-A", "AMZN", "XOM", "JPM", "WFC", "GE", "BAC", "T", "BABA", "PG", "CVX", "V",
+	        "VZ", "HD", "DIS", "INTC", "ORCL", "HSBC" };
 }

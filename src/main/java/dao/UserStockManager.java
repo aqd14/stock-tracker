@@ -5,11 +5,31 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import main.java.common.CommonDefine;
 import main.java.model.Stock;
+import main.java.model.User;
 import main.java.model.UserStock;
+import main.java.model.UserStockId;
 import main.java.utility.HibernateUtil;
 
 public class UserStockManager<T> extends BaseManager<T> {
+	
+	public void add(User user, Stock stock) {
+		// Create new UserStock instance with INTERESTED_STOCK type
+		UserStockId userStockId = new UserStockId(stock.getId(), user.getId());
+		UserStock userStock = new UserStock(userStockId, stock, user, CommonDefine.INTERESTED_STOCK);
+		// Do we need to create new instance
+		// Another to cast object?
+		new UserStockManager<UserStock>().add(userStock);
+	}
+	
+	public void remove(Integer userId, String stockSymbol) {
+		// Remove UserStock instance with INTERESTED_STOCK type
+		UserStock us = findInterestedStock(userId, stockSymbol);
+		// Do we need to create new instance
+		// Another to cast object?
+		new UserStockManager<UserStock>().remove(us);
+	}
 	
 	/**
 	 * <p>
@@ -54,7 +74,7 @@ public class UserStockManager<T> extends BaseManager<T> {
 	 * @return <code>true</code> if users own that stock. Otherwise returns <code>false</code>
 	 */
 	public boolean hasStock(Integer userId, String stockCode) {
-		List<UserStock> us = findUserStock(userId, stockCode);
+		List<UserStock> us = findUserStockWithOwnedRelationship(userId, stockCode);
 		return (null != us && us.size() > 0);
 	}
 	
@@ -77,6 +97,7 @@ public class UserStockManager<T> extends BaseManager<T> {
 					+ "ON us.id.userId = :userID "
 					+ "AND us.id.stockId = :stockID "
 					+ "AND stock.id = :stockID "
+					+ "AND us.stockType = 1 " // User owns stock
 					+ "AND stock.transaction is not null";
 			@SuppressWarnings("unchecked")
 			Query<UserStock> query = session.createQuery(hql);
@@ -96,6 +117,46 @@ public class UserStockManager<T> extends BaseManager<T> {
 	
 	/**
 	 * <p>
+	 * Find UserStock instance in database that matches user's id and stock's
+	 * symbol. This own is used when user set alert threshold. Only owned stock
+	 * can be set <code>Combined Threshold</code> and
+	 * <code>Net Gain/Loss Threshold </code> S
+	 * 
+	 * o this function will return an
+	 * UserStock instance in which user owns stock.
+	 * </p>
+	 * 
+	 * @param userId
+	 * @param stockId
+	 * @return
+	 */
+	public List<UserStock> findUserStockWithOwnedRelationship(Integer userId, String symbol) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		try {
+			String hql = "SELECT us FROM UserStock us "
+					+ "INNER JOIN Stock stock "
+					+ "ON us.id.userId = :userID "
+					+ "AND us.stock.stockCode = :symbol "
+					+ "AND stock.stockCode = :symbol "
+					+ "AND us.stockType = 1 " // User owns stock
+					+ "AND stock.transaction is not null";
+			@SuppressWarnings("unchecked")
+			Query<UserStock> query = session.createQuery(hql);
+			query.setParameter("userID", userId);
+			query.setParameter("symbol", symbol);
+			List<UserStock> userStocks = query.getResultList();
+			return userStocks;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			session.close();
+		}
+	}
+	
+	/**
+	 * <p>
 	 * 
 	 * Find UserStock instance in database that matches user'id and stock code.
 	 * Avoid using stock's id because when user settings alert, 
@@ -105,7 +166,8 @@ public class UserStockManager<T> extends BaseManager<T> {
 	 * </p>
 	 * @param userId
 	 * @param stockCode
-	 * @return List of UserStock instances in which there is relationship between user and stocks. It is not necessary to be owned relationship
+	 * @return List of UserStock instances in which there is relationship between user and stocks. 
+	 * 		It is not necessary to be owned relationship
 	 */
 	public List<UserStock> findUserStock(Integer userId, String stockCode) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -162,5 +224,65 @@ public class UserStockManager<T> extends BaseManager<T> {
 				session.close();
 			}
 		}
+	}
+	
+	/**
+	 * Find list of stocks that user is interested in investment.
+	 * They can include the default stock when user registers and first login into system
+	 * or the stock user add later when user find interested in.
+	 * 
+	 * @param userID
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<UserStock> findInterestedStockList(Integer userID) {
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
+			String hql = "SELECT us FROM UserStock us "
+					+ "WHERE us.id.userId = :userID "
+					+ "AND us.stockType = 0"; // Only select one instance for each stock. 
+												//	TODO: Think about the way to get only owned stock (if any)
+			Query<UserStock> query = session.createQuery(hql);
+			query.setParameter("userID", userID);
+			List<UserStock> userStocks = query.getResultList();
+			return userStocks;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public UserStock findInterestedStock(Integer userID, String stockSymbol) {
+		Session session = null;
+		try {
+			session = sessionFactory.getCurrentSession();
+			session.beginTransaction();
+			String hql = "SELECT us FROM UserStock us "
+					+ "WHERE us.id.userId = :userID "
+					+ "AND us.stock.stockCode = :symbol "
+					+ "AND us.stockType = 0"; // Only select one instance for each stock. 
+												//	TODO: Think about the way to get only owned stock (if any)
+			Query<UserStock> query = session.createQuery(hql);
+			query.setParameter("userID", userID);
+			query.setParameter("symbol", stockSymbol);
+			List<UserStock> userStocks = query.getResultList();
+			if (userStocks != null && !userStocks.isEmpty())
+				return userStocks.get(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		return null;
 	}
 }

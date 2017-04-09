@@ -441,7 +441,7 @@ public class StockDetailsController extends BaseController implements Initializa
 				UserStockId userStockId = new UserStockId(boughtStock.getId(), user.getId());
 				// Get existing UserStock instance to update alert threshold for all same stocks
 				List<UserStock> userStocks = userStockManager.findUserStock(user.getId(), boughtStock.getStockCode());
-				UserStock userStock = new UserStock(userStockId, boughtStock, user);
+				UserStock userStock = new UserStock(userStockId, boughtStock, user, CommonDefine.OWNED_STOCK);
 				if (userStocks != null && !userStocks.isEmpty()) {
 					UserStock us = userStocks.get(0);
 					userStock.setValueThreshold(us.getValueThreshold());
