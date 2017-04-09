@@ -27,7 +27,6 @@ public class SecurityUtils {
 	 * @return Hashed value
 	 */
 	public static String hash(String data) {
-		System.out.println("Password: " + data);
 		KeySpec spec = new PBEKeySpec(data.toCharArray(), salt, 64, 128);
 		SecretKeyFactory f;
 		byte[] hash;
