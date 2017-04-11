@@ -8,9 +8,18 @@
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="transaction" class="main.java.model.Transaction" fetch="select">
-            <column name="transaction_id" not-null="false" />
-        </many-to-one>
+<!--         <many-to-one name="transaction" 
+        column="transaction_id" 
+        unique="true"
+        not-null="false"/>
+		<id name="transactionId" type="java.lang.Integer">
+			<column name="transaction_id" />
+			<generator class="foreign">
+				<param name="property">transaction</param>
+			</generator>
+		</id> -->
+		<one-to-one name="transaction" class="main.java.model.Transaction" cascade="save-update"/>
+		<!-- <one-to-one name="transaction" class="main.java.model.Transaction" constrained="false"/> -->
         <property name="stockName" type="string">
             <column name="stock_name" length="45" not-null="true" />
         </property>
@@ -26,9 +35,6 @@
         <property name="amount" type="int">
             <column name="amount"/>
         </property>
-		<property name="owned" type="int">
-			<column name="owned" />
-		</property>
         <set name="userStocks" table="user_stock" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="stock_id" not-null="true" />

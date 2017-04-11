@@ -92,4 +92,12 @@ public class TransactionWrapper {
 	public boolean getSelected() {
 		return selected.get();
 	}
+	
+	public String getTransactionPayment() {
+		return String.valueOf(transaction.getPayment());
+	}
+	
+	public String getBalance() {
+		return String.valueOf(transaction.getBalance());
+	}
 }

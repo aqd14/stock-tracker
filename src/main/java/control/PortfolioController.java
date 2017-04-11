@@ -3,6 +3,7 @@ package main.java.control;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.java.common.CommonDefine;
 import main.java.model.Stock;
+import main.java.model.Transaction;
 import main.java.model.TransactionWrapper;
 import main.java.model.UserStock;
 import main.java.utility.AlertFactory;
@@ -77,7 +79,7 @@ public class PortfolioController extends BaseController implements Initializable
 	public void initPortfolio() {
 		if (user != null) {
 //			stocks = userStockManager.findStocks(user.getId());
-			portfolioTransactions = transactionManager.findTransactions(user.getId(), true);
+			portfolioTransactions = transactionManager.findTransactions(user.getId(), CommonDefine.OWNED_STOCK);
 //			portfolioPagination.setPageCount(stocks.size()/rowsPerPage + 1);
 			portfolioPagination.setPageCount(portfolioTransactions.size()/rowsPerPage + 1);
 //			table = createTable();
@@ -116,11 +118,12 @@ public class PortfolioController extends BaseController implements Initializable
 	
 	/**
 	 * Initialize transaction history.
-	 * Need to consider dynamic or lazy in
+	 * Need to consider dynamic or lazy initialization
 	 */
 	public void initTransactionHistory() {
 		if (user != null) {
-			historyTransactions = transactionManager.findTransactions(user.getId(), false);
+			// Get both owned and sold transaction
+			historyTransactions = transactionManager.findTransactions(user.getId(), CommonDefine.TRANSACTION_STOCK);
 			transactionHistoryPagination.setPageCount(historyTransactions.size()/rowsPerPage + 1);
 			historyTable = createHistoryTable();
 			transactionHistoryPagination.setPageFactory(this::createTransactionPage);
@@ -139,22 +142,38 @@ public class PortfolioController extends BaseController implements Initializable
 		if (null == stocks || stocks.size() <= 0) {
 			return;
 		}
+		
 		// Sell stock one by one
 		double earnedAmount = 0;
+		// Add up value to user account
+		double curBalance = user.getAccount().getBalance();
 		for (Stock soldStock : stocks) {
 			// Get current price of stock
 			try {
 				yahoofinance.Stock yahooStock = yahoofinance.YahooFinance.get(soldStock.getStockCode());
 				earnedAmount += yahooStock.getQuote().getPrice().doubleValue() * soldStock.getAmount();
 				UserStock us = userStockManager.findUserStock(user.getId(), soldStock.getId());
-				userStockManager.remove(us);
+				// Not remove but update status of the stock: owned -> sold
+				// Need to keep record to display in transaction history
+				us.setStockType(CommonDefine.SOLD_STOCK);
+				userStockManager.update(us);
+				// Create new transaction for a selling action
+				Transaction t = new Transaction(user.getAccount(), new Date());
+				// Add payment and balance information to transaction
+				t.setPayment(earnedAmount);
+				t.setBalance(curBalance + earnedAmount);
+				Stock s = new Stock(soldStock); // Clone data
+				s.setPrice(yahooStock.getQuote().getPrice());
+				s.setTransaction(t);
+				t.setStock(s);
+				stockManager.add(s);
+				// Create new UserStock instance with [Sold] type in database
+				userStockManager.add(user, s, CommonDefine.SOLD_STOCK);
 			} catch (IOException e) {
 				System.err.println("Transaction failed. Rollback.");
 				e.printStackTrace();
 			}
 		}
-		// Add up value to user account
-		double curBalance = user.getAccount().getBalance();
 		user.getAccount().setBalance(curBalance + earnedAmount);
 		userManager.update(user);
 	}
@@ -266,8 +285,17 @@ public class PortfolioController extends BaseController implements Initializable
 		TableColumn<TransactionWrapper, String> amountCol = new TableColumn<>("Quantity");
 		amountCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAmount()));
 		amountCol.setPrefWidth(100);
+		
+		TableColumn<TransactionWrapper, String> paymentCol = new TableColumn<>("Payment");
+		paymentCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTransactionPayment()));
+		paymentCol.setPrefWidth(100);
+		styleTableCell(paymentCol);
 
-		table.getColumns().addAll(transDateCol,  transTimeCol, stockCodeCol, stockNameCol, stockPriceCol, amountCol);
+		TableColumn<TransactionWrapper, String> balanceCol = new TableColumn<>("Balance");
+		balanceCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getBalance()));
+		balanceCol.setPrefWidth(100);
+		
+		table.getColumns().addAll(transDateCol,  transTimeCol, stockCodeCol, stockNameCol, stockPriceCol, amountCol, paymentCol, balanceCol);
 		return table;
 	}
 	
@@ -323,6 +351,21 @@ public class PortfolioController extends BaseController implements Initializable
 		newStage.setScene(new Scene(root));
 		newStage.show();
 	}
+	
+//	private Stock extractStock(yahoofinance.Stock yahooStock) {
+//		// Extract stock information
+//		String stockName = yahooStock.getName();
+//		String stockCode = yahooStock.getSymbol();
+//		int amount = quantityCB.getSelectionModel().getSelectedItem();
+//		BigDecimal price = yahooStock.getQuote().getPrice();
+//		BigDecimal previousPrice = yahooStock.getQuote().getPreviousClose();
+//		
+//		Transaction transaction = new Transaction(user.getAccount(), new Date());
+//		Stock stock = new Stock(transaction, stockName, stockCode, amount, CommonDefine.OWNED_STOCK, price, previousPrice);
+//		transaction.setStock(stock);
+////		transactionManager.add(transaction);
+//		return stock;
+//	}
 
 	@Override
 	public void switchScreen(Screen target, String title, String url) {

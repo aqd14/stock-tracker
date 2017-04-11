@@ -58,6 +58,8 @@ public class CommonDefine {
 	public static final int OWNED_STOCK = 1; // When user buys the stock, own_stock also means interested
 	public static final int INTERESTED_STOCK = 0; // When user only adds the stock to keep track of updates but doesn't buy
 	public static final int SOLD_STOCK = -1; // When user sold the stock
+	public static final int TRANSACTION_STOCK = 2; // Used to get the list of transaction from database. 
+													// They should include both owned and sold stocks 
 	
 	// Default interested stock list
 	public static final String[] DEFAULT_INTERESTED_STOCKS = new String[] { "INTC", "AAPL", "GOOG", "YHOO", "XOM", "WMT", "TM", "KO",

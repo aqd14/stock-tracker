@@ -5,7 +5,6 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import main.java.common.CommonDefine;
 import main.java.model.Stock;
 import main.java.model.User;
 import main.java.model.UserStock;
@@ -14,10 +13,10 @@ import main.java.utility.HibernateUtil;
 
 public class UserStockManager<T> extends BaseManager<T> {
 	
-	public void add(User user, Stock stock) {
+	public void add(User user, Stock stock, int stockType) {
 		// Create new UserStock instance with INTERESTED_STOCK type
 		UserStockId userStockId = new UserStockId(stock.getId(), user.getId());
-		UserStock userStock = new UserStock(userStockId, stock, user, CommonDefine.INTERESTED_STOCK);
+		UserStock userStock = new UserStock(userStockId, stock, user, stockType);
 		// Do we need to create new instance
 		// Another to cast object?
 		new UserStockManager<UserStock>().add(userStock);

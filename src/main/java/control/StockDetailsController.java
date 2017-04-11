@@ -430,13 +430,22 @@ public class StockDetailsController extends BaseController implements Initializa
 			double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
 			
 			// Check if current balance is enough to buy stock
-			double subtraction = Utils.round(curBal - quantity*price, 2);
-			if (subtraction > 0) {
-				user.getAccount().setBalance(subtraction);
-				userManager.update(user);
+			double payment = quantity*price;
+			double newBalance = Utils.round(curBal - payment, 2); // New balance after performing transaction
+			if (newBalance > 0) {
 				// Create new instance and relationship in database
 				Stock boughtStock = extractStock();
+				// Update transaction payment and current balance
+				Transaction t = boughtStock.getTransaction();
+				t.setPayment(payment*-1); // Money comes out of user's balance
+				t.setBalance(newBalance);
 				stockManager.add(boughtStock);
+//				transactionManager.update(t);
+				
+				// Update user's balance
+				user.getAccount().setBalance(newBalance);
+				userManager.update(user);
+				
 				// Create new UserStock instance
 				UserStockId userStockId = new UserStockId(boughtStock.getId(), user.getId());
 				// Get existing UserStock instance to update alert threshold for all same stocks
@@ -472,14 +481,17 @@ public class StockDetailsController extends BaseController implements Initializa
 	}
 	
 	private Stock extractStock() {
-		Transaction transaction = new Transaction(user.getAccount(), new Date());
-		transactionManager.add(transaction);
+		// Extract stock information
 		String stockName = yahooStock.getName();
 		String stockCode = yahooStock.getSymbol();
 		int amount = quantityCB.getSelectionModel().getSelectedItem();
 		BigDecimal price = yahooStock.getQuote().getPrice();
 		BigDecimal previousPrice = yahooStock.getQuote().getPreviousClose();
+		
+		Transaction transaction = new Transaction(user.getAccount(), new Date());
 		Stock stock = new Stock(transaction, stockName, stockCode, amount, CommonDefine.OWNED_STOCK, price, previousPrice);
+		transaction.setStock(stock);
+//		transactionManager.add(transaction);
 		return stock;
 	}
 	

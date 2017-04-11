@@ -90,7 +90,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 	private ArrayList<String> stockSymbolsArrayList;
 	private String[] stockSymbolsArray;
 	
-	private boolean isFirstLogin;
+	private boolean isFirstLogin = false;
 	
 	RealTimeUpdateService stockUpdateService;
 	AlertSettingsCheckingService alertSettingsService;
@@ -144,7 +144,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 			stocks.add(newStock);
 			// Add new UserStock instance to db
 			stockManager.add(newStock);
-			userStockManager.add(user, newStock);
+			userStockManager.add(user, newStock, CommonDefine.INTERESTED_STOCK);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -219,7 +219,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 				for (Stock s : stocks) {
 					// Add new interested stock and new user-stock instances to database
 					stockManager.add(s);
-					userStockManager.add(user, s);
+					userStockManager.add(user, s, CommonDefine.INTERESTED_STOCK);
 				}
 			} else {
 				System.out.println("This is not the first time login!");

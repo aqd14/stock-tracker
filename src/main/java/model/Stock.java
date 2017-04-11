@@ -21,13 +21,15 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer id;
+	// Each stock belong to a transaction. If this is [Interested Stock], transaction is null
+//	private int transactionId;
 	private Transaction transaction;
+	// Stock attribute
 	private String stockName;
 	private String stockCode;
 	private BigDecimal price;
 	private BigDecimal previousPrice;
 	private int amount;
-	private int owned; // The attribute marks if user owns stock or not. Used for alert settings
 	private Set<UserStock> userStocks = new HashSet<UserStock>(0);
 	private StockDetail stockDetail;
 	
@@ -35,8 +37,19 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	private BigDecimal priceChange;
 	private BigDecimal priceChangePercent;
 	
+	
 //	private StringProperty stockBuy;
 	public Stock() {
+		
+	}
+	
+	// Clone
+	public Stock(Stock stock) {
+		this.stockName = stock.stockName;
+		this.amount = stock.amount;
+		this.stockCode = stock.stockCode;
+		// previous price = bought price for sold stock
+		this.previousPrice = stock.price;
 	}
 
 	public Stock(Transaction transaction, String stockName, String stockCode, int amount, int owned, BigDecimal price, BigDecimal previousPrice) {
@@ -44,7 +57,6 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 		this.stockName = stockName;
 		this.stockCode = stockCode;
 		this.amount = amount;
-		setOwned(owned);
 		setPrice(price);
 		setPreviousPrice(previousPrice);
 	}
@@ -111,20 +123,6 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 		this.amount = amount;
 	}
 	
-	public int getOwned() {
-		return owned;
-	}
-	
-	public void setOwned(int owned) {
-		// Keep value of "owned" within 0 & 1
-		if (owned == 0) {
-			
-		} else if (owned != 1) {
-			owned = 1;
-		}
-		this.owned = owned;
-	}
-
 	public void setPreviousPrice(BigDecimal previousPrice) {
 		this.previousPrice = previousPrice.setScale(2, RoundingMode.CEILING);
 		this.previousPrice = previousPrice;
@@ -180,6 +178,27 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	public String getPriceChangePercentString() {
 		return Utils.formatCurrencyNumber(priceChangePercent);//Double.toString(priceChangePercent.doubleValue()); // priceChangePercent.toString();
 	}
+	
+//	public Stock clone() {
+//		Stock clone = new Stock();
+//		clone.setStockCode(this.getStockCode());
+//		clone.set
+//		return clone;
+//	}
+
+//	/**
+//	 * @return the transactionId
+//	 */
+//	public int getTransactionId() {
+//		return transactionId;
+//	}
+//
+//	/**
+//	 * @param transactionId the transactionId to set
+//	 */
+//	public void setTransactionId(int transactionId) {
+//		this.transactionId = transactionId;
+//	}
 	
 //	public StringProperty getStockBuy() {
 //		return this.stockBuy;
