@@ -36,14 +36,6 @@ public class Transaction implements java.io.Serializable {
 		this.stock = stock;
 	}
 
-//	public Integer getId() {
-//		return this.id;
-//	}
-//
-//	public void setId(Integer id) {
-//		this.id = id;
-//	}
-
 	public Account getAccount() {
 		return this.account;
 	}

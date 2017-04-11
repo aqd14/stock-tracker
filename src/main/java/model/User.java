@@ -39,7 +39,6 @@ public class User implements java.io.Serializable {
 	public User(String username, String password, String firstName, String lastName, String email, String phoneNumber, Date birthday) {
 		this.username = username;
 		this.setPassword(password);
-//		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;

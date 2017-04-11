@@ -38,7 +38,6 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	private BigDecimal priceChangePercent;
 	
 	
-//	private StringProperty stockBuy;
 	public Stock() {
 		
 	}
@@ -178,33 +177,4 @@ public class Stock extends RecursiveTreeObject<Stock> implements java.io.Seriali
 	public String getPriceChangePercentString() {
 		return Utils.formatCurrencyNumber(priceChangePercent);//Double.toString(priceChangePercent.doubleValue()); // priceChangePercent.toString();
 	}
-	
-//	public Stock clone() {
-//		Stock clone = new Stock();
-//		clone.setStockCode(this.getStockCode());
-//		clone.set
-//		return clone;
-//	}
-
-//	/**
-//	 * @return the transactionId
-//	 */
-//	public int getTransactionId() {
-//		return transactionId;
-//	}
-//
-//	/**
-//	 * @param transactionId the transactionId to set
-//	 */
-//	public void setTransactionId(int transactionId) {
-//		this.transactionId = transactionId;
-//	}
-	
-//	public StringProperty getStockBuy() {
-//		return this.stockBuy;
-//	}
-	
-//	public void setStockBuy(String stockBuy) {
-//		this.stockBuy = new SimpleStringProperty(stockBuy);
-//	}
 }
