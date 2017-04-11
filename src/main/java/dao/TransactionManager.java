@@ -48,10 +48,11 @@ public class TransactionManager<T> extends BaseManager<T> {
 							+ "INNER JOIN UserStock us "
 							+ "ON us.id.userId = :userId "
 							+ "AND stock = us.stock "
-							+ "AND us.stockType = 1";
+							+ "AND us.stockType = 1 "
+							+ "ORDER BY transaction.transactionDate DESC";
 					break;
 				case CommonDefine.TRANSACTION_STOCK:
-					hql = "from Transaction";
+					hql = "from Transaction transaction ORDER BY transaction.transactionDate DESC";
 //					hql = "SELECT stock, transaction "
 //							+ "FROM Transaction transaction "
 //							+ "INNER JOIN Stock stock "
