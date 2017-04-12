@@ -69,11 +69,11 @@ public class Utils {
 			StockQuote stockQuote = s.getQuote(true);
 			if (stockQuote != null) {
 				if (stockQuote.getPrice() != null)
-					stock.setPrice(stockQuote.getPrice());
+					stock.setPrice(stockQuote.getPrice().setScale(2, RoundingMode.CEILING));
 				if (stockQuote.getPreviousClose() != null)
-					stock.setPreviousPrice(stockQuote.getPreviousClose());
+					stock.setPreviousPrice(stockQuote.getPreviousClose().setScale(2, RoundingMode.CEILING));
 				if (stockQuote.getChange() != null)
-					stock.setPriceChange(stockQuote.getChange());
+					stock.setPriceChange(stockQuote.getChange().setScale(2, RoundingMode.CEILING));
 				if (stockQuote.getChangeInPercent() != null)
 					stock.setPriceChangePercent(stockQuote.getChangeInPercent());
 			}

@@ -1,6 +1,7 @@
 package main.java.control;
 
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -152,7 +153,7 @@ public class PortfolioController extends BaseController implements Initializable
 			try {
 				Stock soldStock = tran.getStock();
 				yahoofinance.Stock yahooStock = yahoofinance.YahooFinance.get(soldStock.getStockCode());
-				earnedAmount += yahooStock.getQuote().getPrice().doubleValue() * soldStock.getAmount();
+				earnedAmount += yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue() * soldStock.getAmount();
 				UserStock us = userStockManager.findUserStock(user.getId(), soldStock.getId());
 				// Not remove but update status of the stock: owned -> sold
 				// Need to keep record to display in transaction history

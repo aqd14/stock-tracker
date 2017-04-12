@@ -302,7 +302,7 @@ public class StockDetailsController extends BaseController implements Initializa
 		
 		// Buying stock options
 		stockCodeLB.setText(yahooStock.getSymbol());
-		buyPriceLB.setText(yahooStock.getQuote().getPrice().toString());
+		buyPriceLB.setText(yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).toString());
 		ObservableList<Integer> options = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		quantityCB.setItems(options);
 		currentBalanceTF.setText("$" + Utils.formatCurrencyDouble(user.getAccount().getBalance()));
@@ -431,7 +431,7 @@ public class StockDetailsController extends BaseController implements Initializa
 			
 			// Check if current balance is enough to buy stock
 			double payment = quantity*price;
-			double newBalance = Utils.round(curBal - payment, 2); // New balance after performing transaction
+			double newBalance = curBal - payment;//Utils.round(curBal - payment, 2); // New balance after performing transaction
 			if (newBalance > 0) {
 				// Create new instance and relationship in database
 				Stock boughtStock = extractStock();

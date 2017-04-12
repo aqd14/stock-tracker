@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import main.java.utility.Utils;
 
 public class TransactionWrapper {
 	private Transaction transaction;
@@ -95,10 +94,10 @@ public class TransactionWrapper {
 	}
 	
 	public String getTransactionPayment() {
-		return String.valueOf(Utils.round(transaction.getPayment(), 2));
+		return String.valueOf(transaction.getPayment());
 	}
 	
 	public String getBalance() {
-		return String.valueOf("$" + Utils.round(transaction.getBalance(), 2));
+		return String.valueOf("$" + transaction.getBalance());
 	}
 }
