@@ -225,9 +225,10 @@ public class PortfolioController extends BaseController implements Initializable
 	 * @param performingTransactions
 	 */
 	private void refreshTableView(List<TransactionWrapper> performingTransactions) {
-		for (Iterator<TransactionWrapper> iterator = portfolioTransactions.iterator(); iterator.hasNext();) {
-			TransactionWrapper t = iterator.next();
-			portfolioTable.getItems().remove(t);
+		for (TransactionWrapper t : performingTransactions) {
+			if (portfolioTable.getItems().contains(t)) { // Remove sold stock (transaction)
+				portfolioTable.getItems().remove(t);
+			}
 		}
 		// Refresh transaction history by pulling out data from database again and redraw table
 		// TODO: It might take time, consider the way to update table without accessing database
