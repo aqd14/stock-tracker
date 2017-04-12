@@ -4,10 +4,11 @@
 package main.java.control;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -19,17 +20,13 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.ScheduledService;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -37,8 +34,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
@@ -46,17 +41,17 @@ import javafx.scene.control.TreeTableRow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.java.common.CommonDefine;
-import main.java.dao.UserStockManager;
 import main.java.model.Stock;
 import main.java.model.User;
 import main.java.model.UserStock;
 import main.java.notification.EmailNotification;
 import main.java.notification.PhoneNotification;
+import main.java.service.AlertSettingsCheckingService;
+import main.java.service.RealTimeUpdateService;
 import main.java.utility.AlertFactory;
 import main.java.utility.Screen;
 import main.java.utility.StageFactory;
@@ -497,7 +492,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 	 */
 	private void notifyAlertToUser(ObservableList<UserStock> userStocks) {
 		if (userStocks != null && userStocks.size() > 0) {
-			showAlertStage(userStocks);
+//			showAlertStage(userStocks);
 			sendMessageToUser(userStocks);
 		}
 	}
@@ -508,14 +503,23 @@ public class HomeController extends BaseController implements Initializable, Obs
 	 * @param userStocks
 	 */
 	private void sendMessageToUser(ObservableList<UserStock> userStocks) {
+		// Make a list of non-duplicate alert stocks to send to user
+		HashSet<String> stockSet = new HashSet<String>();
+		for (UserStock us : userStocks) {
+			stockSet.add(us.getStock().getStockCode());
+		}
+		
 		StringBuilder builder = new StringBuilder("Here is the list of stocks which have thresholds crossed: ");
-		for (int i = 0; i < userStocks.size(); i ++) {
-			UserStock us = userStocks.get(i);
-			builder.append(us.getStock().getStockCode());
+		Iterator<String> it = stockSet.iterator();
+		int size = stockSet.size();
+		int i = 1;
+		while (it.hasNext()) {
+			builder.append(it.next());
 			// Format message sent to user's phone
-			if (i != userStocks.size() - 1) {
+			if (i != size) {
 				builder.append(", ");
 			}
+			i ++;
 		}
 //		CommunicationUtil.sendMessage(builder.toString(), user.getPhoneNumber());
 		String sms = builder.toString();
@@ -523,332 +527,128 @@ public class HomeController extends BaseController implements Initializable, Obs
 		emailNotif.notify(sms, user.getEmail());
 	}
 	
-	/**
-	 * Create a list of stocks whole values crossed threshold
-	 * @param stocks
-	 */
-	private void showAlertStage(ObservableList<UserStock> userStocks) {
-		TableView<UserStock> alertTable = createAlertTable(userStocks);
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().add(alertTable);
-		Stage stage = StageFactory.generateStage("Stock Alert");
-		stage.setScene(new Scene(vbox));
-		stage.show();
-		stage.setOnCloseRequest(event -> { // Clean up database when user close stage
-			clean(userStocks);
-		});
-	}
-	
-	@SuppressWarnings("unchecked")
-	private TableView<UserStock> createAlertTable(ObservableList<UserStock> us) {
-		// Only display what threshold have been crossed
-//		List <TableColumn<UserStock, String>> columns = new ArrayList<>();
-		TableView<UserStock> table = new TableView<>();
-		table.setEditable(true);
-		
-		TableColumn<UserStock, String> stockCodeCol = new TableColumn<>("Stock Code");
-		stockCodeCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStock().getStockCode()));
-		stockCodeCol.setPrefWidth(80);
-
-//		TableColumn<UserStock, String> stockNameCol = new TableColumn<>("Company");
-//		stockNameCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStock().getStockName()));
-//		stockNameCol.setPrefWidth(250);
-
-		TableColumn<UserStock, String> stockPriceCol = new TableColumn<>("Bought Price");
-		stockPriceCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStock().getPriceString()));
-		stockPriceCol.setPrefWidth(100);
-		
-		TableColumn<UserStock, String> valueThresholdCol = new TableColumn<>("Value Threshold");
-		valueThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValueThresholdString()));
-		valueThresholdCol.setPrefWidth(120);
-		
-		TableColumn<UserStock, String> combinedValueThresholdCol = new TableColumn<>("Combined Value Threshold");
-		combinedValueThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCombinedValueThresholdString()));
-		combinedValueThresholdCol.setPrefWidth(200);
-		
-		TableColumn<UserStock, String> netProfitThresholdCol = new TableColumn<>("Net Profit Threshold");
-		netProfitThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNetProfitThresholdString()));
-		netProfitThresholdCol.setPrefWidth(150);
-		
-		TableColumn<UserStock, String> currentValueThresholdCol = new TableColumn<>("Current Value Threshold");
-		currentValueThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCurrentValueThresholdString()));
-		currentValueThresholdCol.setPrefWidth(180);
-		
-		TableColumn<UserStock, String> currentCombinedValueThresholdCol = new TableColumn<>("Current Combined Value Threshold");
-		currentCombinedValueThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCurrentCombinedValueThresholdString()));
-		currentCombinedValueThresholdCol.setPrefWidth(250);
-		
-		TableColumn<UserStock, String> currentNetProfitThresholdCol = new TableColumn<>("Current Net Profit Threshold");
-		currentNetProfitThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCurrentNetProfitThresholdString()));
-		currentNetProfitThresholdCol.setPrefWidth(250);
-		
-//		TableColumn<TransactionWrapper, Boolean> sellStockCol = new TableColumn<>();
-//		sellStockCol.setGraphic(new CheckBox());
+//	/**
+//	 * Create a list of stocks whole values crossed threshold
+//	 * @param stocks
+//	 */
+//	@SuppressWarnings("unused") // Don't need to show alert stage at this time. Only sending email and message is enough
+//	private void showAlertStage(ObservableList<UserStock> userStocks) {
+//		TableView<UserStock> alertTable = createAlertTable(userStocks);
+//        final VBox vbox = new VBox();
+//        vbox.setSpacing(5);
+//        vbox.setPadding(new Insets(10, 0, 0, 10));
+//        vbox.getChildren().add(alertTable);
+//		Stage stage = StageFactory.generateStage("Stock Alert");
+//		stage.setScene(new Scene(vbox));
+//		stage.show();
+////		stage.setOnCloseRequest(event -> { // Clean up database when user close stage
+////			clean(userStocks);
+////		});
+//		// Clean database when ever a threshold crossed after alerting user
+//		clean(userStocks);
+//	}
+//	
+//	@SuppressWarnings("unchecked")
+//	private TableView<UserStock> createAlertTable(ObservableList<UserStock> us) {
+//		// Only display what threshold have been crossed
+////		List <TableColumn<UserStock, String>> columns = new ArrayList<>();
+//		TableView<UserStock> table = new TableView<>();
+//		table.setEditable(true);
 //		
-//		sellStockCol.setCellValueFactory(new PropertyValueFactory<TransactionWrapper, Boolean>("selected"));
-//		// Add event handler when users select a check box on table
-//		sellStockCol.setCellFactory(CheckBoxTableCell.forTableColumn(new Callback<Integer, ObservableValue<Boolean>>() {
-//		    @Override
-//		    public ObservableValue<Boolean> call(Integer index) {
-//		        TransactionWrapper item = table.getItems().get(index);
-//		        // Add/Remove item from the selected list
-//		        if (true == item.getSelected()) {
-//		            selectedStock.add(item.getStock());
-//		        } else {
-//		        	selectedStock.remove(item.getStock());
-//		        }
-//		        return item.selectedProperty();
-//		    }
-//		}));
-//		sellStockCol.setEditable(true);
-		table.setItems(us);
-		table.getColumns().addAll(stockCodeCol, stockPriceCol, valueThresholdCol, 
-								currentValueThresholdCol, combinedValueThresholdCol, 
-								currentCombinedValueThresholdCol, netProfitThresholdCol, 
-								currentNetProfitThresholdCol);
-		return table;
-	}
+//		TableColumn<UserStock, String> stockCodeCol = new TableColumn<>("Stock Code");
+//		stockCodeCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStock().getStockCode()));
+//		stockCodeCol.setPrefWidth(80);
+//
+////		TableColumn<UserStock, String> stockNameCol = new TableColumn<>("Company");
+////		stockNameCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStock().getStockName()));
+////		stockNameCol.setPrefWidth(250);
+//
+//		TableColumn<UserStock, String> stockPriceCol = new TableColumn<>("Bought Price");
+//		stockPriceCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStock().getPriceString()));
+//		stockPriceCol.setPrefWidth(100);
+//		
+//		TableColumn<UserStock, String> valueThresholdCol = new TableColumn<>("Value Threshold");
+//		valueThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValueThresholdString()));
+//		valueThresholdCol.setPrefWidth(120);
+//		
+//		TableColumn<UserStock, String> combinedValueThresholdCol = new TableColumn<>("Combined Value Threshold");
+//		combinedValueThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCombinedValueThresholdString()));
+//		combinedValueThresholdCol.setPrefWidth(200);
+//		
+//		TableColumn<UserStock, String> netProfitThresholdCol = new TableColumn<>("Net Profit Threshold");
+//		netProfitThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNetProfitThresholdString()));
+//		netProfitThresholdCol.setPrefWidth(150);
+//		
+//		TableColumn<UserStock, String> currentValueThresholdCol = new TableColumn<>("Current Value Threshold");
+//		currentValueThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCurrentValueThresholdString()));
+//		currentValueThresholdCol.setPrefWidth(180);
+//		
+//		TableColumn<UserStock, String> currentCombinedValueThresholdCol = new TableColumn<>("Current Combined Value Threshold");
+//		currentCombinedValueThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCurrentCombinedValueThresholdString()));
+//		currentCombinedValueThresholdCol.setPrefWidth(250);
+//		
+//		TableColumn<UserStock, String> currentNetProfitThresholdCol = new TableColumn<>("Current Net Profit Threshold");
+//		currentNetProfitThresholdCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getCurrentNetProfitThresholdString()));
+//		currentNetProfitThresholdCol.setPrefWidth(250);
+//		
+////		TableColumn<TransactionWrapper, Boolean> sellStockCol = new TableColumn<>();
+////		sellStockCol.setGraphic(new CheckBox());
+////		
+////		sellStockCol.setCellValueFactory(new PropertyValueFactory<TransactionWrapper, Boolean>("selected"));
+////		// Add event handler when users select a check box on table
+////		sellStockCol.setCellFactory(CheckBoxTableCell.forTableColumn(new Callback<Integer, ObservableValue<Boolean>>() {
+////		    @Override
+////		    public ObservableValue<Boolean> call(Integer index) {
+////		        TransactionWrapper item = table.getItems().get(index);
+////		        // Add/Remove item from the selected list
+////		        if (true == item.getSelected()) {
+////		            selectedStock.add(item.getStock());
+////		        } else {
+////		        	selectedStock.remove(item.getStock());
+////		        }
+////		        return item.selectedProperty();
+////		    }
+////		}));
+////		sellStockCol.setEditable(true);
+//		table.setItems(us);
+//		table.getColumns().addAll(stockCodeCol, stockPriceCol, valueThresholdCol, 
+//								currentValueThresholdCol, combinedValueThresholdCol, 
+//								currentCombinedValueThresholdCol, netProfitThresholdCol, 
+//								currentNetProfitThresholdCol);
+//		return table;
+//	}
+//	
+//	/**
+//	 * Clean up database after showing user alert.
+//	 * Set all threshold values that have been crossed to -1 (Reset) 
+//	 * 
+//	 * @param userStocks
+//	 */
+//	private void clean(ObservableList<UserStock> userStocks) {
+//		BigDecimal defaultThreshold = new BigDecimal(-1);
+//		for (UserStock us : userStocks) {
+//			BigDecimal valueThreshold = us.getValueThreshold();
+//			BigDecimal curValueThreshold = us.getCurrentValueThreshold();
+//			BigDecimal combinedThreshold = us.getCombinedValueThreshold();
+//			BigDecimal curCombinedThreshold = us.getCurrentCombinedValueThreshold();
+//			BigDecimal netProfitThreshold = us.getNetProfitThreshold();
+//			BigDecimal curNetProfitThreshold = us.getCurrentNetProfitThreshold();
+//			// Whenever a threshold reached, reset to default value
+//			if (valueThreshold != null && curValueThreshold != null) {
+////				if (isThresholdCrossed(valueThreshold, us.getStock().getPreviousPrice(), us.getStock().getPrice())) {
+////					us.setValueThreshold(defaultThreshold);
+////				}
+//			}
+//			if (combinedThreshold != null && curCombinedThreshold != null && combinedThreshold.compareTo(curCombinedThreshold) < 0) {
+//				us.setCombinedValueThreshold(defaultThreshold);
+//			}
+//			if (netProfitThreshold != null && curNetProfitThreshold != null && netProfitThreshold.compareTo(curNetProfitThreshold) < 0) {
+//				us.setNetProfitThreshold(defaultThreshold);
+//			}
+//			userStockManager.update(us);
+//		}
+//	}
 	
-	/**
-	 * Clean up database after showing user alert.
-	 * Set all threshold values that have been crossed to -1 (Reset) 
-	 * 
-	 * @param userStocks
-	 */
-	private void clean(ObservableList<UserStock> userStocks) {
-		BigDecimal defaultThreshold = new BigDecimal(-1);
-		for (UserStock us : userStocks) {
-			BigDecimal valueThreshold = us.getValueThreshold();
-			BigDecimal curValueThreshold = us.getCurrentValueThreshold();
-			BigDecimal combinedThreshold = us.getCombinedValueThreshold();
-			BigDecimal curCombinedThreshold = us.getCurrentCombinedValueThreshold();
-			BigDecimal netProfitThreshold = us.getNetProfitThreshold();
-			BigDecimal curNetProfitThreshold = us.getCurrentNetProfitThreshold();
-			// Whenever a threshold reached, reset to default value
-			if (valueThreshold != null && curValueThreshold != null && valueThreshold.compareTo(curValueThreshold) < 0) {
-				us.setValueThreshold(defaultThreshold);
-			}
-			if (combinedThreshold != null && curCombinedThreshold != null && combinedThreshold.compareTo(curCombinedThreshold) < 0) {
-				us.setCombinedValueThreshold(defaultThreshold);
-			}
-			if (netProfitThreshold != null && curNetProfitThreshold != null && netProfitThreshold.compareTo(curNetProfitThreshold) < 0) {
-				us.setNetProfitThreshold(defaultThreshold);
-			}
-			userStockManager.update(us);
-		}
-	}
-	
-	/**
-	 * <p>
-	 * Scheduled service to automatically download real-time stock information.
-	 * Default downloading time interval is 2 minutes. 
-	 * </p>
-	 * @author doquocanh-macbook
-	 *
-	 */
-	private static class RealTimeUpdateService extends ScheduledService<ObservableList<Stock>> {
-		String[] stockSymbols;
-		
-		public RealTimeUpdateService(String[] stockSymbols) {
-			this.stockSymbols = stockSymbols;
-		}
-		
-		@Override
-		protected Task<ObservableList<Stock>> createTask() {
-			return new Task<ObservableList<Stock>>() {
-				@Override
-				protected ObservableList<Stock> call() throws IOException {
-					 return Utils.getMultipleStockData(stockSymbols);
-				}
-			};
-		}
-	}
-	
-	/**
-	 * <p>
-	 * Scheduled service to check if any threshold of Alert Settings crossed
-	 * Default checking time interval is 30 minutes. 
-	 * </p>
-	 * @author doquocanh-macbook
-	 *
-	 */
-	private static class AlertSettingsCheckingService extends ScheduledService<ObservableList<UserStock>> {
-		
-		private UserStockManager<UserStock> usManager;
-		private Integer userID;
-		
-		public AlertSettingsCheckingService(Integer userID, UserStockManager<UserStock> usManager) {
-			this.userID = userID;
-			this.usManager = usManager;
-		}
-		
-		/**
-		 * Search database for list of stocks then calculate combined value threshold.
-		 * 
-		 * @param stock Current stock that needs to calculate combined threshold
-		 * @return
-		 */
-		private BigDecimal calculatePreviousCombinedValueThreshold(yahoofinance.Stock stock) {
-			List<Stock> stocks = usManager.findStocks(userID, stock.getSymbol());
-			if (stocks != null && stocks.size() > 0) {
-				BigDecimal total = new BigDecimal(0);
-				for (Stock s : stocks) {
-					total = total.add(s.getPrice().multiply(BigDecimal.valueOf(s.getAmount())));
-				}
-				return total;
-			}
-			return new BigDecimal(-1);
-		}
-		
-		/**
-		 * Calculate combined value of stock with current price
-		 * 
-		 * @param stock
-		 * @return
-		 */
-		private BigDecimal calculateCurrentCombinedValueThreshold(yahoofinance.Stock stock) {
-			List<Stock> stocks = usManager.findStocks(userID, stock.getSymbol());
-			BigDecimal total = new BigDecimal(-1);
-			if (stocks != null && stocks.size() > 0) {
-				int totalAmount = 0;
-				for (Stock s : stocks) {
-					totalAmount += s.getAmount();
-				}
-				total = stock.getQuote().getPrice().multiply(BigDecimal.valueOf(totalAmount));
-			}
-			return total;
-		}
-		
-
-		/**
-		 * <p>
-		 * Check if threshold is crossed or not. There are two possibilities:
-		 * 
-		 * <li>
-		 * 1. At the time when user set threshold, the stock price is higher than threshold value,
-		 * which means user was looking for the alert when stock price went down
-		 * </li>
-		 * 
-		 * <li>
-		 * 2. Conversely, if the stock price was lower than threshold value when user setting, 
-		 * he is looking for the alert when price raising
-		 * </li>
-		 * </p>
-		 *
-		 * 
-		 * @param threshold			The threshold value
-		 * @param previousPrice		The price at the moment user settings
-		 * @param curPrice			Current price of stock
-		 * @return	<code>True</code> if the price went below or above threshold. Otherwise, returns <code>False</code> 
-		 */
-		private boolean isThresholdCrossed(BigDecimal threshold, BigDecimal previousPrice, BigDecimal curPrice) {
-			// At the time user set threshold, the value of threshold is lesser than the stock price
-			// So, we check if the current price went down below threshold or not
-			if (threshold.compareTo(previousPrice) < 0) {
-				if (threshold.compareTo(curPrice) > 0) {
-					return true;
-				}
-			} else {
-				if (threshold.compareTo(curPrice) < 0) {
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		/**
-		 * <p>
-		 * Check if threshold is crossed or not. There are two possibilities:
-		 * 
-		 * <li>
-		 * 1. At the time when user set threshold, the stock price is higher than threshold value,
-		 * which means user was looking for the alert when stock price went down
-		 * </li>
-		 * 
-		 * <li>
-		 * 2. Conversely, if the stock price was lower than threshold value when user setting, 
-		 * he is looking for the alert when price raising
-		 * </li>
-		 * </p>
-		 *
-		 * 
-		 * @param threshold			The threshold value
-		 * @param previousPrice		The price at the moment user settings
-		 * @param curPrice			Current price of stock
-		 * @return	<code>True</code> if the price went below or above threshold. Otherwise, returns <code>False</code> 
-		 */
-		private boolean isNetThresholdCrossed(BigDecimal threshold, BigDecimal previousPrice, BigDecimal curPrice) {
-			// TODO: Need to find a way to check if user wants to check net profit or net loss
-			BigDecimal difference = curPrice.subtract(previousPrice);
-			if (difference.compareTo(BigDecimal.ZERO) > 0) { // User is earning money
-				if (threshold.compareTo(difference) < 0) {	 // Therefore, user probably wants to check net profit
-					return true;
-				}
-			} else { // User is losing money, he might want to check net loss
-				BigDecimal minusOne = new BigDecimal(-1);
-				// Reverse value of difference than compare with threshold value
-				if (threshold.compareTo(difference.multiply(minusOne)) < 0) {
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		@Override
-		protected Task<ObservableList<UserStock>> createTask() {
-			return new Task<ObservableList<UserStock>>() {
-				@Override
-				protected ObservableList<UserStock> call() throws IOException {
-					List<UserStock> userStocks = usManager.findWithAlertSettingsOn(userID);
-					if (userStocks == null) {
-						return null;
-					}
-					BigDecimal defaultThreshold = new BigDecimal(-1);
-					// Get current quotes of list of stocks to check thresholds reached or not
-					// If reached, initialize current values for those threshold. If not, 
-					// remove from UserStock list
-					List<UserStock> removeList = new ArrayList<UserStock>();
-					for (UserStock us : userStocks) {
-						boolean thresholdCrossed = false;
-						Stock stock = us.getStock();
-						yahoofinance.Stock yahooStock = YahooFinance.get(stock.getStockCode());
-						BigDecimal curPrice = yahooStock.getQuote().getPrice();
-						// Check value threshold crossed
-						if (us.getValueThreshold().compareTo(defaultThreshold) > 0) {
-							thresholdCrossed = thresholdCrossed || isThresholdCrossed(us.getValueThreshold(), us.getStock().getPrice(), curPrice);
-						}
-						
-						// Check combined value threshold crossed
-						BigDecimal previousCombinedValue = calculatePreviousCombinedValueThreshold(yahooStock);
-						BigDecimal curCombinedValue = calculateCurrentCombinedValueThreshold(yahooStock);
-						if (us.getCombinedValueThreshold().compareTo(defaultThreshold) > 0) {
-							thresholdCrossed = thresholdCrossed || isThresholdCrossed(us.getCombinedValueThreshold(), previousCombinedValue, curCombinedValue);
-						}
-						
-						// Check net gain/net loss
-						if (us.getNetProfitThreshold().compareTo(defaultThreshold) > 0) {
-							thresholdCrossed = thresholdCrossed || isNetThresholdCrossed(us.getNetProfitThreshold(), previousCombinedValue, curCombinedValue);
-						}
-						
-						// Set threshold values for display purpose later
-						us.setCurrentValueThreshold(curPrice);
-//						us.setCurrentCombinedValueThreshold(curr);
-						
-						if (thresholdCrossed) { // Reset threshold in database
-//							usManager.update(us);
-						} else {
-							removeList.add(us); // No threshold crossed, remove from the list to avoid displaying
-						}
-						// TODO: Confirm about net gains/losses
-					}
-					userStocks.removeAll(removeList);
-					return FXCollections.observableArrayList(userStocks);
-				}
-			};
-		}
-	}
 
 	/**
 	 * {@inheritDoc}

@@ -208,8 +208,8 @@ public class UserStockManager<T> extends BaseManager<T> {
 					+ "WHERE us.id.userId = :userID "
 					+ "AND (us.valueThreshold != -1 "
 					+ "OR us.combinedValueThreshold != -1 "
-					+ "OR us.netProfitThreshold != -1) "
-					+ "GROUP BY us.stock.stockName"; // Only select one instance for each stock. 
+					+ "OR us.netProfitThreshold != -1)"; // Don't need to display to screen any more so can get all
+//					+ "GROUP BY us.stock.stockName"; // Only select one instance for each stock. WHY??
 													 //	TODO: Think about the way to get only owned stock (if any)
 			Query<UserStock> query = session.createQuery(hql);
 			query.setParameter("userID", userID);
