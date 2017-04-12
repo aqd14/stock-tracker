@@ -270,7 +270,7 @@ public class PortfolioController extends BaseController implements Initializable
 		stockNameCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStockCompany()));
 		stockNameCol.setPrefWidth(250);
 
-		TableColumn<TransactionWrapper, String> stockPriceCol = new TableColumn<>("Bought Price");
+		TableColumn<TransactionWrapper, String> stockPriceCol = new TableColumn<>("Price");
 		stockPriceCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPrice()));
 		stockPriceCol.setPrefWidth(100);
 		
