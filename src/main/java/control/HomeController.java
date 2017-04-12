@@ -158,10 +158,14 @@ public class HomeController extends BaseController implements Initializable, Obs
 	 * Update schedule service period whenever there is update from user's settings
 	 */
 	@Override public void update() {
-		if (stockUpdateService != null)
+		if (stockUpdateService != null) {
 			stockUpdateService.setPeriod(Duration.minutes(user.getStockUpdateTime()));
-		if (alertSettingsService != null)
+			stockUpdateService.restart();
+		}
+		if (alertSettingsService != null) {
 			alertSettingsService.setPeriod(Duration.minutes(user.getAlertTime()));
+			alertSettingsService.restart();
+		}
 	}
 	
 	@Override 
