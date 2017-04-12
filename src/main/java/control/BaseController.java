@@ -50,7 +50,11 @@ public class BaseController {
 		col.setCellFactory(param -> new TableCell<TransactionWrapper, String>() {
 			@Override
 			protected void updateItem(String item, boolean empty) {
-				if (!empty) {
+				if (empty) { // Remove any text and graphic before for every non-qualified row
+					setText(null);
+					setGraphic(null);
+				}
+				else {
 					super.updateItem(item, empty);
 					item = item.replaceAll(",", "");
 					StringBuilder bd = new StringBuilder();

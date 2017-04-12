@@ -191,8 +191,6 @@ public class HomeController extends BaseController implements Initializable, Obs
 	/**
 	 * Only add list of interested in database when this is 
 	 * the first time user login into system.
-	 * 
-	 * @param isFirstLogin
 	 */
 	private void startStockUpdateService() {
 		// Background service to pull out real-time stock data
@@ -460,7 +458,11 @@ public class HomeController extends BaseController implements Initializable, Obs
 		priceChangeCol.setCellFactory(param -> new TreeTableCell<Stock, String>() {
 			@Override
 			protected void updateItem(String item, boolean empty) {
-				if (!empty) {
+				if (empty) {
+					setText(null);
+					setGraphic(null);
+				}
+				else {
 					super.updateItem(item, empty);
 					item = item.replaceAll(",", "");
 					StringBuilder bd = new StringBuilder();
