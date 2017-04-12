@@ -38,7 +38,7 @@ public class User implements java.io.Serializable {
 
 	public User(String username, String password, String firstName, String lastName, String email, String phoneNumber, Date birthday) {
 		this.username = username;
-		this.setPassword(password);
+		this.setHashedPassword(password);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -76,12 +76,13 @@ public class User implements java.io.Serializable {
 	}
 
 	public void setPassword(String password) {
-		// Can't hash directly in this method because when Hibernate execute database query,
-		// it will call this method again. Therefore, password will be hashed again as well
-		// Workaround: Only hash when current password if different from hashed one
-		if (this.password != password)
-			password = SecurityUtils.hash(password);
 		this.password = password;
+	}
+	
+	public void setHashedPassword(String password) {
+		// Can't use setter directly in theset method because when Hibernate execute database query,
+		// it will call the set method. Therefore, password will be hashed again as well
+		this.password = SecurityUtils.hash(password);
 	}
 
 	public String getFirstName() {

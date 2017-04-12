@@ -37,8 +37,11 @@ public class LoginController extends BaseController implements Initializable, IC
     
     @FXML protected void login(ActionEvent e) throws IOException {
     	// Check if given username and password matched with records in database
-    	if (user == null)
-    		user = userManager.findByUsernameOrEmail(usernameTF.getText(), SecurityUtils.hash(passwordPF.getText()));
+		if (user == null) {
+    		String hashedPW = SecurityUtils.hash(passwordPF.getText());
+    		user = userManager.findByUsernameOrEmail(usernameTF.getText(), hashedPW);
+		}
+		
         if (user != null) {
         	System.out.println("Login successfully!");
         	// Initialize array to pass optional argument

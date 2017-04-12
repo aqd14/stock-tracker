@@ -148,14 +148,17 @@ public class UserManager<T> extends BaseManager<T> {
 			String searchUserHQL = "";
 			// If given both username, email and password
 			if (password != null) {
-				searchUserHQL = "FROM User user WHERE user.username = '" + usernameOrEmail + "'" + " AND user.password  = '" + password
-				+ "'" + "OR email = '" + usernameOrEmail + "'" + " AND user.password = '" + password + "'";
+				searchUserHQL = "FROM User user WHERE user.username = :identification AND user.password = :password OR user.email = :identification AND user.password = :password";
 			} else { // Search by username or email only
-				searchUserHQL = "FROM User user WHERE user.username = '" + usernameOrEmail + "'" + "OR email = '" + usernameOrEmail + "'";
+				searchUserHQL = "FROM User user WHERE user.username = :identification OR user.email = :identification";
 			}
 			        
 			@SuppressWarnings("unchecked")
 			Query<User> query = session.createQuery(searchUserHQL);//.setParameter("email", email);
+			query.setParameter("identification", usernameOrEmail);
+			if (password != null) {
+				query.setParameter("password", password);
+			}
 			List<User> users = query.getResultList();
 			if (users == null || users.size() == 0) {
 				log.debug("get successful, no instance found");

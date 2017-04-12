@@ -128,8 +128,10 @@ public class SettingsController extends BaseController implements Initializable,
 			// User doesn't want to update password
 		} else {
 			// Update password
-			if (ValidationUtil.validateCurrentPassword(user.getPassword(), currentPasswordPF, currentPasswordError) && ValidationUtil.validateOriginalPassword(newPasswordPF, passwordError) && ValidationUtil.validateConfirmedPassword(newPasswordPF, confirmPasswordPF, passwordError)) {
-				user.setPassword(newPasswordPF.getText());
+			if (ValidationUtil.validateCurrentPassword(user.getPassword(), currentPasswordPF, currentPasswordError)
+			        && ValidationUtil.validateOriginalPassword(newPasswordPF, passwordError)
+			        && ValidationUtil.validateConfirmedPassword(newPasswordPF, confirmPasswordPF, passwordError)) {
+				user.setHashedPassword(newPasswordPF.getText());
 				anyChange = true;
 			} else {
 				anyChange = false;

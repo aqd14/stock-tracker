@@ -119,7 +119,7 @@ public class ValidationUtil {
 	 * @return
 	 */
 	public static boolean validateCurrentPassword(String curPw, PasswordField passwordPF, Text passwordError) {
-		if (!curPw.equals(passwordPF.getText())) {
+		if (!curPw.equals(SecurityUtils.hash(passwordPF.getText()))) {
 			passwordError.setText(CommonDefine.CURRENT_PASSWORD_INCORRECT);
 			passwordError.setVisible(true);
 			return false;
