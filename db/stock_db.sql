@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `stock_name` VARCHAR(45) NOT NULL,
   `stock_code` VARCHAR(45) NOT NULL,
-  `price` DECIMAL(10,0) NOT NULL,
-  `previous_price` DECIMAL(10,0) NOT NULL,
+  `price` DECIMAL(10,2) NOT NULL,
+  `previous_price` DECIMAL(10,2) NOT NULL,
   `amount` INT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `stock_id_UNIQUE` (`id` ASC))
