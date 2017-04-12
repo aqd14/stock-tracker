@@ -271,17 +271,17 @@
                                  </VBox.margin></Separator>
                               <HBox prefHeight="55.0" prefWidth="212.0">
                                  <children>
-                                    <Label fx:id="stockCodeLB" prefHeight="31.0" prefWidth="75.0">
+                                    <Label fx:id="stockCodeLB" prefHeight="31.0" prefWidth="68.0">
                                        <font>
                                           <Font name="Georgia" size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="buyPriceLB" prefHeight="30.0" prefWidth="94.0">
+                                    <Label fx:id="buyPriceLB" prefHeight="30.0" prefWidth="82.0">
                                        <font>
                                           <Font name="Serif Regular" size="18.0" />
                                        </font>
                                     </Label>
-                                    <JFXComboBox fx:id="quantityCB" prefHeight="27.0" prefWidth="41.0" />
+                                    <JFXComboBox fx:id="quantityCB" prefHeight="27.0" prefWidth="63.0" />
                                  </children>
                                  <opaqueInsets>
                                     <Insets top="10.0" />
