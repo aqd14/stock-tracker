@@ -22,14 +22,6 @@ public class UserStockManager<T> extends BaseManager<T> {
 		new UserStockManager<UserStock>().add(userStock);
 	}
 	
-	public void remove(Integer userId, String stockSymbol) {
-		// Remove UserStock instance with INTERESTED_STOCK type
-		UserStock us = findInterestedStock(userId, stockSymbol);
-		// Do we need to create new instance
-		// Another to cast object?
-		new UserStockManager<UserStock>().remove(us);
-	}
-	
 	/**
 	 * <p>
 	 * 

@@ -299,7 +299,12 @@ public class HomeController extends BaseController implements Initializable, Obs
 	    		stockSymbolsArrayList.remove(stockCode);
 	    		synchronizeStockList();
 	    		// Remove from database
-	    		userStockManager.remove(user.getId(), stockCode);
+	    		// Remove stock and associate UserStock instance
+	    		UserStock us = userStockManager.findInterestedStock(user.getId(), stockCode);
+	    		Stock removedStock = us.getStock();
+	    		userStockManager.remove(us);
+	    		stockManager.remove(removedStock);
+//	    		userStockManager.remove();
 		    	// Remove selected stock from table view
 		    	TreeItem<Stock> treeItem = row.getTreeItem();
 		    	treeItem.getParent().getChildren().remove(treeItem);
