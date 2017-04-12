@@ -27,6 +27,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -49,6 +50,7 @@ import yahoofinance.YahooFinance;
 
 public class PortfolioController extends BaseController implements Initializable, IController {
 	@FXML private AnchorPane mainAP;
+	@FXML private TabPane mainTP;
 	@FXML private Pagination portfolioPagination;
 	@FXML private Pagination transactionHistoryPagination;
 	@FXML private JFXButton sellStockButton;
@@ -78,6 +80,24 @@ public class PortfolioController extends BaseController implements Initializable
 		// Clear any selected stock when user open Portfolio
 		// TODO: Consider switching tabs
 		performingTransactions.clear();
+		
+		// Resize tab's width based on selected tab
+		// Need more width for Transaction History tab
+		mainTP.getSelectionModel().selectedItemProperty().addListener(listener -> {
+			int selectedIndex = mainTP.getSelectionModel().getSelectedIndex();
+			System.out.println("Selected index: " + selectedIndex);
+			double preferWidth;
+			if (selectedIndex == 0) { // Portfolio view
+				preferWidth = 760;
+			} else {
+				preferWidth = 950;
+			}
+			mainAP.getScene().getWindow().setWidth(preferWidth);
+			mainAP.setPrefWidth(preferWidth);
+			mainTP.setPrefWidth(preferWidth);
+			portfolioPagination.setPrefWidth(preferWidth);
+			transactionHistoryPagination.setPrefWidth(preferWidth);
+		});
 	}
 	
 	/**
