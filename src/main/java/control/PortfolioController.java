@@ -1,5 +1,6 @@
 package main.java.control;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -30,7 +31,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.java.common.CommonDefine;
@@ -39,14 +42,17 @@ import main.java.model.Transaction;
 import main.java.model.TransactionWrapper;
 import main.java.model.UserStock;
 import main.java.utility.AlertFactory;
+import main.java.utility.ExportUtils;
 import main.java.utility.Screen;
 import main.java.utility.StageFactory;
 import yahoofinance.YahooFinance;
 
 public class PortfolioController extends BaseController implements Initializable, IController {
+	@FXML private AnchorPane mainAP;
 	@FXML private Pagination portfolioPagination;
 	@FXML private Pagination transactionHistoryPagination;
 	@FXML private JFXButton sellStockButton;
+	@FXML private JFXButton exportButton;
 	
 	final static int rowsPerPage = 10;
 //	TableView<Stock> table;
@@ -129,6 +135,19 @@ public class PortfolioController extends BaseController implements Initializable
 			historyTable = createHistoryTable();
 			transactionHistoryPagination.setPageFactory(this::createTransactionPage);
 		}
+		
+		exportButton.setOnAction(event -> {
+			DirectoryChooser dc = new DirectoryChooser();
+			File selectedDir = dc.showDialog(mainAP.getScene().getWindow());
+			boolean exportSuccessful = ExportUtils.writeToExcel(historyTransactions, selectedDir.getAbsolutePath());
+			if (exportSuccessful) {
+				Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, "Exported successfully!");
+				alert.showAndWait();
+			} else {
+				Alert alert = AlertFactory.generateAlert(AlertType.ERROR, "Exported failed! Try again.");
+				alert.showAndWait();
+			}
+		});
 	}
 	
 	/**

@@ -51,6 +51,21 @@
 	-fx-background-color: #0c6d3d;
 }
 
+// Used to represent a sell action
+.export_button {
+    -fx-background-color: #4277f4;
+    -fx-text-fill: white;
+	-fx-font: 16px Helvetica;
+}
+
+.export_button:hover {
+    -fx-background-color: #2f5ece;
+}
+
+.export_button:pressed {
+	-fx-background-color: #254caa;
+}
+
 .register:hover {
 	-fx-underline: true;
 }
