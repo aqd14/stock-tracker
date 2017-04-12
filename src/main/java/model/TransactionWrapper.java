@@ -79,7 +79,7 @@ public class TransactionWrapper {
 	}
 	
 	public String getPrice() {
-		return stock.getPriceString();
+		return "$" + stock.getPriceString();
 	}
 
 	public BooleanProperty selectedProperty() {
@@ -99,6 +99,6 @@ public class TransactionWrapper {
 	}
 	
 	public String getBalance() {
-		return String.valueOf(Utils.round(transaction.getBalance(), 2));
+		return String.valueOf("$" + Utils.round(transaction.getBalance(), 2));
 	}
 }
