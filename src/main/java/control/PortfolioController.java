@@ -60,7 +60,7 @@ public class PortfolioController extends BaseController implements Initializable
 	List<TransactionWrapper> historyTransactions;
 	
 	// List of selected stocks that user consider to sell
-	List<Stock> selectedStock = new ArrayList<>();
+	List<TransactionWrapper> performingTransactions = new ArrayList<TransactionWrapper>();
 	
 	public PortfolioController() {
 		// TODO Auto-generated constructor stub
@@ -70,7 +70,7 @@ public class PortfolioController extends BaseController implements Initializable
 	public void initialize(URL location, ResourceBundle resources) {
 		// Clear any selected stock when user open Portfolio
 		// TODO: Consider switching tabs
-		selectedStock.clear();
+		performingTransactions.clear();
 	}
 	
 	/**
@@ -88,15 +88,15 @@ public class PortfolioController extends BaseController implements Initializable
 			// Sell stock when user click on button
 			sellStockButton.setOnAction(event -> {
 				// Only display alert when user select some stocks
-				if (selectedStock != null && selectedStock.size() > 0) {
+				if (performingTransactions != null && performingTransactions.size() > 0) {
 					Alert alert = AlertFactory.generateAlert(AlertType.CONFIRMATION, CommonDefine.SELL_STOCK_SMS);
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.isPresent() && result.get() == ButtonType.OK) {
-						sellStock(selectedStock);
+						sellStock(performingTransactions);
 						// Refresh table view
-						refreshTableView(selectedStock);
+						refreshTableView(performingTransactions);
 						// Clear selected stocl
-						selectedStock.clear();
+						performingTransactions.clear();
 					} else {
 						// User doesn't want to sell stock. Close alert and get back to portfolio page
 					}
@@ -132,14 +132,14 @@ public class PortfolioController extends BaseController implements Initializable
 	
 	/**
 	 * <p>
-	 * Sell owned stocks.
+	 * Sell owned stocks. Add performing transaction to database
 	 * Add up earned money to balance and remove UserStock instance from database.
 	 * </p>
 	 * 
-	 * @param stocks List of selected stock in Portfolio
+	 * @param performingTransactions List of selected stock in Portfolio
 	 */
-	private void sellStock(List<Stock> stocks) {
-		if (null == stocks || stocks.size() <= 0) {
+	private void sellStock(List<TransactionWrapper> performingTransactions) {
+		if (null == performingTransactions || performingTransactions.size() <= 0) {
 			return;
 		}
 		
@@ -147,9 +147,10 @@ public class PortfolioController extends BaseController implements Initializable
 		double earnedAmount = 0;
 		// Add up value to user account
 		double curBalance = user.getAccount().getBalance();
-		for (Stock soldStock : stocks) {
+		for (TransactionWrapper tran : performingTransactions) {
 			// Get current price of stock
 			try {
+				Stock soldStock = tran.getStock();
 				yahoofinance.Stock yahooStock = yahoofinance.YahooFinance.get(soldStock.getStockCode());
 				earnedAmount += yahooStock.getQuote().getPrice().doubleValue() * soldStock.getAmount();
 				UserStock us = userStockManager.findUserStock(user.getId(), soldStock.getId());
@@ -179,27 +180,18 @@ public class PortfolioController extends BaseController implements Initializable
 	}
 	
 	/**
-	 * Refresh portfolio view when user sold stocks
-	 * @param stock
+	 * Refresh portfolio and transaction history view when user sold stocks
+	 * 
+	 * @param performingTransactions
 	 */
-	private void refreshTableView(List<Stock> stocks) {
-//		Platform.runLater(new Runnable() {
-//			@Override
-//			public void run() {
-				// Remove transactions from portfolio
-				// Not so good using 2 nested loop
-				// Think about another way
-				for (Iterator<TransactionWrapper> iterator = portfolioTransactions.iterator(); iterator.hasNext();) {
-					TransactionWrapper t = iterator.next();
-					for (Stock s : stocks) {
-						if (t.getStock().equals(s)) {
-							portfolioTable.getItems().remove(t);
-//							portfolioTransactions.remove(t);
-						}
-					}
-				}
-//			}
-//		});
+	private void refreshTableView(List<TransactionWrapper> performingTransactions) {
+		for (Iterator<TransactionWrapper> iterator = portfolioTransactions.iterator(); iterator.hasNext();) {
+			TransactionWrapper t = iterator.next();
+			portfolioTable.getItems().remove(t);
+		}
+		// Refresh transaction history by pulling out data from database again and redraw table
+		// TODO: It might take time, consider the way to update table without accessing database
+		initTransactionHistory();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -243,9 +235,9 @@ public class PortfolioController extends BaseController implements Initializable
 		        TransactionWrapper item = table.getItems().get(index);
 		        // Add/Remove item from the selected list
 		        if (true == item.getSelected()) {
-		            selectedStock.add(item.getStock());
+		            performingTransactions.add(item);
 		        } else {
-		        	selectedStock.remove(item.getStock());
+		        	performingTransactions.remove(item);
 		        }
 		        return item.selectedProperty();
 		    }
