@@ -95,7 +95,7 @@ public class RegistrationController extends BaseController implements IControlle
 		return ValidationUtil.validateFirstName(firstNameTF, firstNameError)
 		        && ValidationUtil.validateLastName(lastNameTF, lastNameError)
 		        && ValidationUtil.validateUsername(usernameTF, usernameError)
-		        && ValidationUtil.validateOriginalPassword(passwordPF, confirmPasswordError)
+		        && ValidationUtil.validateOriginalPassword(passwordPF, passwordError)
 		        && ValidationUtil.validateConfirmedPassword(passwordPF, confirmPasswordPF, confirmPasswordError) 
 		        && ValidationUtil.validateEmail(emailTF, emailError) 
 				&& ValidationUtil.validatePhoneNumber(phoneNumberTF, phoneNumberError)

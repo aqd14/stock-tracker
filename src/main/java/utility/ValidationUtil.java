@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import com.jfoenix.controls.JFXDatePicker;
 
+import javafx.css.PseudoClass;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -17,12 +18,15 @@ public class ValidationUtil {
 	
 	static UserManager<User> userManager = new UserManager<User>();
 	
+	public static final Pattern VALID_USERNAME_REGEX = Pattern.compile("^[a-zA-Z0-9._-]+$");
 	
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 	
 	public static final Pattern VALID_CHARACTERS_REGEX = Pattern.compile("^[a-zA-Z]+$");
 	
 	public static final Pattern PHONE_NUMBER_REGEX = Pattern.compile("^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$");
+	
+	final static PseudoClass errorClass = PseudoClass.getPseudoClass("error");
 	
 	public ValidationUtil() {
 		// TODO Auto-generated constructor stub
@@ -45,15 +49,18 @@ public class ValidationUtil {
 		// Validate first name's empty
 		if (isTextFieldEmpty(firstNameTF)) {
 			displayErrorMessage(firstNameError, CommonDefine.EMPTY_FIELD_ERR);
+			firstNameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		} 
 		
 		if (!isValidName(firstNameTF.getText())) {
 			displayErrorMessage(firstNameError, CommonDefine.INVALID_NAME_ERR);
+			firstNameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		// Valid first name
 		hideErrorMessage(firstNameError);
+		firstNameTF.pseudoClassStateChanged(errorClass, false);
 		return true;
 	}
 	
@@ -66,16 +73,19 @@ public class ValidationUtil {
 		// Validate first name
 		if (isTextFieldEmpty(lastNameTF)) {
 			displayErrorMessage(lastNameError, CommonDefine.EMPTY_FIELD_ERR);
+			lastNameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		} 
 		
 		if (!isValidName(lastNameTF.getText())) {
 			displayErrorMessage(lastNameError, CommonDefine.INVALID_NAME_ERR);
+			lastNameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
 		// Passed all phases, set error text invisible
 		hideErrorMessage(lastNameError);
+		lastNameTF.pseudoClassStateChanged(errorClass, false);
 		return true;
 	}
 	
@@ -83,6 +93,7 @@ public class ValidationUtil {
 		// Validate first name
 		if (isTextFieldEmpty(usernameTF)) {
 			displayErrorMessage(usernameError, CommonDefine.EMPTY_FIELD_ERR);
+			usernameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
@@ -90,13 +101,16 @@ public class ValidationUtil {
 		if (user != null) {
 			// Search through all database to find if user already existed
 			// Print warning message
+			displayErrorMessage(usernameError, CommonDefine.USERNAME_TAKEN_ERR);
+			usernameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
 		// Check if username contains invalid characters
-		boolean isContainedInvalidChar = false; 
-		if (isContainedInvalidChar) {
+		if (!VALID_USERNAME_REGEX.matcher(usernameTF.getText()).matches()) {
 			// Print warning message
+			displayErrorMessage(usernameError, CommonDefine.INVALID_USERNAME_ERR);
+			usernameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
@@ -105,9 +119,11 @@ public class ValidationUtil {
 		if (usernameTF.getText().length() < minLength || usernameTF.getText().length() > maxLength) { // Length should be from 6 - 30 (Eg)
 			// Print warning message
 			displayErrorMessage(usernameError, CommonDefine.INVALID_USERNAME_LENGTH_ERR);
+			usernameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		hideErrorMessage(usernameError);
+		usernameTF.pseudoClassStateChanged(errorClass, false);
 		return true;
 	}
 	
@@ -122,9 +138,11 @@ public class ValidationUtil {
 		if (!curPw.equals(SecurityUtils.hash(passwordPF.getText()))) {
 			passwordError.setText(CommonDefine.CURRENT_PASSWORD_INCORRECT);
 			passwordError.setVisible(true);
+			passwordPF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		hideErrorMessage(passwordError);
+		passwordPF.pseudoClassStateChanged(errorClass, true);
 		return true;
 	}
 	
@@ -139,16 +157,19 @@ public class ValidationUtil {
 		if (isTextFieldEmpty(passwordPF)) {
 			passwordError.setText(CommonDefine.EMPTY_FIELD_ERR);
 			passwordError.setVisible(true);
+			passwordPF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
 		final int minLength = 8;
 		if(passwordPF.getText().length() < minLength) {
 			displayErrorMessage(passwordError, CommonDefine.PASSWORD_TOO_SHORT_ERR);
+			passwordPF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		// Passed all validation
 		hideErrorMessage(passwordError);
+		passwordPF.pseudoClassStateChanged(errorClass, false);
 		return true;
 	}
 	
@@ -162,12 +183,14 @@ public class ValidationUtil {
 	public static boolean validateConfirmedPassword(PasswordField passwordPF, PasswordField confirmPasswordPF, Text confirmPasswordError) {
 		if (isTextFieldEmpty(confirmPasswordPF)) {
 			displayErrorMessage(confirmPasswordError, CommonDefine.EMPTY_FIELD_ERR);
+			confirmPasswordPF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
 		if (!passwordPF.getText().equals(confirmPasswordPF.getText())) {
 			System.err.println("Passwords not matching!");
 			displayErrorMessage(confirmPasswordError, CommonDefine.PASSWORD_NOT_MATCHED_ERR);
+			confirmPasswordPF.pseudoClassStateChanged(errorClass, true);
 			// Reset password fields to empty
 			passwordPF.setText("");
 			confirmPasswordPF.setText("");
@@ -175,6 +198,7 @@ public class ValidationUtil {
 		}
 		// Passed all validation
 		hideErrorMessage(confirmPasswordError);
+		confirmPasswordPF.pseudoClassStateChanged(errorClass, false);
 		return true;
 	}
 	
@@ -189,21 +213,25 @@ public class ValidationUtil {
 	public static boolean validateEmail(TextField emailTF, Text emailError) {
 		if (isTextFieldEmpty(emailTF)) {
 			displayErrorMessage(emailError, CommonDefine.EMPTY_FIELD_ERR);
+			emailTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
 		if (!isValidEmail(emailTF.getText())) {
 			displayErrorMessage(emailError, CommonDefine.INVALID_EMAIL_ERR);
+			emailTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
 		User user = userManager.findByUsernameOrEmail(emailTF.getText());
 		if (null != user) {
 			displayErrorMessage(emailError, CommonDefine.EMAIL_TAKEN_ERR);
+			emailTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		// Passed all validations
 		hideErrorMessage(emailError);
+		emailTF.pseudoClassStateChanged(errorClass, false);
 		return true;
 	}
 	
@@ -218,16 +246,19 @@ public class ValidationUtil {
 	public static boolean validatePhoneNumber(TextField phoneNumberTF, Text phoneNumberError) {
 		if (isTextFieldEmpty(phoneNumberTF)) {
 			displayErrorMessage(phoneNumberError, CommonDefine.EMPTY_FIELD_ERR);
+			phoneNumberTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
 		if (!isPhoneNumberValid(phoneNumberTF.getText())) {
 			displayErrorMessage(phoneNumberError, CommonDefine.INVALID_PHONE_NUMBER);
+			phoneNumberTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
 		
 		// Passed all validations
 		hideErrorMessage(phoneNumberError);
+		phoneNumberTF.pseudoClassStateChanged(errorClass, false);
 		return true;
 	}
 	

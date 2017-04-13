@@ -98,7 +98,8 @@ public class SettingsController extends BaseController implements Initializable,
 		if (lastNameTF.getText().equals("")) {
 			// User doesn't want to update last name
 		} else {
-			if (ValidationUtil.validateLastName(lastNameTF, firstNameError)) {
+			 // Only validate next changes if the previous is valid
+			if (anyChange && ValidationUtil.validateLastName(lastNameTF, lastNameError)) {
 				user.setLastName(lastNameTF.getText());
 				anyChange = true;
 			} else {
@@ -109,7 +110,7 @@ public class SettingsController extends BaseController implements Initializable,
 		if (emailTF.getText().equals("")) {
 			// User doesn't want to update email
 		} else {
-			if (ValidationUtil.validateEmail(emailTF, emailError)) {
+			if (anyChange && ValidationUtil.validateEmail(emailTF, emailError)) {
 				user.setEmail(emailTF.getText());
 				anyChange = true;
 			} else {
@@ -117,17 +118,23 @@ public class SettingsController extends BaseController implements Initializable,
 			}
 		}
 		
-		if (ValidationUtil.validatePhoneNumber(phoneNumberTF, phoneNumberError)) {
-			user.setPhoneNumber(phoneNumberTF.getText());
-			anyChange = true;
-		} else {
-			anyChange = false;
+		if (phoneNumberTF.getText().equals("###-###-####")) {
+			// User doesn't want to update phone number
+		}
+		else {
+			if (anyChange && ValidationUtil.validatePhoneNumber(phoneNumberTF, phoneNumberError)) {
+				user.setPhoneNumber(phoneNumberTF.getText());
+				anyChange = true;
+			} else {
+				anyChange = false;
+			}
 		}
 		
 		if (currentPasswordPF.getText().equals("") && newPasswordPF.getText().equals("") && confirmPasswordPF.getText().equals("")) {
 			// User doesn't want to update password
 		} else {
 			// Update password
+			// Another tab, still need to display error message to user so don't need to check anyChange
 			if (ValidationUtil.validateCurrentPassword(user.getPassword(), currentPasswordPF, currentPasswordError)
 			        && ValidationUtil.validateOriginalPassword(newPasswordPF, passwordError)
 			        && ValidationUtil.validateConfirmedPassword(newPasswordPF, confirmPasswordPF, passwordError)) {

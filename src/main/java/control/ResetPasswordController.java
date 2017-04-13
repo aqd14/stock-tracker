@@ -43,14 +43,19 @@ public class ResetPasswordController extends BaseController implements IControll
 	
 	@FXML protected void reset(MouseEvent e) {
 		System.out.println("Reset password.");
+		
+		if (!ValidationUtil.validateDoB(dobDP, errorT)) {
+			return;
+		}
+		
+		User user = userManager.verifyResetPassword(emailTF.getText(), Date.valueOf(dobDP.getValue()));
+		if (user == null) { // Can't find user matched given information
+			ValidationUtil.displayErrorMessage(errorT, CommonDefine.INCORRECT_INFORMATION_ERR);
+			return;
+		}
+		
 		if (ValidationUtil.validateOriginalPassword(passwordPF, errorT) &&
-			ValidationUtil.validateConfirmedPassword(passwordPF, confirmPasswordPF, errorT) &&
-			ValidationUtil.validateDoB(dobDP, errorT)) {
-			User user = userManager.verifyResetPassword(emailTF.getText(), Date.valueOf(dobDP.getValue()));
-			if (user == null) { // Can't find user matched given information
-				ValidationUtil.displayErrorMessage(errorT, CommonDefine.INCORRECT_INFORMATION_ERR);
-				return;
-			}
+			ValidationUtil.validateConfirmedPassword(passwordPF, confirmPasswordPF, errorT)) {
 			user.setHashedPassword(passwordPF.getText());
 			boolean updateSuccessful = userManager.update(user);
 			// Update remember_me file
