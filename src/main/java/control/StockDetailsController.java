@@ -39,7 +39,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import main.java.common.CommonDefine;
 import main.java.common.CommonDefine.Interval;
@@ -390,8 +389,6 @@ public class StockDetailsController extends BaseController implements Initializa
 				}
 				// Hide points display in line chart
 				// by adding an invisible node into data
-				Rectangle rec = new Rectangle();
-				rec.setVisible(false);
 				XYChart.Data<String, Number> data = new XYChart.Data<String, Number>(date, price);
 				data.setNode(new HoveredThresholdNode(previousPrice, price));
 				previousPrice = price;
@@ -408,15 +405,17 @@ public class StockDetailsController extends BaseController implements Initializa
 			// Original lower boundary: 45.62 -> 45 -> 25
 			// Original upper boundary: 55.23 -> 55 -> 75
 			lowerBound -= (lowerBound % 10);
-			lowerBound -= 20;
 			upperBound -= (upperBound % 10);
-			upperBound += 20;
-			double tickUnit = 10;
+			double difference = upperBound - lowerBound;
+			lowerBound -= difference;
+			upperBound += difference;
+			double tickUnit = difference/5;
 			NumberAxis yAxis = new NumberAxis(lowerBound, upperBound, tickUnit);
 			
 			VBox parent = (VBox)stockLineChart.getParent();
 			parent.getChildren().remove(stockLineChart);
 			stockLineChart = new LineChart<String, Number>(xAxis, yAxis);
+			stockLineChart.setTitle("Yahoo Finance - Stock Tracker");
 			stockLineChart.setCursor(Cursor.CROSSHAIR);
 //			stockLineChart.getYAxis().setAutoRanging(true);
 	        stockLineChart.getData().add(series);
