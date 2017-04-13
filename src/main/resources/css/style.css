@@ -79,4 +79,9 @@
   	-fx-text-box-border: red ;
 	-fx-focus-color: red ;
 }
+
+.chart-series-line {
+	-fx-stroke: #4286f4;    
+    -fx-stroke-width: 2px;
+    -fx-effect: null;
 }
