@@ -136,7 +136,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 		try {
 			Stock newStock = (Stock) Utils.getMultipleStockData(list).get(0);
 			// Add new stock to interested list
-			stocks.add(newStock);
+			stocks.add(0, newStock);
 			// Add new UserStock instance to db
 			stockManager.add(newStock);
 			userStockManager.add(user, newStock, CommonDefine.INTERESTED_STOCK);

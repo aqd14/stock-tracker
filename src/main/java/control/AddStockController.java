@@ -75,7 +75,7 @@ public class AddStockController extends BaseController implements Initializable 
 				System.out.println("Add Stock: " + stock);
 				// Pass added stock symbol to Home page
 				// Download stock data if not exist in table yet
-				stockSymbols.add(stock);
+				stockSymbols.add(0, stock);
 				homeController.populateData(stock);
 				Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.ADDED_STOCK_SUCCESSFULLY_SMS);
 				alert.showAndWait();
