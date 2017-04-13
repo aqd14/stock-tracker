@@ -82,6 +82,13 @@
 
 .chart-series-line {
 	-fx-stroke: #4286f4;    
-    -fx-stroke-width: 2px;
+    -fx-stroke-width: 3px;
     -fx-effect: null;
 }
+
+.default-color0.chart-line-symbol { 
+	-fx-background-color: #4286f4, white;
+}
+
+.default-color1.chart-series-line { -fx-stroke: #dda0dd; }
+

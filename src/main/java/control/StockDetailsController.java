@@ -28,6 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -47,6 +48,7 @@ import main.java.model.Transaction;
 import main.java.model.UserStock;
 import main.java.model.UserStockId;
 import main.java.utility.AlertFactory;
+import main.java.utility.HoveredThresholdNode;
 import main.java.utility.Utils;
 import yahoofinance.histquotes.HistoricalQuote;
 
@@ -374,10 +376,11 @@ public class StockDetailsController extends BaseController implements Initializa
 			double lowerBound = Double.MAX_VALUE;
 			double upperBound = Double.MIN_VALUE;
 			// Reverse iteration because date appears as reverse order in List
+			double previousPrice = 0;
 			for (int index = historyQuotes.size() - 1; index >= 0; index --) {
 				HistoricalQuote quote = historyQuotes.get(index);
 				String date = dfm.format(quote.getDate().getTime());
-				double price = quote.getOpen().doubleValue();
+				double price = quote.getOpen().setScale(2, RoundingMode.CEILING).doubleValue();
 				// Get boundary values for stock price
 				if (price != 0 && lowerBound > price) {
 					lowerBound = price;
@@ -390,7 +393,9 @@ public class StockDetailsController extends BaseController implements Initializa
 				Rectangle rec = new Rectangle();
 				rec.setVisible(false);
 				XYChart.Data<String, Number> data = new XYChart.Data<String, Number>(date, price);
-				data.setNode(rec);
+				data.setNode(new HoveredThresholdNode(previousPrice, price));
+				previousPrice = price;
+//				data.setNode(rec);
 				series.getData().add(data);
 			}
 			
@@ -412,6 +417,7 @@ public class StockDetailsController extends BaseController implements Initializa
 			VBox parent = (VBox)stockLineChart.getParent();
 			parent.getChildren().remove(stockLineChart);
 			stockLineChart = new LineChart<String, Number>(xAxis, yAxis);
+			stockLineChart.setCursor(Cursor.CROSSHAIR);
 //			stockLineChart.getYAxis().setAutoRanging(true);
 	        stockLineChart.getData().add(series);
 	        parent.getChildren().add(stockLineChart);
