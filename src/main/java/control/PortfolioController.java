@@ -136,7 +136,8 @@ public class PortfolioController extends BaseController implements Initializable
 			// TODO: Update portfolio view when user buy some stocks
 			portfolioTable.setOnMouseClicked(eventHandler -> {
 				if (2 == eventHandler.getClickCount()) {
-					makeNewStage(Screen.STOCK_DETAILS, "Stock Details", "../view/StockDetails.fxml");
+//					makeNewStage(Screen.STOCK_DETAILS, "Stock Details", "../view/StockDetails.fxml");
+					makeNewStage(Screen.SELL_STOCK, "Sell Stock", "../view/SellStock.fxml");
 				}
 			});
 		}
@@ -358,18 +359,23 @@ public class PortfolioController extends BaseController implements Initializable
         	e.printStackTrace();
         	return;
         }
+		TransactionWrapper tw = portfolioTable.getSelectionModel().getSelectedItem();
 		switch(target) {
+			case SELL_STOCK:
+				SellStockController controller = loader.<SellStockController>getController();
+				controller.setUser(user);
+				controller.init(tw);
+				break;
 			case STOCK_DETAILS:
 				StockDetailsController stockController = loader.<StockDetailsController>getController();
 				stockController.setUser(user);
 				// Find selected stock in Java API
-				TransactionWrapper item = portfolioTable.getSelectionModel().getSelectedItem();
 				// TODO: Think about better way to find the stock given stock code
 				yahoofinance.Stock yahooStock = null;
 				try {
-					yahooStock = YahooFinance.get(item.getStockCode(), false);
+					yahooStock = YahooFinance.get(tw.getStockCode(), false);
 				} catch (IOException e) {
-					System.err.println("Stock code is invalid: " + item.getStockCode());
+					System.err.println("Stock code is invalid: " + tw.getStockCode());
 					e.printStackTrace();
 					return;
 				}
@@ -384,21 +390,6 @@ public class PortfolioController extends BaseController implements Initializable
 		newStage.show();
 	}
 	
-//	private Stock extractStock(yahoofinance.Stock yahooStock) {
-//		// Extract stock information
-//		String stockName = yahooStock.getName();
-//		String stockCode = yahooStock.getSymbol();
-//		int amount = quantityCB.getSelectionModel().getSelectedItem();
-//		BigDecimal price = yahooStock.getQuote().getPrice();
-//		BigDecimal previousPrice = yahooStock.getQuote().getPreviousClose();
-//		
-//		Transaction transaction = new Transaction(user.getAccount(), new Date());
-//		Stock stock = new Stock(transaction, stockName, stockCode, amount, CommonDefine.OWNED_STOCK, price, previousPrice);
-//		transaction.setStock(stock);
-////		transactionManager.add(transaction);
-//		return stock;
-//	}
-
 	@Override
 	public void switchScreen(Screen target, String title, String url) {
 		// TODO Auto-generated method stub
