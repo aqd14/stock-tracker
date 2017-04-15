@@ -390,7 +390,7 @@ public class StockDetailsController extends BaseController implements Initializa
 				// Hide points display in line chart
 				// by adding an invisible node into data
 				XYChart.Data<String, Number> data = new XYChart.Data<String, Number>(date, price);
-				data.setNode(new HoveredThresholdNode(previousPrice, price));
+				data.setNode(new HoveredThresholdNode(date, price));
 				previousPrice = price;
 //				data.setNode(rec);
 				series.getData().add(data);
@@ -404,13 +404,28 @@ public class StockDetailsController extends BaseController implements Initializa
 			// Create boundary. Example followings:
 			// Original lower boundary: 45.62 -> 45 -> 25
 			// Original upper boundary: 55.23 -> 55 -> 75
-			lowerBound -= (lowerBound % 10);
-			upperBound -= (upperBound % 10);
-			double difference = upperBound - lowerBound;
-			lowerBound -= difference;
-			upperBound += difference;
-			double tickUnit = difference/5;
-			NumberAxis yAxis = new NumberAxis(lowerBound, upperBound, tickUnit);
+			lowerBound = Math.floor(lowerBound);
+			upperBound = Math.floor(upperBound);
+			
+			System.out.println("Lower bound: " + lowerBound);
+			System.out.println("Upper bound: " + upperBound);
+			
+			double range = upperBound - lowerBound;
+			int tickCount = 10;
+			double unroundedTickSize = range/(tickCount-1);
+			double x = Math.ceil(Math.log10(unroundedTickSize)-1);
+			double pow10x = Math.pow(10, x);
+			double roundedTickRange = Math.ceil(unroundedTickSize / pow10x) * pow10x;
+			double padding = Math.ceil(lowerBound / 15);
+			roundedTickRange += Math.ceil(lowerBound/20);
+			lowerBound = roundedTickRange * Math.ceil(lowerBound/roundedTickRange) - padding;
+			upperBound = roundedTickRange * Math.ceil(1 + upperBound/roundedTickRange) + padding;
+//			upperBound += tickUnit;  // Make room for stock price display when user hovers mouse
+			NumberAxis yAxis = new NumberAxis(lowerBound, upperBound, roundedTickRange);
+			
+			System.out.println("Tick unit: " + roundedTickRange);
+			System.out.println("Lower bound: " + lowerBound);
+			System.out.println("Upper bound: " + upperBound);
 			
 			VBox parent = (VBox)stockLineChart.getParent();
 			parent.getChildren().remove(stockLineChart);
