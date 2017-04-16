@@ -118,10 +118,10 @@ public class PortfolioController extends BaseController implements Initializable
 					Alert alert = AlertFactory.generateAlert(AlertType.CONFIRMATION, CommonDefine.SELL_STOCK_SMS);
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.isPresent() && result.get() == ButtonType.OK) {
-						sellStock(performingTransactions);
+						sellMutipleStocks(performingTransactions);
 						// Refresh table view
 						refreshTableView(performingTransactions);
-						// Clear selected stocl
+						// Clear selected stock
 						performingTransactions.clear();
 					} else {
 						// User doesn't want to sell stock. Close alert and get back to portfolio page
@@ -137,7 +137,7 @@ public class PortfolioController extends BaseController implements Initializable
 			portfolioTable.setOnMouseClicked(eventHandler -> {
 				if (2 == eventHandler.getClickCount()) {
 //					makeNewStage(Screen.STOCK_DETAILS, "Stock Details", "../view/StockDetails.fxml");
-					makeNewStage(Screen.SELL_STOCK, "Sell Stock", "../view/SellStock.fxml");
+					switchScreen(Screen.SELL_STOCK, "Sell Stock", "../view/SellStock.fxml");
 				}
 			});
 		}
@@ -178,45 +178,69 @@ public class PortfolioController extends BaseController implements Initializable
 	 * 
 	 * @param performingTransactions List of selected stock in Portfolio
 	 */
-	private void sellStock(List<TransactionWrapper> performingTransactions) {
+	private void sellMutipleStocks(List<TransactionWrapper> performingTransactions) {
 		if (null == performingTransactions || performingTransactions.size() <= 0) {
 			return;
 		}
 		
 		// Sell stock one by one
-		double earnedAmount = 0;
 		// Add up value to user account
 		double curBalance = user.getAccount().getBalance();
 		for (TransactionWrapper tran : performingTransactions) {
 			// Get current price of stock
 			try {
-				Stock soldStock = tran.getStock();
-				yahoofinance.Stock yahooStock = yahoofinance.YahooFinance.get(soldStock.getStockCode());
-				earnedAmount += yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue() * soldStock.getAmount();
-				UserStock us = userStockManager.findUserStock(user.getId(), soldStock.getId());
-				// Not remove but update status of the stock: owned -> sold
-				// Need to keep record to display in transaction history
-				us.setStockType(CommonDefine.SOLD_STOCK);
-				userStockManager.update(us);
-				// Create new transaction for a selling action
-				Transaction t = new Transaction(user.getAccount(), new Date());
-				// Add payment and balance information to transaction
-				t.setPayment(earnedAmount);
-				t.setBalance(curBalance + earnedAmount);
-				Stock s = new Stock(soldStock); // Clone data
-				s.setPrice(yahooStock.getQuote().getPrice());
-				s.setTransaction(t);
-				t.setStock(s);
-				stockManager.add(s);
-				// Create new UserStock instance with [Sold] type in database
-				userStockManager.add(user, s, CommonDefine.SOLD_STOCK);
+				curBalance += sellSingleStock(tran, curBalance);
 			} catch (IOException e) {
 				System.err.println("Transaction failed. Rollback.");
 				e.printStackTrace();
 			}
 		}
-		user.getAccount().setBalance(curBalance + earnedAmount);
+		user.getAccount().setBalance(curBalance);
 		userManager.update(user);
+	}
+	
+	/**
+	 * Sell stocks, update database
+	 * @param tran
+	 * @return Earned amount
+	 * @throws IOException
+	 */
+	public double sellSingleStock(TransactionWrapper tran, double curBalance, int...soldAmount) throws IOException {
+		double earnedAmount = 0;
+		
+		Stock soldStock = tran.getStock();
+		Stock s = new Stock(soldStock); // Clone data
+		
+		yahoofinance.Stock yahooStock = yahoofinance.YahooFinance.get(soldStock.getStockCode());
+		// Sell all owned stocks of this type
+		if (soldAmount == null || soldAmount.length <= 0) {
+			earnedAmount = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue() * soldStock.getAmount();
+			UserStock us = userStockManager.findUserStock(user.getId(), soldStock.getId());
+			// Not remove but update status of the stock: owned -> sold
+			// Need to keep record to display in transaction history
+			us.setStockType(CommonDefine.SOLD_STOCK);
+			userStockManager.update(us);
+		} else { // Sell only some stocks
+			earnedAmount = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue() * soldAmount[0];
+			s.setAmount(soldAmount[0]);
+			// Update remaining number of owned stock
+			soldStock.setAmount(soldStock.getAmount() - soldAmount[0]);
+			stockManager.update(soldStock);
+		}
+		// Create new transaction for a selling action
+		Transaction t = new Transaction(user.getAccount(), new Date());
+		// Add payment and balance information to transaction
+		t.setPayment(earnedAmount);
+//		t.setBalance(curBalance + earnedAmount);
+		t.setBalance(curBalance + earnedAmount);
+		s.setPrice(yahooStock.getQuote().getPrice());
+		s.setTransaction(t);
+		t.setStock(s);
+		stockManager.add(s);
+		// Create new UserStock instance with [Sold] type in database
+		userStockManager.add(user, s, CommonDefine.SOLD_STOCK);
+		
+		return earnedAmount;
 	}
 	
 	/**
@@ -392,7 +416,27 @@ public class PortfolioController extends BaseController implements Initializable
 	
 	@Override
 	public void switchScreen(Screen target, String title, String url) {
-		// TODO Auto-generated method stub
-		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
+		Parent root = null;
+		try {
+			root = (Parent)loader.load();
+		} catch (IOException e) {
+        	System.err.println("Could not load url: " + url);
+        	e.printStackTrace();
+        	return;
+        }
+		TransactionWrapper tw = portfolioTable.getSelectionModel().getSelectedItem();
+		switch(target) {
+			case SELL_STOCK:
+				SellStockController controller = loader.<SellStockController>getController();
+				controller.setUser(user);
+				controller.init(tw);
+				break;
+			default:
+				return; // Move to undefined target. Should throw some exception?
+		}
+		Stage curStage = (Stage)mainAP.getScene().getWindow();
+		curStage.setScene(new Scene(root));
+		curStage.show();
 	}
 }

@@ -14,8 +14,14 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import main.java.common.CommonDefine;
 import main.java.model.TransactionWrapper;
 import main.java.utility.Screen;
 import main.java.utility.Utils;
@@ -30,7 +36,15 @@ public class SellStockController extends BaseController implements IController, 
 	@FXML private JFXTextField marketPriceTF;
 	@FXML private JFXTextField estimateCostTF;
 	@FXML private Label stockSymbolLB;
+	// Buttons
+	@FXML private JFXButton backBT;
 	@FXML private JFXButton sellStockBT;
+	
+	// Flag to check action should do when switch back to Portfolio page
+	boolean sellStock = false;
+	int[] soldAmount = new int[1];
+	
+	@FXML private VBox mainVB;
 	
 	TransactionWrapper transaction;
 	
@@ -40,24 +54,6 @@ public class SellStockController extends BaseController implements IController, 
 	 */
 	public SellStockController() {
 		// TODO Auto-generated constructor stub
-	}
-
-	/* (non-Javadoc)
-	 * @see main.java.control.IController#switchScreen(main.java.utility.Screen, java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void switchScreen(Screen target, String title, String url) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see main.java.control.IController#makeNewStage(main.java.utility.Screen, java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void makeNewStage(Screen target, String title, String url) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -80,13 +76,26 @@ public class SellStockController extends BaseController implements IController, 
 	            	} else {
 	            		tempPrice = tempPrice*amount;
 	            		isDisabled = false;
+	            		soldAmount[0] = amount;
 	            	}
 	            	estimateCostTF.setText("$" + Utils.formatCurrencyDouble(tempPrice));
 	            }
 	        	sellStockBT.setDisable(isDisabled);
 	        }
 	    });
+		// Doesn't allow user to edit current market price
 		marketPriceTF.setEditable(false);
+		
+		// Set event handler for buttons
+		backBT.setOnAction(event -> {
+			sellStock = false;
+			switchScreen(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, "../view/Portfolio.fxml");
+		});
+		
+		sellStockBT.setOnAction(event -> {
+			sellStock = true;
+			switchScreen(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, "../view/Portfolio.fxml");
+		});
 	}
 	
 	public void init(TransactionWrapper t) {
@@ -104,5 +113,52 @@ public class SellStockController extends BaseController implements IController, 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see main.java.control.IController#switchScreen(main.java.utility.Screen, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void switchScreen(Screen target, String title, String url) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
+		Parent root = null;
+        try {
+			switch (target) {
+				case PORFOLIO:
+					root = loader.load();
+					if (sellStock) { // Perform transaction when user clicks on [Sell] button
+						PortfolioController portfolioController = loader.<PortfolioController>getController();
+						portfolioController.setUser(user);
+						// Sell stock
+						double curBalance = user.getAccount().getBalance();
+						curBalance += portfolioController.sellSingleStock(transaction, curBalance, soldAmount);
+						user.getAccount().setBalance(curBalance);
+						userManager.update(user);
+						
+						portfolioController.initPortfolio();
+						portfolioController.initTransactionHistory();
+					}
+					break;
+				default:
+					return;
+			}
+        } catch (IOException e) {
+        	e.printStackTrace();
+        	return;
+		}
+    	Stage curStage = (Stage)mainVB.getScene().getWindow();
+        curStage.setTitle(title);
+        curStage.setScene(new Scene(root));
+        curStage.setResizable(false);
+        curStage.show();
+	}
+
+	/* (non-Javadoc)
+	 * @see main.java.control.IController#makeNewStage(main.java.utility.Screen, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void makeNewStage(Screen target, String title, String url) {
+		// TODO Auto-generated method stub
+
 	}
 }
