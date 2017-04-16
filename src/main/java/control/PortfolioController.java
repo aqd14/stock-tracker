@@ -240,6 +240,10 @@ public class PortfolioController extends BaseController implements Initializable
 		// Create new UserStock instance with [Sold] type in database
 		userStockManager.add(user, s, CommonDefine.SOLD_STOCK);
 		
+		// Show successful transaction
+		Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.TRANSACTION_SUCCESSFUL_SMS);
+		alert.showAndWait();
+		
 		return earnedAmount;
 	}
 	

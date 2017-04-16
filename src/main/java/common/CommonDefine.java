@@ -24,7 +24,7 @@ public class CommonDefine {
 	// Alert message
 	public static final String REMOVE_STOCK_SMS = "Do you really want to remove it?";
 	public static final String SELL_STOCK_SMS = "Are you sure you really want to sell these stocks?";
-	public static final String BUY_STOCK_SUCCESSFUL_SMS = "Your transaction is successful!";
+	public static final String TRANSACTION_SUCCESSFUL_SMS = "Your transaction is successful!";
 	public static final String UPDATE_ALERT_SETTINGS_SMS = "You've updated alert settings successfully!";
 	public static final String NOT_SELECT_ANY_STOCK_SMS = "You must choose at least one stock to sell!";
 	public static final String NOT_SELECT_STOCK_AMOUNT_SMS = "You haven't selected any stock amount to buy!";

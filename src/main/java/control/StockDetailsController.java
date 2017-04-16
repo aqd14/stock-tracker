@@ -341,19 +341,19 @@ public class StockDetailsController extends BaseController implements Initializa
 					break;
 				case ONE_MONTH: // Nearest month
 					from.add(Calendar.MONTH, -1);
-					dfm = new SimpleDateFormat("MMM dd");
+					dfm = new SimpleDateFormat("EEE, MMM dd");
 					break;
 				case THREE_MONTH: // Nearest 3 months
 					from.add(Calendar.MONTH, -3);
-					dfm = new SimpleDateFormat("MMM dd");
+					dfm = new SimpleDateFormat("EEE, MMM dd");
 					break;
 				case SIX_MONTH: // Nearest 6 months
 					from.add(Calendar.MONTH, -6);
-					dfm = new SimpleDateFormat("MMM");
+					dfm = new SimpleDateFormat("EEE, MMM dd");
 					break;
 				case ONE_YEAR: //Nearest year
 					from.add(Calendar.YEAR, -1);
-					dfm = new SimpleDateFormat("MMM yyyy");
+					dfm = new SimpleDateFormat("MMM dd, yyyy");
 					break;
 				default:
 					return;
@@ -375,7 +375,6 @@ public class StockDetailsController extends BaseController implements Initializa
 			double lowerBound = Double.MAX_VALUE;
 			double upperBound = Double.MIN_VALUE;
 			// Reverse iteration because date appears as reverse order in List
-			double previousPrice = 0;
 			for (int index = historyQuotes.size() - 1; index >= 0; index --) {
 				HistoricalQuote quote = historyQuotes.get(index);
 				String date = dfm.format(quote.getDate().getTime());
@@ -391,13 +390,8 @@ public class StockDetailsController extends BaseController implements Initializa
 				// by adding an invisible node into data
 				XYChart.Data<String, Number> data = new XYChart.Data<String, Number>(date, price);
 				data.setNode(new HoveredThresholdNode(date, price));
-				previousPrice = price;
-//				data.setNode(rec);
 				series.getData().add(data);
 			}
-			
-			System.out.println("Lower bound: " + lowerBound);
-			System.out.println("Upper bound: " + upperBound);
 			
 			// Initialize line chart
 			CategoryAxis xAxis = new CategoryAxis();
@@ -406,9 +400,6 @@ public class StockDetailsController extends BaseController implements Initializa
 			// Original upper boundary: 55.23 -> 55 -> 75
 			lowerBound = Math.floor(lowerBound);
 			upperBound = Math.floor(upperBound);
-			
-			System.out.println("Lower bound: " + lowerBound);
-			System.out.println("Upper bound: " + upperBound);
 			
 			double range = upperBound - lowerBound;
 			int tickCount = 10;
@@ -422,10 +413,6 @@ public class StockDetailsController extends BaseController implements Initializa
 			upperBound = roundedTickRange * Math.ceil(1 + upperBound/roundedTickRange) + padding;
 //			upperBound += tickUnit;  // Make room for stock price display when user hovers mouse
 			NumberAxis yAxis = new NumberAxis(lowerBound, upperBound, roundedTickRange);
-			
-			System.out.println("Tick unit: " + roundedTickRange);
-			System.out.println("Lower bound: " + lowerBound);
-			System.out.println("Upper bound: " + upperBound);
 			
 			VBox parent = (VBox)stockLineChart.getParent();
 			parent.getChildren().remove(stockLineChart);
@@ -491,7 +478,7 @@ public class StockDetailsController extends BaseController implements Initializa
 	 * Update GUI elements after buying stocks successfully
 	 */
 	private void setupAfterBuyingStock() {
-		Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.BUY_STOCK_SUCCESSFUL_SMS);
+		Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.TRANSACTION_SUCCESSFUL_SMS);
 		alert.showAndWait();
 		// After 
 		quantityCB.getSelectionModel().clearSelection();

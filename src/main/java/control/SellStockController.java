@@ -18,11 +18,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.java.common.CommonDefine;
 import main.java.model.TransactionWrapper;
+import main.java.utility.AlertFactory;
 import main.java.utility.Screen;
 import main.java.utility.Utils;
 import yahoofinance.YahooFinance;
@@ -137,6 +140,9 @@ public class SellStockController extends BaseController implements IController, 
 						
 						portfolioController.initPortfolio();
 						portfolioController.initTransactionHistory();
+						
+						Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.TRANSACTION_SUCCESSFUL_SMS);
+						alert.showAndWait();
 					}
 					break;
 				default:

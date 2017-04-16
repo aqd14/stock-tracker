@@ -81,13 +81,13 @@
 }
 
 .chart-series-line {
-	-fx-stroke: #4286f4;    
+	-fx-stroke: #508ced;    
     -fx-stroke-width: 3px;
     -fx-effect: null;
 }
 
 .default-color0.chart-line-symbol { 
-	-fx-background-color: #4286f4, white;
+	-fx-background-color: #508ced, white;
 }
 
 .default-color1.chart-series-line { -fx-stroke: #dda0dd; }
