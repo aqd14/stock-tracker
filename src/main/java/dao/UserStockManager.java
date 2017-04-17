@@ -88,7 +88,7 @@ public class UserStockManager<T> extends BaseManager<T> {
 					+ "ON us.id.userId = :userID "
 					+ "AND us.id.stockId = :stockID "
 					+ "AND stock.id = :stockID "
-					+ "AND us.stockType = 1 " // User owns stock
+					+ "AND (us.stockType = 1 OR us.stockType = 2) " // User owns stock
 					+ "AND stock.transaction is not null";
 			@SuppressWarnings("unchecked")
 			Query<UserStock> query = session.createQuery(hql);
