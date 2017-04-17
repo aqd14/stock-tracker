@@ -48,7 +48,7 @@ public class TransactionManager<T> extends BaseManager<T> {
 							+ "ORDER BY transaction.transactionDate DESC";
 					break;
 				case CommonDefine.TRANSACTION_STOCK:
-					hql = "from Transaction transaction ORDER BY transaction.transactionDate DESC";
+					hql = "from Transaction transaction WHERE transaction.account.userId = :userId ORDER BY transaction.transactionDate DESC";
 					break;
 				default:
 					// Invalid parameter
@@ -56,9 +56,9 @@ public class TransactionManager<T> extends BaseManager<T> {
 			}
 			@SuppressWarnings("unchecked")
 			Query<Transaction> query = session.createQuery(hql);
-			if (stockType == CommonDefine.OWNED_STOCK) {
-				query.setParameter("userId", userId);
-			}
+//			if (stockType == CommonDefine.OWNED_STOCK) {
+			query.setParameter("userId", userId);
+//			}
 			List<Transaction> transactions = (List<Transaction>)query.getResultList();
 			session.close();
 			List<TransactionWrapper> wrapper = new ArrayList<>();

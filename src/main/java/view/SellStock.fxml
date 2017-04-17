@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="mainVB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="307.0" prefWidth="368.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SellStockController">
+<VBox fx:id="mainVB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="307.0" prefWidth="366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SellStockController">
    <children>
       <Label fx:id="stockSymbolLB" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="361.0">
          <font>
@@ -73,7 +73,7 @@
             <Insets top="10.0" />
          </VBox.margin>
       </Separator>
-      <Separator prefWidth="200.0" />
+      <Separator prefWidth="396.0" />
       <HBox prefHeight="96.0" prefWidth="368.0">
          <children>
             <Label prefHeight="18.0" prefWidth="93.0" text="EST COST" textFill="#797a7c">
