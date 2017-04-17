@@ -183,7 +183,8 @@ public class UserStock implements java.io.Serializable {
 	 * @param ownStock the ownStock to set
 	 */
 	public void setStockType(int stockType) {
-		if (stockType != CommonDefine.SOLD_STOCK && stockType != CommonDefine.OWNED_STOCK && stockType != CommonDefine.INTERESTED_STOCK) {
+		if (stockType != CommonDefine.SOLD_STOCK && stockType != CommonDefine.OWNED_STOCK &&
+			stockType != CommonDefine.INTERESTED_STOCK && stockType != CommonDefine.REMAINING_STOCK) {
 			stockType = CommonDefine.INTERESTED_STOCK; // Set default is interested stock
 		}
 		this.stockType = stockType;

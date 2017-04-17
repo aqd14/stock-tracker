@@ -208,42 +208,55 @@ public class PortfolioController extends BaseController implements Initializable
 	public double sellSingleStock(TransactionWrapper tran, double curBalance, int...soldAmount) throws IOException {
 		double earnedAmount = 0;
 		
-		Stock soldStock = tran.getStock();
-		Stock s = new Stock(soldStock); // Clone data
+		// Separate to sold transaction and remaining transaction
+		// Store transaction when user didn't sell all stock
+		Stock stock = tran.getStock();
+		Stock soldStock = new Stock(stock); // Clone data
 		
-		yahoofinance.Stock yahooStock = yahoofinance.YahooFinance.get(soldStock.getStockCode());
+		yahoofinance.Stock yahooStock = yahoofinance.YahooFinance.get(stock.getStockCode());
 		// Sell all owned stocks of this type
-		if (soldAmount == null || soldAmount.length <= 0) {
-			earnedAmount = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue() * soldStock.getAmount();
-			UserStock us = userStockManager.findUserStock(user.getId(), soldStock.getId());
-			// Not remove but update status of the stock: owned -> sold
-			// Need to keep record to display in transaction history
-			us.setStockType(CommonDefine.SOLD_STOCK);
-			userStockManager.update(us);
+		if (soldAmount == null || soldAmount.length <= 0 || soldAmount[0] == stock.getAmount()) {
+			earnedAmount = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue() * stock.getAmount();
 		} else { // Sell only some stocks
 			earnedAmount = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue() * soldAmount[0];
-			s.setAmount(soldAmount[0]);
+			soldStock.setAmount(soldAmount[0]);
 			// Update remaining number of owned stock
-			soldStock.setAmount(soldStock.getAmount() - soldAmount[0]);
-			stockManager.update(soldStock);
+//			stock.setAmount(stock.getAmount() - soldAmount[0]);
+//			stockManager.update(stock);
+			
+			// Remaining transaction
+			Stock remainingStock = new Stock(stock); // Clone data
+			remainingStock.setAmount(stock.getAmount() - soldAmount[0]);
+			Transaction remainingTransaction = new Transaction(user.getAccount(), new Date());
+			// Copy previous transaction date
+			remainingTransaction.setTransactionDate(tran.getTransaction().getTransactionDate());
+			// Setup 1-to-1 mapping
+			remainingStock.setTransaction(remainingTransaction);
+			remainingTransaction.setStock(remainingStock);
+			stockManager.add(remainingStock);
+			userStockManager.add(user, remainingStock, CommonDefine.REMAINING_STOCK);
 		}
+		// Keep record, not query anymore. 
+		UserStock us = userStockManager.findUserStock(user.getId(), stock.getId());
+		// Not remove but update status of the stock: owned -> sold
+		// Need to keep record to display in transaction history
+		us.setStockType(CommonDefine.TRANSACTION_STOCK);
+		userStockManager.update(us);
+		
+		
 		// Create new transaction for a selling action
-		Transaction t = new Transaction(user.getAccount(), new Date());
+		Transaction soldTransaction = new Transaction(user.getAccount(), new Date());
 		// Add payment and balance information to transaction
-		t.setPayment(earnedAmount);
+		soldTransaction.setPayment(earnedAmount);
 //		t.setBalance(curBalance + earnedAmount);
-		t.setBalance(curBalance + earnedAmount);
-		s.setPrice(yahooStock.getQuote().getPrice());
-		s.setTransaction(t);
-		t.setStock(s);
-		stockManager.add(s);
+		soldTransaction.setBalance(curBalance + earnedAmount);
+		soldStock.setPrice(yahooStock.getQuote().getPrice());
+		soldStock.setTransaction(soldTransaction);
+		soldTransaction.setStock(soldStock);
+		stockManager.add(soldStock);
 		// Create new UserStock instance with [Sold] type in database
-		userStockManager.add(user, s, CommonDefine.SOLD_STOCK);
-		
-		// Show successful transaction
-		Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.TRANSACTION_SUCCESSFUL_SMS);
-		alert.showAndWait();
-		
+		userStockManager.add(user, soldStock, CommonDefine.TRANSACTION_STOCK);
+		// Return earned amount
 		return earnedAmount;
 	}
 	

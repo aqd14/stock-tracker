@@ -44,11 +44,22 @@ public class TransactionManager<T> extends BaseManager<T> {
 							+ "INNER JOIN UserStock us "
 							+ "ON us.id.userId = :userId "
 							+ "AND stock = us.stock "
-							+ "AND us.stockType = 1 "
+							+ "AND (us.stockType = 1 "
+							+ "OR us.stockType = 2) "
 							+ "ORDER BY transaction.transactionDate DESC";
 					break;
 				case CommonDefine.TRANSACTION_STOCK:
-					hql = "from Transaction transaction WHERE transaction.account.userId = :userId ORDER BY transaction.transactionDate DESC";
+//					hql = "from Transaction transaction WHERE transaction.account.userId = :userId ORDER BY transaction.transactionDate DESC";
+					hql = "SELECT transaction "
+							+ "FROM Transaction transaction "
+							+ "INNER JOIN Stock stock "
+							+ "ON transaction.stockId = stock.id "
+							+ "AND transaction.account.userId = :userId "
+							+ "INNER JOIN UserStock us "
+							+ "ON us.id.userId = :userId "
+							+ "AND stock = us.stock "
+							+ "AND us.stockType != 2 " // Don't include remaining stock
+							+ "ORDER BY transaction.transactionDate DESC";
 					break;
 				default:
 					// Invalid parameter
