@@ -197,6 +197,9 @@ public class PortfolioController extends BaseController implements Initializable
 		}
 		user.getAccount().setBalance(curBalance);
 		userManager.update(user);
+		// Show successful message
+		Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.TRANSACTION_SUCCESSFUL_SMS);
+		alert.showAndWait();
 	}
 	
 	/**

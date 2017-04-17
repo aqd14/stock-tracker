@@ -103,7 +103,7 @@ public class SellStockController extends BaseController implements IController, 
 	
 	public void init(TransactionWrapper t) {
 		transaction = t;
-		stockSymbolLB.setText(t.getStockCode());
+		stockSymbolLB.setText(t.getStockCompany() + " (" + t.getStockCode() + ")");
 		try {
 			yahoofinance.Stock yahooStock = YahooFinance.get(t.getStockCode(), false);
 			// Initialize current price
