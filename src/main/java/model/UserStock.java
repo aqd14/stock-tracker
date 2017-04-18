@@ -179,12 +179,11 @@ public class UserStock implements java.io.Serializable {
 
 	/**
 	 * Flag to check if user owns stock or not.
-	 * Only accept two values: 0 or 1
+	 * Only accept integer values in range [-2, 2]
 	 * @param ownStock the ownStock to set
 	 */
 	public void setStockType(int stockType) {
-		if (stockType != CommonDefine.SOLD_STOCK && stockType != CommonDefine.OWNED_STOCK &&
-			stockType != CommonDefine.INTERESTED_STOCK && stockType != CommonDefine.REMAINING_STOCK) {
+		if (stockType < -2 && stockType > 2) {
 			stockType = CommonDefine.INTERESTED_STOCK; // Set default is interested stock
 		}
 		this.stockType = stockType;

@@ -239,13 +239,17 @@ public class PortfolioController extends BaseController implements Initializable
 			stockManager.add(remainingStock);
 			userStockManager.add(user, remainingStock, CommonDefine.REMAINING_STOCK);
 		}
-		// Keep record, not query anymore. 
+		// Keep record, not query anymore.
 		UserStock us = userStockManager.findUserStock(user.getId(), stock.getId());
-		// Not remove but update status of the stock: owned -> sold
-		// Need to keep record to display in transaction history
-		us.setStockType(CommonDefine.TRANSACTION_STOCK);
-		userStockManager.update(us);
-		
+		// User wants to sell remaining stock
+		if (us.getStockType() == CommonDefine.REMAINING_STOCK) {
+			// Remove previous remaining stock
+			userStockManager.remove(us);
+		} else {
+			// User wants to sell all stocks at one
+			us.setStockType(CommonDefine.TRANSACTION_STOCK);
+			userStockManager.update(us);
+		}
 		
 		// Create new transaction for a selling action
 		Transaction soldTransaction = new Transaction(user.getAccount(), new Date());
