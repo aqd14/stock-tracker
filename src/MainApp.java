@@ -13,6 +13,8 @@ public class MainApp extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
+    	// Redirect to https
+    	System.setProperty("yahoofinance.baseurl.histquotes", "https://ichart.yahoo.com/table.csv");
     	// Initialize current stage
     	// User login is the first page appears when user runs the app
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("main/java/view/Login.fxml"));
