@@ -156,6 +156,9 @@ public class PortfolioController extends BaseController implements Initializable
 			transactionHistoryPagination.setPageFactory(this::createTransactionPage);
 		}
 		
+		// Disable export button when there is no data to export
+		exportButton.setDisable(historyTransactions == null || historyTransactions.size() == 0);
+		
 		exportButton.setOnAction(event -> {
 			DirectoryChooser dc = new DirectoryChooser();
 			File selectedDir = dc.showDialog(mainAP.getScene().getWindow());
