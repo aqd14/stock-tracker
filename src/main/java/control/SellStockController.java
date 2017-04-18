@@ -129,9 +129,9 @@ public class SellStockController extends BaseController implements IController, 
 			switch (target) {
 				case PORFOLIO:
 					root = loader.load();
+					PortfolioController portfolioController = loader.<PortfolioController>getController();
+					portfolioController.setUser(user);
 					if (sellStock) { // Perform transaction when user clicks on [Sell] button
-						PortfolioController portfolioController = loader.<PortfolioController>getController();
-						portfolioController.setUser(user);
 						// Sell stock
 						double curBalance = user.getAccount().getBalance();
 						curBalance += portfolioController.sellSingleStock(transaction, curBalance, soldAmount);
@@ -143,6 +143,9 @@ public class SellStockController extends BaseController implements IController, 
 						
 						Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.TRANSACTION_SUCCESSFUL_SMS);
 						alert.showAndWait();
+					} else {
+						portfolioController.initPortfolio();
+						portfolioController.initTransactionHistory();
 					}
 					break;
 				default:
