@@ -37,6 +37,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -65,12 +66,17 @@ public class StockDetailsController extends BaseController implements Initializa
 	@FXML private AnchorPane lineChartAP;
 	@FXML private LineChart<String, Number> stockLineChart;
 	
+	// Get parent of combobox to replace it with a text field when users want to buy more than 10 stocks
+	@FXML private HBox parentHB;
+	JFXTextField quantityTF;
+	int quantity;
+	
 	RealTimeUpdateService service;
 	
 	// Buy Stock
 	@FXML private Label stockCodeLB;
 	@FXML private Label buyPriceLB;
-	@FXML private JFXComboBox<Integer> quantityCB;
+	@FXML private JFXComboBox<Object> quantityCB;
 	@FXML JFXTextField currentBalanceTF;
 	@FXML JFXTextField subTotalTF;
 	@FXML JFXTextField remainBalanceTF;
@@ -116,18 +122,35 @@ public class StockDetailsController extends BaseController implements Initializa
 //		});
 		
 		// Add listener when user selects item in combobox
-		quantityCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
+		quantityCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
 			@Override
-			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer quantity) {
-				if (quantity != null) {
-					System.out.println("Selected item: " + quantity);
-					double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue()*quantity;
-					double remainingBalance = user.getAccount().getBalance() - price;
-					// Disable [Buy] button if the remaining balance is negative
-					buyStockButton.setDisable(remainingBalance < 0);
-					// Set corresponding balance and sub total
-					subTotalTF.setText("- $" + Utils.formatCurrencyDouble(price));
-					remainBalanceTF.setText("$" + Utils.formatCurrencyDouble(remainingBalance));
+			public void changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
+				if (newValue != null) {
+					try {
+						quantity = Integer.parseInt(newValue.toString());
+						estimateBuyingCost(quantity);
+					} catch (NumberFormatException e) { // When user select "10+"
+						// Replace combobox with new text field that allows user to input expected number
+						parentHB.getChildren().remove(quantityCB);
+						quantityTF = new JFXTextField();
+						quantityTF.setPrefHeight(27.0);
+						quantityTF.setPrefWidth(63);
+						parentHB.getChildren().add(2, quantityTF);
+						
+						quantityTF.textProperty().addListener(new ChangeListener<String>() {
+
+							@Override
+							public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+								if (!newValue.matches("\\d*")) {
+									quantityTF.setText(newValue.replaceAll("[^\\d]", ""));
+								} else if (!quantityTF.getText().isEmpty()) {
+									// Avoid setText statement will call changed again
+									quantity = Integer.parseInt(quantityTF.getText());
+									estimateBuyingCost(quantity);
+								}
+							}
+						});
+					}
 				}
 			}
 		});
@@ -160,6 +183,21 @@ public class StockDetailsController extends BaseController implements Initializa
 			interval = Interval.ONE_YEAR;
 			handleOptionSelected(oneYearLB);
 		});
+	}
+	
+	/**
+	 * Estimate buying cost when user specify the number of stocks to buy
+	 * @param quantity
+	 */
+	private void estimateBuyingCost(int quantity) {
+		System.out.println("Selected item: " + quantity);
+		double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue()*quantity;
+		double remainingBalance = user.getAccount().getBalance() - price;
+		// Disable [Buy] button if the remaining balance is negative
+		buyStockButton.setDisable(remainingBalance < 0);
+		// Set corresponding balance and sub total
+		subTotalTF.setText("- $" + Utils.formatCurrencyDouble(price));
+		remainBalanceTF.setText("$" + Utils.formatCurrencyDouble(remainingBalance));
 	}
 	
 	/**
@@ -304,7 +342,7 @@ public class StockDetailsController extends BaseController implements Initializa
 		// Buying stock options
 		stockCodeLB.setText(yahooStock.getSymbol());
 		buyPriceLB.setText(yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).toString());
-		ObservableList<Integer> options = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		ObservableList<Object> options = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "10+");
 		quantityCB.setItems(options);
 		currentBalanceTF.setText("$" + Utils.formatCurrencyDouble(user.getAccount().getBalance()));
 	}
@@ -426,14 +464,14 @@ public class StockDetailsController extends BaseController implements Initializa
 	}
 
 	@FXML private void buyStock(ActionEvent e) {
-		if (quantityCB.getSelectionModel().isEmpty()) { // User didn't select any amount
+		 // User didn't select any amount
+		if ((quantityCB != null && quantityCB.getSelectionModel().isEmpty()) || (quantityTF != null && quantityTF.getText().isEmpty())) {
 			// Display warning message
 			Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.NOT_SELECT_STOCK_AMOUNT_SMS);
 			alert.showAndWait();
 		} else {
 			// Subtract money from user's balance
 			double curBal= user.getAccount().getBalance();
-			int quantity = quantityCB.getSelectionModel().getSelectedItem();
 			double price = yahooStock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue();
 			
 			// Check if current balance is enough to buy stock
@@ -480,23 +518,29 @@ public class StockDetailsController extends BaseController implements Initializa
 	private void setupAfterBuyingStock() {
 		Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.TRANSACTION_SUCCESSFUL_SMS);
 		alert.showAndWait();
-		// After 
-		quantityCB.getSelectionModel().clearSelection();
+		// After
+		if (quantityCB != null && quantityTF == null) {
+			quantityCB.getSelectionModel().clearSelection();
+		} else {
+			parentHB.getChildren().remove(quantityTF);
+			parentHB.getChildren().add(2, quantityCB);
+			quantityCB.getSelectionModel().clearSelection();
+		}
 		subTotalTF.setText("");
 		remainBalanceTF.setText("");
 		currentBalanceTF.setText("$" + Utils.formatCurrencyDouble(user.getAccount().getBalance()));
+		quantity = 0;
 	}
 	
 	private Stock extractStock() {
 		// Extract stock information
 		String stockName = yahooStock.getName();
 		String stockCode = yahooStock.getSymbol();
-		int amount = quantityCB.getSelectionModel().getSelectedItem();
 		BigDecimal price = yahooStock.getQuote().getPrice();
 		BigDecimal previousPrice = yahooStock.getQuote().getPreviousClose();
 		
 		Transaction transaction = new Transaction(user.getAccount(), new Date());
-		Stock stock = new Stock(transaction, stockName, stockCode, amount, CommonDefine.OWNED_STOCK, price, previousPrice);
+		Stock stock = new Stock(transaction, stockName, stockCode, quantity, CommonDefine.OWNED_STOCK, price, previousPrice);
 		transaction.setStock(stock);
 //		transactionManager.add(transaction);
 		return stock;

@@ -269,7 +269,7 @@
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin></Separator>
-                              <HBox prefHeight="55.0" prefWidth="212.0">
+                              <HBox fx:id="parentHB" prefHeight="55.0" prefWidth="212.0">
                                  <children>
                                     <Label fx:id="stockCodeLB" prefHeight="31.0" prefWidth="68.0">
                                        <font>
