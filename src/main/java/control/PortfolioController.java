@@ -447,11 +447,11 @@ public class PortfolioController extends BaseController implements Initializable
 		amountCol.setPrefWidth(100);
 		
 		TableColumn<TransactionWrapper, String> totalPrice = new TableColumn<>("Total Bought Price");
-		totalPrice.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTransactionPayment()));
+		totalPrice.setCellValueFactory(param -> new SimpleStringProperty("$" + param.getValue().getTransactionPayment()));
 		totalPrice.setPrefWidth(160);
 		
 		TableColumn<TransactionWrapper, String> curTotalPrice = new TableColumn<>("Current Stock Value");
-		curTotalPrice.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTransactionPayment()));
+		curTotalPrice.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTotalValue()));
 		curTotalPrice.setPrefWidth(160);
 		
 		table.getColumns().addAll(stockCodeCol, stockNameCol, amountCol, totalPrice, curTotalPrice);

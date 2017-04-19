@@ -105,8 +105,8 @@ public class TransactionWrapper {
 	/**
 	 * @return the totalValue
 	 */
-	public double getTotalValue() {
-		return totalValue;
+	public String getTotalValue() {
+		return "$" + String.valueOf(totalValue);
 	}
 
 	/**
