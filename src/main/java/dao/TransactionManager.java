@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import main.java.common.CommonDefine;
+import main.java.model.Stock;
 import main.java.model.Transaction;
 import main.java.model.TransactionWrapper;
 import main.java.utility.HibernateUtil;
@@ -17,6 +18,51 @@ import main.java.utility.HibernateUtil;
  * @author aqd14
  */
 public class TransactionManager<T> extends BaseManager<T> {
+	
+	/**
+	 * <p>
+	 * Find list of summary transactions. How many stocks user owns for each stock, how much he spent on that.
+	 * This can be used to create a summary table that reflects current price then user can know how much he might earn from owned stocks
+	 * </p>
+	 * 
+	 * @param userId
+	 * @return List of summary transactions
+	 */
+	public List<TransactionWrapper> findSummaryTransactions(Integer userId) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+	
+		String hql = "SELECT stock.stockCode as symbol, stock.stockName as company, SUM(stock.price*stock.amount) as totalPayment, SUM(stock.amount) as totalAmount "
+				+ "FROM Stock stock "
+		        + "INNER JOIN UserStock us " 
+				+ "ON us.id.userId = :userId " 
+		        + "AND stock = us.stock "
+		        + "AND (us.stockType = 1 " 
+		        + "OR us.stockType = 2) " 
+		        + "GROUP BY stock.stockCode";
+
+		@SuppressWarnings("unchecked")
+		Query<Object> query = session.createQuery(hql);
+		// if (stockType == CommonDefine.OWNED_STOCK) {
+		query.setParameter("userId", userId);
+		// }
+		List<Object> transactions = query.getResultList();
+		session.close();
+		List<TransactionWrapper> wrapper = new ArrayList<>();
+		for (Object t : transactions) {
+			Object[] data = (Object[])t; // Cast to extract data in inner array
+			Transaction tran = new Transaction();
+			Stock stock = new Stock();
+			// Extract data
+			stock.setStockCode(data[0].toString());
+			stock.setStockName(data[1].toString());;
+			tran.setPayment(Double.valueOf(data[2].toString()));
+			stock.setAmount(Integer.parseInt(data[3].toString()));
+			
+			wrapper.add(new TransactionWrapper(tran, stock));
+		}
+		return wrapper;
+	}
 
 	/**
 	 * <p>

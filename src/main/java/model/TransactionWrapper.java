@@ -11,6 +11,7 @@ public class TransactionWrapper {
 	private Stock stock;
 	
 	private BooleanProperty selected;
+	private double totalValue; // Multiplication of stock's price and its quantity
 	
 	/**
 	 * Wrapper class to have attributes from both Transaction and Stock 
@@ -99,5 +100,19 @@ public class TransactionWrapper {
 	
 	public String getBalance() {
 		return String.valueOf("$" + transaction.getBalance());
+	}
+
+	/**
+	 * @return the totalValue
+	 */
+	public double getTotalValue() {
+		return totalValue;
+	}
+
+	/**
+	 * @param totalValue the totalValue to set
+	 */
+	public void setTotalValue(double totalValue) {
+		this.totalValue = totalValue;
 	}
 }

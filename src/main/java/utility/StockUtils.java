@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -66,5 +67,19 @@ public class StockUtils {
 	 */
 	public static boolean checkContainCaseInsensitive(String s1, String s2) {
 		return Pattern.compile(Pattern.quote(s2), Pattern.CASE_INSENSITIVE).matcher(s1).find();
+	}
+	
+	/**
+	 * Calculate the value of stock with given amount
+	 * 
+	 * @param stock
+	 * @param amount
+	 * @return value
+	 */
+	public static double calculateStockValue(yahoofinance.Stock stock, int amount) {
+		if (stock == null) {
+			return 0;
+		}
+		return stock.getQuote().getPrice().setScale(2, RoundingMode.CEILING).doubleValue()*amount;
 	}
 }

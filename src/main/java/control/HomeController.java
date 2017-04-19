@@ -360,6 +360,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 				portfolioController.setUser(user);
 				portfolioController.initPortfolio();
 				portfolioController.initTransactionHistory();
+				portfolioController.initTransactionSummary();
 				break;
 			case SETTINGS:
 				// Set current user

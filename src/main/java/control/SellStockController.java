@@ -140,12 +140,14 @@ public class SellStockController extends BaseController implements IController, 
 						
 						portfolioController.initPortfolio();
 						portfolioController.initTransactionHistory();
+						portfolioController.initTransactionSummary();
 						
 						Alert alert = AlertFactory.generateAlert(AlertType.INFORMATION, CommonDefine.TRANSACTION_SUCCESSFUL_SMS);
 						alert.showAndWait();
 					} else {
 						portfolioController.initPortfolio();
 						portfolioController.initTransactionHistory();
+						portfolioController.initTransactionSummary();
 					}
 					break;
 				default:

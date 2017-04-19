@@ -45,6 +45,7 @@ import main.java.utility.AlertFactory;
 import main.java.utility.ExportUtils;
 import main.java.utility.Screen;
 import main.java.utility.StageFactory;
+import main.java.utility.StockUtils;
 import yahoofinance.YahooFinance;
 
 public class PortfolioController extends BaseController implements Initializable, IController {
@@ -52,6 +53,7 @@ public class PortfolioController extends BaseController implements Initializable
 	@FXML private TabPane mainTP;
 	@FXML private Pagination portfolioPagination;
 	@FXML private Pagination transactionHistoryPagination;
+	@FXML private Pagination summaryTransactionPagination;
 	@FXML private JFXButton sellStockButton;
 	@FXML private JFXButton exportButton;
 	
@@ -66,6 +68,10 @@ public class PortfolioController extends BaseController implements Initializable
 	// Transaction history table
 	TableView<TransactionWrapper> historyTable;
 	List<TransactionWrapper> historyTransactions;
+	
+	// Transaction summary table
+	TableView<TransactionWrapper> summaryTable;
+	List<TransactionWrapper> summaryTransactions;
 	
 	// List of selected stocks that user consider to sell
 	List<TransactionWrapper> performingTransactions = new ArrayList<TransactionWrapper>();
@@ -84,18 +90,27 @@ public class PortfolioController extends BaseController implements Initializable
 		// Need more width for Transaction History tab
 		mainTP.getSelectionModel().selectedItemProperty().addListener(listener -> {
 			int selectedIndex = mainTP.getSelectionModel().getSelectedIndex();
-			System.out.println("Selected index: " + selectedIndex);
 			double preferWidth;
-			if (selectedIndex == 0) { // Portfolio view
-				preferWidth = 760;
-			} else {
-				preferWidth = 950;
+			switch(selectedIndex) {
+				case 0:  // Portfolio view
+					preferWidth = 760;
+					portfolioPagination.setPrefWidth(preferWidth);
+					break;
+				case 1:  // Transaction history view
+					preferWidth = 950;
+					transactionHistoryPagination.setPrefWidth(preferWidth);
+					break;
+				case 2:  // Onwed stock summary view
+					preferWidth = 780;
+					summaryTransactionPagination.setPrefWidth(preferWidth);
+					break;
+				default:
+					preferWidth = 950;
+					break;
 			}
 			mainAP.getScene().getWindow().setWidth(preferWidth);
 			mainAP.setPrefWidth(preferWidth);
 			mainTP.setPrefWidth(preferWidth);
-			portfolioPagination.setPrefWidth(preferWidth);
-			transactionHistoryPagination.setPrefWidth(preferWidth);
 		});
 	}
 	
@@ -171,6 +186,35 @@ public class PortfolioController extends BaseController implements Initializable
 				alert.showAndWait();
 			}
 		});
+	}
+	
+	/**
+	 * Initialize transaction summary table
+	 */
+	public void initTransactionSummary() {
+		summaryTransactions = transactionManager.findSummaryTransactions(user.getId());
+		// Calculate value of owned stock with real-time price
+		setCurrentValue();
+		// Instantiate table and pagination view
+		summaryTransactionPagination.setPageCount(summaryTransactions.size()/rowsPerPage + 1);
+		summaryTable = createSummaryTransactionTable();
+		summaryTransactionPagination.setPageFactory(this::createSummaryPage);
+	}
+	
+	/**
+	 * Get current price for owned stocks to calculate current value
+	 */
+	private void setCurrentValue() {
+		for (TransactionWrapper tw : summaryTransactions) {
+			try {
+				yahoofinance.Stock stock = YahooFinance.get(tw.getStockCode());
+				double value = StockUtils.calculateStockValue(stock, tw.getStock().getAmount());
+				tw.setTotalValue(value);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -284,6 +328,7 @@ public class PortfolioController extends BaseController implements Initializable
 		// Refresh transaction history by pulling out data from database again and redraw table
 		// TODO: It might take time, consider the way to update table without accessing database
 		initTransactionHistory();
+		initTransactionSummary();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -383,6 +428,36 @@ public class PortfolioController extends BaseController implements Initializable
 		return table;
 	}
 	
+	@SuppressWarnings("unchecked")
+	private TableView<TransactionWrapper> createSummaryTransactionTable() {
+
+		TableView<TransactionWrapper> table = new TableView<>();
+		table.setEditable(true);
+
+		TableColumn<TransactionWrapper, String> stockCodeCol = new TableColumn<>("Stock Symbol");
+		stockCodeCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStockCode()));
+		stockCodeCol.setPrefWidth(80);
+
+		TableColumn<TransactionWrapper, String> stockNameCol = new TableColumn<>("Company");
+		stockNameCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getStockCompany()));
+		stockNameCol.setPrefWidth(250);
+
+		TableColumn<TransactionWrapper, String> amountCol = new TableColumn<>("Quantity");
+		amountCol.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAmount()));
+		amountCol.setPrefWidth(100);
+		
+		TableColumn<TransactionWrapper, String> totalPrice = new TableColumn<>("Total Bought Price");
+		totalPrice.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTransactionPayment()));
+		totalPrice.setPrefWidth(160);
+		
+		TableColumn<TransactionWrapper, String> curTotalPrice = new TableColumn<>("Current Stock Value");
+		curTotalPrice.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTransactionPayment()));
+		curTotalPrice.setPrefWidth(160);
+		
+		table.getColumns().addAll(stockCodeCol, stockNameCol, amountCol, totalPrice, curTotalPrice);
+		return table;
+	}
+	
 	private Node createPortfolioPage(int pageIndex) {
         int fromIndex = pageIndex * rowsPerPage;
         int toIndex = Math.min(fromIndex + rowsPerPage, portfolioTransactions.size());
@@ -395,6 +470,13 @@ public class PortfolioController extends BaseController implements Initializable
         int toIndex = Math.min(fromIndex + rowsPerPage, historyTransactions.size());
         historyTable.setItems(FXCollections.observableArrayList(historyTransactions.subList(fromIndex, toIndex)));
         return new BorderPane(historyTable);
+    }
+	
+	private Node createSummaryPage(int pageIndex) {
+        int fromIndex = pageIndex * rowsPerPage;
+        int toIndex = Math.min(fromIndex + rowsPerPage, summaryTransactions.size());
+        summaryTable.setItems(FXCollections.observableArrayList(summaryTransactions.subList(fromIndex, toIndex)));
+        return new BorderPane(summaryTable);
     }
 
 	/**
