@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 9, 2017 11:38:22 PM by Hibernate Tools 5.2.0.CR1 -->
+<hibernate-mapping>
+    <class name="main.java.model.Transaction" table="transaction" catalog="stock" optimistic-lock="version">
+        <!-- <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id> -->
+        <id name="stockId" type="java.lang.Integer">
+			<column name="stock_id" />
+			<generator class="foreign">
+				<param name="property">stock</param>
+			</generator>
+		</id>
+		<one-to-one name="stock" class="main.java.model.Stock" constrained="true" lazy="false" fetch="select"/>
+        <many-to-one name="account" class="main.java.model.Account" lazy="false" fetch="select">
+            <column name="account_id" not-null="true" />
+        </many-to-one>
+        <property name="transactionDate" type="timestamp">
+            <column name="transaction_date" length="19" not-null="true" />
+        </property>
+        <property name="payment" type="double">
+            <column name="payment" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="balance" type="double">
+            <column name="balance" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

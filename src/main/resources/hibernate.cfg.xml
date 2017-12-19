@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">12345678</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/stock</property>
+        <property name="hibernate.connection.username">aqd14</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+        <property name="hibernate.search.autoregister_listeners">true</property>
+        <property name="hibernate.validator.apply_to_ddl">false</property>
+        
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">true</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <!-- Mapping hbm file to connect Java Persistent Objects with Database -->
+        <mapping resource="hbm/Account.hbm.xml" />
+        <mapping resource="hbm/User.hbm.xml" />
+        <mapping resource="hbm/Transaction.hbm.xml" />
+        <mapping resource="hbm/Stock.hbm.xml" />
+        <mapping resource="hbm/StockDetail.hbm.xml" />
+        <mapping resource="hbm/UserStock.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

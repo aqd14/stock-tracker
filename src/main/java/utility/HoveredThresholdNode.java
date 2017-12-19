@@ -4,7 +4,6 @@
 package main.java.utility;
 
 import com.jfoenix.controls.JFXTextField;
-
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;

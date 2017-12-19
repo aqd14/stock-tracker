@@ -1,8 +1,7 @@
 package main.java.dao;
 
-import java.util.Date;
-import java.util.List;
-
+import main.java.model.User;
+import main.java.utility.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
@@ -10,8 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import main.java.model.User;
-import main.java.utility.HibernateUtil;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Home object for domain model class User.

@@ -3,24 +3,18 @@
  */
 package main.java.utility;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Map;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import main.java.model.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.quotes.stock.StockQuote;
+
+import java.io.*;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Map;
 
 /**
  * @author aqd14

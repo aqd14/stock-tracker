@@ -7,11 +7,7 @@ import main.java.dao.StockManager;
 import main.java.dao.TransactionManager;
 import main.java.dao.UserManager;
 import main.java.dao.UserStockManager;
-import main.java.model.Stock;
-import main.java.model.Transaction;
-import main.java.model.TransactionWrapper;
-import main.java.model.User;
-import main.java.model.UserStock;
+import main.java.model.*;
 
 public class BaseController {
 	

@@ -1,10 +1,10 @@
 package main.java.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TransactionWrapper {
 	private Transaction transaction;

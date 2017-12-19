@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 9, 2017 11:38:22 PM by Hibernate Tools 5.2.0.CR1 -->
+<hibernate-mapping>
+    <class name="main.java.model.User" table="user" catalog="stock" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="username" type="string">
+            <column name="username" length="45" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="45" not-null="true" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="first_name" length="45" not-null="true" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="45" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45" not-null="true" />
+        </property>
+		<property name="phoneNumber" type="string">
+            <column name="phone_number" length="45" not-null="true" />
+        </property>
+        <property name="birthday" type="timestamp">
+            <column name="birthday" length="19" not-null="true" />
+        </property>
+        <property name="alertTime" type="int">
+            <column name="alert_time"/>
+        </property>
+        <property name="stockUpdateTime" type="int">
+            <column name="stock_update_time"/>
+        </property>
+        <set name="userStocks" table="user_stock" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="main.java.model.UserStock" />
+        </set>
+        <one-to-one name="account" class="main.java.model.Account" cascade="save-update"/>
+    </class>
+</hibernate-mapping>

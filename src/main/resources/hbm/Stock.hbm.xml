@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 9, 2017 11:38:22 PM by Hibernate Tools 5.2.0.CR1 -->
+<hibernate-mapping>
+    <class name="main.java.model.Stock" table="stock" catalog="stock" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+<!--         <many-to-one name="transaction" 
+        column="transaction_id" 
+        unique="true"
+        not-null="false"/>
+		<id name="transactionId" type="java.lang.Integer">
+			<column name="transaction_id" />
+			<generator class="foreign">
+				<param name="property">transaction</param>
+			</generator>
+		</id> -->
+		<one-to-one name="transaction" class="main.java.model.Transaction" cascade="save-update"/>
+		<!-- <one-to-one name="transaction" class="main.java.Transaction" constrained="false"/> -->
+        <property name="stockName" type="string">
+            <column name="stock_name" length="45" not-null="true" />
+        </property>
+        <property name="stockCode" type="string">
+            <column name="stock_code" length="45" not-null="true" />
+        </property>
+        <property name="price" type="java.math.BigDecimal">
+            <column name="price" precision="22" scale="2" not-null="true" />
+        </property>
+        <property name="previousPrice" type="java.math.BigDecimal">
+            <column name="previous_price" precision="22" scale="2" not-null="true" />
+        </property>
+        <property name="amount" type="int">
+            <column name="amount"/>
+        </property>
+        <set name="userStocks" table="user_stock" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="stock_id" not-null="true" />
+            </key>
+            <one-to-many class="main.java.model.UserStock" />
+        </set>
+        <one-to-one name="stockDetail" class="main.java.model.StockDetail"></one-to-one>
+    </class>
+</hibernate-mapping>

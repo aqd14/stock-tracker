@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 9, 2017 11:38:22 PM by Hibernate Tools 5.2.0.CR1 -->
+<hibernate-mapping>
+    <class name="main.java.model.StockDetail" table="stock_detail" catalog="stock" optimistic-lock="version">
+        <id name="stockId" type="int">
+            <column name="stock_id" />
+            <generator class="foreign">
+                <param name="property">stock</param>
+            </generator>
+        </id>
+        <one-to-one name="stock" class="main.java.model.Stock" constrained="true"></one-to-one>
+        <property name="companyName" type="string">
+            <column name="company_name" length="45" />
+        </property>
+        <property name="companyDescription" type="string">
+            <column name="company_description" length="45" />
+        </property>
+        <property name="listedDate" type="timestamp">
+            <column name="listed_date" length="19" />
+        </property>
+        <property name="remark" type="string">
+            <column name="remark" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

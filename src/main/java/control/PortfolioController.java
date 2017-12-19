@@ -1,17 +1,6 @@
 package main.java.control;
 
-import java.io.File;
-import java.io.IOException;
-import java.math.RoundingMode;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,14 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -41,12 +24,15 @@ import main.java.model.Stock;
 import main.java.model.Transaction;
 import main.java.model.TransactionWrapper;
 import main.java.model.UserStock;
+import main.java.utility.*;
 import main.java.utility.AlertFactory;
-import main.java.utility.ExportUtils;
-import main.java.utility.Screen;
-import main.java.utility.StageFactory;
-import main.java.utility.StockUtils;
 import yahoofinance.YahooFinance;
+
+import java.io.File;
+import java.io.IOException;
+import java.math.RoundingMode;
+import java.net.URL;
+import java.util.*;
 
 public class PortfolioController extends BaseController implements Initializable, IController {
 	@FXML private AnchorPane mainAP;
@@ -152,7 +138,7 @@ public class PortfolioController extends BaseController implements Initializable
 			portfolioTable.setOnMouseClicked(eventHandler -> {
 				if (2 == eventHandler.getClickCount()) {
 //					makeNewStage(Screen.STOCK_DETAILS, "Stock Details", "../view/StockDetails.fxml");
-					switchScreen(Screen.SELL_STOCK, "Sell Stock", "../view/SellStock.fxml");
+					switchScreen(Screen.SELL_STOCK, "Sell Stock", ResourceLocator.SELL_STOCK_VIEW);
 				}
 			});
 		}

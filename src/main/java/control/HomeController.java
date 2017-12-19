@@ -1,24 +1,10 @@
-/**
- * 
- */
 package main.java.control;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,15 +15,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableRow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -52,11 +31,12 @@ import main.java.notification.EmailNotification;
 import main.java.notification.PhoneNotification;
 import main.java.service.AlertSettingsCheckingService;
 import main.java.service.RealTimeUpdateService;
-import main.java.utility.AlertFactory;
-import main.java.utility.Screen;
-import main.java.utility.StageFactory;
-import main.java.utility.Utils;
+import main.java.utility.*;
 import yahoofinance.YahooFinance;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author doquocanh-macbook
@@ -240,7 +220,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		addStock.setOnMouseClicked(event -> {
-			makeNewStage(Screen.ADD_STOCK, "Add new stock", "../view/AddStock.fxml");
+			makeNewStage(Screen.ADD_STOCK, "Add new stock", ResourceLocator.ADD_STOCK_VIEW);
 		});
 		// Initialize GUI
 		stocks = FXCollections.observableArrayList();
@@ -278,7 +258,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 		    };
 		    alertSettingsItem.setOnAction(evt -> {
 		        stock = row.getItem();
-		        makeNewStage(Screen.ALERT_SETTINGS, CommonDefine.ALERT_SETTINGS_TITLE, "../view/AlertSettings.fxml");
+		        makeNewStage(Screen.ALERT_SETTINGS, CommonDefine.ALERT_SETTINGS_TITLE, ResourceLocator.ALERT_SETTINGS_VIEW);
 		    });
 		    // event handlers for other menu items...
 		    removeItem.setOnAction(evt -> {
@@ -326,7 +306,7 @@ public class HomeController extends BaseController implements Initializable, Obs
 			public void handle(MouseEvent mouseEvent) {
 //				System.out.println("Current number of rows: " + stockTableView.getCurrentItemsCount());
 				if (mouseEvent.getClickCount() == 2 && stockTableView.getCurrentItemsCount() > 0) { // Double click
-					makeNewStage(Screen.STOCK_DETAILS, CommonDefine.STOCK_DETAILS_TITLE, "../view/StockDetails.fxml");
+					makeNewStage(Screen.STOCK_DETAILS, CommonDefine.STOCK_DETAILS_TITLE, ResourceLocator.STOCK_DETAILS_VIEW);
 //					TreeItem<Stock> item = stockTableView.getSelectionModel().getSelectedItem();
 //					System.out.println("Selected stock: " + item.getValue().getStockName());
 				}
@@ -407,23 +387,21 @@ public class HomeController extends BaseController implements Initializable, Obs
 	 * @param event Capture the action user performed. 
 	 */
 	@FXML private void openAccountSettings(ActionEvent event) {
-		makeNewStage(Screen.SETTINGS, CommonDefine.USER_SETTINGS_TITLE, "../view/Settings.fxml");
+		makeNewStage(Screen.SETTINGS, CommonDefine.USER_SETTINGS_TITLE, ResourceLocator.SETTINGS_VIEW);
 	}
 	
 	@FXML private void openPorfolio(ActionEvent event) {
-		makeNewStage(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, "../view/Portfolio.fxml");
+		makeNewStage(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, ResourceLocator.PORTFOLIO_VIEW);
 	}
 	
 	@FXML private void exit(ActionEvent event) {
 		Alert alert = AlertFactory.generateAlert(AlertType.CONFIRMATION, "Do you really want to exit?");
 		Optional<ButtonType> selection = alert.showAndWait();
 		if (selection.isPresent() && selection.get().equals(ButtonType.OK)) {
-			switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, "../../../main/java/view/Login.fxml");
+			switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, ResourceLocator.LOGIN_VIEW);
 			// Stop schedule services
 			stockUpdateService.cancel();
 			alertSettingsService.cancel();
-		} else {
-			// Stay in Home page
 		}
 	}
 

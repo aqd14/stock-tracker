@@ -1,10 +1,9 @@
 package main.java.dao;
 
+import main.java.model.Stock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
-
-import main.java.model.Stock;
 
 /**
  * Home object for domain model class Stock.

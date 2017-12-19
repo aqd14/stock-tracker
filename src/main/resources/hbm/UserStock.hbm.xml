@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 9, 2017 11:38:22 PM by Hibernate Tools 5.2.0.CR1 -->
+<hibernate-mapping>
+    <class name="main.java.model.UserStock" table="user_stock" catalog="stock" optimistic-lock="version">
+        <composite-id name="id" class="main.java.model.UserStockId">
+            <key-property name="stockId" type="int">
+                <column name="stock_id" />
+            </key-property>
+            <key-property name="userId" type="int">
+                <column name="user_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="stock" class="main.java.model.Stock" update="false" insert="false" lazy="false" fetch="select">
+            <column name="stock_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="user" class="main.java.model.User" update="false" insert="false" fetch="select">
+            <column name="user_id" not-null="true" />
+        </many-to-one>
+        <property name="valueThreshold" type="java.math.BigDecimal">
+        	<column name="value_threshold" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="combinedValueThreshold" type="java.math.BigDecimal">
+            <column name="combined_value_threshold" precision="22" scale="0" />
+        </property>
+        <property name="netProfitThreshold" type="java.math.BigDecimal">
+            <column name="net_profit_threshold" precision="22" scale="0" />
+        </property>
+		<property name="stockType" type="int">
+			<column name="stock_type" />
+		</property>
+    </class>
+</hibernate-mapping>

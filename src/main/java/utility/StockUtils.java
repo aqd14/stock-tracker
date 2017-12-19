@@ -1,5 +1,8 @@
 package main.java.utility;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,9 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class StockUtils {
 

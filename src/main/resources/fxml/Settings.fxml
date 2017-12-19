@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="387.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SettingsController">
+   <children>
+      <VBox layoutX="7.0" layoutY="6.0" prefHeight="370.0" prefWidth="441.0">
+         <children>
+            <HBox prefHeight="29.0" prefWidth="395.0">
+               <children>
+                  <Label prefHeight="26.0" prefWidth="95.0" text="Settings">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Text fx:id="successfulMessage" fill="#3c94e1" strokeType="OUTSIDE" strokeWidth="0.0" text="Update successfully!" wrappingWidth="146.21875">
+                     <font>
+                        <Font name="Helvetica Neue" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="50.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Separator>
+            <TabPane prefHeight="320.0" prefWidth="401.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="User Information">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="390.0">
+                           <children>
+                              <VBox prefHeight="225.0" prefWidth="361.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <children>
+                                    <VBox prefHeight="65.0" prefWidth="376.0">
+                                       <children>
+                                          <HBox prefHeight="40.0" prefWidth="376.0">
+                                             <children>
+                                                <Label prefHeight="25.0" prefWidth="110.0" text="First Name">
+                                                   <HBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="Georgia" size="14.0" />
+                                                   </font></Label>
+                                                <JFXTextField fx:id="firstNameTF" prefHeight="25.0" prefWidth="189.0">
+                                                   <HBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </HBox.margin></JFXTextField>
+                                             </children>
+                                          </HBox>
+                                          <Text fx:id="firstNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="377.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="76.0" prefWidth="376.0">
+                                       <children>
+                                          <HBox prefHeight="43.0" prefWidth="376.0">
+                                             <children>
+                                                <Label prefHeight="27.0" prefWidth="110.0" text="Last Name">
+                                                   <HBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="Georgia" size="14.0" />
+                                                   </font></Label>
+                                                <JFXTextField fx:id="lastNameTF" prefHeight="25.0" prefWidth="189.0">
+                                                   <HBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </HBox.margin></JFXTextField>
+                                             </children>
+                                          </HBox>
+                                          <Text fx:id="lastNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.21875" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="83.0" prefWidth="376.0">
+                                       <children>
+                                          <HBox prefHeight="39.0" prefWidth="376.0">
+                                             <children>
+                                                <Label prefHeight="27.0" prefWidth="110.0" text="Email">
+                                                   <font>
+                                                      <Font name="Georgia" size="14.0" />
+                                                   </font></Label>
+                                                <JFXTextField fx:id="emailTF" prefHeight="25.0" prefWidth="189.0" />
+                                             </children>
+                                          </HBox>
+                                          <Text fx:id="emailError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="83.0" prefWidth="376.0">
+                                       <children>
+                                          <HBox prefHeight="39.0" prefWidth="376.0">
+                                             <children>
+                                                <Label prefHeight="27.0" prefWidth="110.0" text="Phone Number">
+                                                   <font>
+                                                      <Font name="Georgia" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <JFXTextField fx:id="phoneNumberTF" prefHeight="25.0" prefWidth="189.0" />
+                                             </children>
+                                          </HBox>
+                                          <Text fx:id="phoneNumberError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="376.0" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Account Balance">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="367.0">
+                           <children>
+                              <VBox prefHeight="166.0" prefWidth="287.0" AnchorPane.leftAnchor="10.0">
+                                 <children>
+                                    <Label fx:id="accountName" prefHeight="37.0" prefWidth="286.0">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox prefHeight="59.0" prefWidth="283.0">
+                                       <children>
+                                          <Label prefHeight="28.0" prefWidth="124.0" text="Current Balance">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                             <font>
+                                                <Font name="Georgia" size="14.0" />
+                                             </font></Label>
+                                          <JFXTextField fx:id="currentBalanceTF" editable="false">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin></JFXTextField>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox prefHeight="58.0" prefWidth="288.0">
+                                       <children>
+                                          <Label prefHeight="27.0" prefWidth="124.0" text="New Balance">
+                                             <HBox.margin>
+                                                <Insets top="10.0" />
+                                             </HBox.margin>
+                                             <font>
+                                                <Font name="Georgia" size="14.0" />
+                                             </font></Label>
+                                          <JFXTextField fx:id="newBalanceTF">
+                                             <HBox.margin>
+                                                <Insets top="10.0" />
+                                             </HBox.margin></JFXTextField>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                  <Tab text="Change Password">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="245.0" prefWidth="395.0">
+                           <children>
+                              <VBox prefHeight="251.0" prefWidth="242.0" AnchorPane.leftAnchor="10.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="195.0">
+                                       <children>
+                                          <Label text="Current Password">
+                                             <font>
+                                                <Font name="Georgia" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <JFXPasswordField fx:id="currentPasswordPF" />
+                                          <Text fx:id="currentPasswordError" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_message" wrappingWidth="288.21875">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="194.0">
+                                       <children>
+                                          <Label text="New Password">
+                                             <VBox.margin>
+                                                <Insets top="20.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font name="Georgia" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <JFXPasswordField fx:id="newPasswordPF" />
+                                          <Text fx:id="passwordError" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_message" wrappingWidth="288.0">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="84.0" prefWidth="242.0">
+                                       <children>
+                                          <Label text="Re-enter New Password">
+                                             <VBox.margin>
+                                                <Insets top="20.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font name="Georgia" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <JFXPasswordField fx:id="confirmPasswordPF" />
+                                          <Text fx:id="confirmPasswordError" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_message" wrappingWidth="293.21875">
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Alert">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutX="7.0" layoutY="32.0" prefHeight="220.0" prefWidth="248.0">
+                                 <children>
+                                    <Label text="New Alert Checking Period">
+                                       <font>
+                                          <Font name="Georgia" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXComboBox fx:id="alertCheckingTime">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXComboBox>
+                                    <Label text="New Stock Update Period">
+                                       <font>
+                                          <Font name="Georgia" size="14.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="40.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <JFXComboBox fx:id="stockUpdateTime">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXComboBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+              </tabs>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </TabPane>
+            <JFXButton buttonType="RAISED" onAction="#saveChanges" prefHeight="32.0" prefWidth="131.0" styleClass="custom_button" text="Save Changes">
+               <font>
+                  <Font name="Helvetica" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="300.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
+   </children>
+   <stylesheets>
+    	<URL value="@../css/style.css" />
+	</stylesheets>
+</Pane>

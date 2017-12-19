@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+<AnchorPane fx:id="mainAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.PortfolioController">
+   <children>
+      <TabPane fx:id="mainTP" prefHeight="400.0" prefWidth="760.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Portfolio">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pagination fx:id="portfolioPagination" prefHeight="335.0" prefWidth="759.0" AnchorPane.topAnchor="10.0" />
+                        <JFXButton fx:id="sellStockButton" buttonType="RAISED" layoutX="605.0" layoutY="322.0" prefHeight="31.0" prefWidth="65.0" ripplerFill="WHITE" styleClass="sell_button" text="Sell">
+                           <font>
+                              <Font name="Segoe UI" size="16.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Transaction History">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pagination fx:id="transactionHistoryPagination" prefHeight="331.0" prefWidth="759.0" AnchorPane.topAnchor="10.0" />
+                        <JFXButton fx:id="exportButton" buttonType="RAISED" layoutX="652.0" layoutY="324.0" styleClass="export_button" text="Export" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Owned Stock Summary">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pagination fx:id="summaryTransactionPagination" prefHeight="350.0" prefWidth="759.0" AnchorPane.topAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+   <stylesheets>
+    	<URL value="@../css/style.css" />
+	</stylesheets>
+</AnchorPane>

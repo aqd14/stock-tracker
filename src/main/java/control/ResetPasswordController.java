@@ -1,13 +1,8 @@
 package main.java.control;
 
-import java.io.IOException;
-import java.sql.Date;
-import java.util.Optional;
-
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,8 +17,13 @@ import javafx.stage.Stage;
 import main.java.common.CommonDefine;
 import main.java.model.User;
 import main.java.utility.AlertFactory;
+import main.java.utility.ResourceLocator;
 import main.java.utility.Screen;
 import main.java.utility.ValidationUtil;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.util.Optional;
 
 public class ResetPasswordController extends BaseController implements IController {
 	@FXML private AnchorPane resetPasswordAP;
@@ -38,7 +38,7 @@ public class ResetPasswordController extends BaseController implements IControll
 	}
 	
 	@FXML protected void back(MouseEvent e) {
-		switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, "../../../main/java/view/Login.fxml");
+		switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, ResourceLocator.LOGIN_VIEW);
 	}
 	
 	@FXML protected void reset(MouseEvent e) {
@@ -66,7 +66,7 @@ public class ResetPasswordController extends BaseController implements IControll
 				Optional<ButtonType> option = alert.showAndWait();
 				// Switch to Login when user select OK
 				if (option.isPresent() && option.get().equals(ButtonType.OK)) {
-					switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, "../../../main/java/view/Login.fxml");
+					switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, ResourceLocator.LOGIN_VIEW);
 				}
 			}
 		}

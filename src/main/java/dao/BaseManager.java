@@ -1,12 +1,11 @@
 package main.java.dao;
 
+import main.java.utility.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
-import main.java.utility.HibernateUtil;
 
 public class BaseManager<T> implements IManager<T> {
 	

@@ -3,11 +3,6 @@
  */
 package main.java.service;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
@@ -16,6 +11,11 @@ import main.java.dao.UserStockManager;
 import main.java.model.Stock;
 import main.java.model.UserStock;
 import yahoofinance.YahooFinance;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author doquocanh-macbook

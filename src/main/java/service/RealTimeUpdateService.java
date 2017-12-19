@@ -1,12 +1,12 @@
 package main.java.service;
 
-import java.io.IOException;
-
 import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import main.java.model.Stock;
 import main.java.utility.Utils;
+
+import java.io.IOException;
 
 /**
  * <p>

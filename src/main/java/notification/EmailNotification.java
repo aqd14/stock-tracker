@@ -3,8 +3,6 @@
  */
 package main.java.notification;
 
-import java.util.Properties;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -12,6 +10,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 /**
  * @author doquocanh-macbook
@@ -32,7 +31,7 @@ public class EmailNotification implements INotification {
 	}
 
 	/* (non-Javadoc)
-	 * @see main.java.notification.INotification#notify(main.java.model.User)
+	 * @see main.java.INotification#notify(main.java.User)
 	 */
 	@Override
 	public void notify(String sms, String to) {

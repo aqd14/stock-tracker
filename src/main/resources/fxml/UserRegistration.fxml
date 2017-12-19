@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<AnchorPane prefHeight="668.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.RegistrationController">
+   <children>
+      <VBox prefHeight="666.0" prefWidth="464.0">
+         <children>
+            <Pane prefHeight="621.0" prefWidth="464.0">
+               <children>
+                  <GridPane fx:id="registerGP" alignment="center" hgap="10.0" prefHeight="621.0" prefWidth="464.0" styleClass="root" vgap="10.0">
+                    <padding>
+                        <Insets bottom="10.0" left="25.0" right="25.0" top="25.0" />
+                     </padding>
+                     <children>
+                       
+                       <Text id="welcome-text" text="User Registration" GridPane.columnSpan="2">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </Text>
+                       
+                       <Label text="First Name" GridPane.rowIndex="3" />
+                       <JFXTextField fx:id="firstNameTF" prefWidth="173.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                       	<font>
+                       		<Font size="14.0" />
+                       	</font>
+                       </JFXTextField>
+                  	<Text fx:id="firstNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="288.13671875" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
+                       
+                        <Label text="Last Name" GridPane.rowIndex="5" />
+                        <JFXTextField fx:id="lastNameTF" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                          <font>
+                       		<Font size="14.0" />
+                       	</font>
+                        </JFXTextField>
+                        	<Text fx:id="lastNameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="287.13671875" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        
+                        <Label text="Username" GridPane.rowIndex="7" />
+                  	<JFXTextField fx:id="usernameTF" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                  		<font>
+                  			<Font size="14.0" />
+                  		</font>
+                  	</JFXTextField>
+                        	<Text fx:id="usernameError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="287.13671875" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        
+                        <Label text="Password" GridPane.rowIndex="9" />
+                        <JFXPasswordField fx:id="passwordPF" prefHeight="25.0" prefWidth="286.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        	<Text fx:id="passwordError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="287.13671875" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        
+                        <Label text="Confirm Password" GridPane.rowIndex="11" />
+                        <JFXPasswordField fx:id="confirmPasswordPF" prefWidth="216.0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                       	<Text fx:id="confirmPasswordError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" wrappingWidth="290.13671875" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        
+                        <Label text="Email" GridPane.rowIndex="13" />
+                        <JFXTextField fx:id="emailTF" GridPane.columnIndex="1" GridPane.rowIndex="13">
+                  		<font>
+                  			<Font size="14.0" />
+                  		</font>
+                        </JFXTextField>
+                        	<Text fx:id="emailError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="289.13671875" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                        <Label text="Phone Number" GridPane.rowIndex="15" />
+                        <JFXTextField fx:id="phoneNumberTF" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXTextField>
+                        <Text fx:id="phoneNumberError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="291.21875" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                        
+                        <Label text="Date of Birth" GridPane.rowIndex="17" />
+                        <JFXDatePicker fx:id="dateOfBirthDP" prefHeight="29.0" prefWidth="287.0" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                  		<Text fx:id="dobError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="290.13671875" GridPane.columnIndex="1" GridPane.rowIndex="18">
+                  		<font>
+                  			<Font name="Arial" size="13.0" />
+                  		</font> 
+                  	</Text>
+                     </children>
+                    
+                    <stylesheets>
+                      <URL value="@../css/registration.css" />
+                    </stylesheets>
+                     <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </Pane>
+            <HBox prefHeight="55.0" prefWidth="464.0">
+               <children>
+                  <JFXButton buttonType="RAISED" onMouseClicked="#back" prefHeight="32.0" prefWidth="90.0" ripplerFill="WHITE" styleClass="back_button" text="Back">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" onAction="#register" prefHeight="32.0" prefWidth="90.0" styleClass="custom_button" text="Register" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="220.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <stylesheets>
+    	<URL value="@../css/style.css" />
+	</stylesheets>
+</AnchorPane>

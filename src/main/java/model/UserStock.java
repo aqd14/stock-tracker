@@ -1,8 +1,8 @@
 package main.java.model;
 
-import java.math.BigDecimal;
-
 import main.java.common.CommonDefine;
+
+import java.math.BigDecimal;
 
 // default package
 // Generated Feb 9, 2017 11:38:22 PM by Hibernate Tools 5.2.0.CR1

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<StackPane prefHeight="338.0" prefWidth="273.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.AlertSettingsController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="277.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="83.0" prefWidth="236.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <JFXToggleButton fx:id="valueAlert" text="Value Alert">
+                                 <tooltip>
+                                    <Tooltip text="This alert is used to notify when a single stock unit reaches a certain level" />
+                                 </tooltip>
+                              </JFXToggleButton>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="91.0" text="Threshold">
+                                 <HBox.margin>
+                                    <Insets left="15.0" top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <JFXTextField fx:id="valueThreshold" prefWidth="126.0">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </JFXTextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="83.0" prefWidth="236.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <JFXToggleButton fx:id="combinedValueAlert" text="Combined Value Alert">
+                                 <tooltip>
+                                    <Tooltip text="Notify when combined value of your shares of stock X reach a certain level Y" />
+                                 </tooltip>
+                              </JFXToggleButton>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="91.0" text="Threshold">
+                                 <HBox.margin>
+                                    <Insets left="15.0" top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <JFXTextField fx:id="combinedValueThreshold" editable="false" prefWidth="126.0">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </JFXTextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="110.0" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="83.0" prefWidth="236.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <JFXToggleButton fx:id="netProfitAlert" text="Net Profit Alert">
+                                 <tooltip>
+                                    <Tooltip text="Alert when your total shares of stock X switch from having a net profit to net loss or vice versa" />
+                                 </tooltip>
+                              </JFXToggleButton>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="91.0" text="Threshold">
+                                 <HBox.margin>
+                                    <Insets left="15.0" top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <JFXTextField fx:id="netProfitThreshold" editable="false" prefWidth="126.0">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </JFXTextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <JFXButton fx:id="saveAlertSettingsButton" buttonType="RAISED" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #0de084;" text="Save">
+               <font>
+                  <Font name="Georgia" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="15.0" />
+               </VBox.margin>
+            </JFXButton>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

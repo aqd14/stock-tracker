@@ -2,13 +2,8 @@
  * LoginController.java
  */
 package main.java.control;
- 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXCheckBox;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,9 +18,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.java.common.CommonDefine;
 import main.java.dao.UserManager;
+import main.java.utility.ResourceLocator;
 import main.java.utility.Screen;
 import main.java.utility.SecurityUtils;
 import main.java.utility.Utils;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
  
 public class LoginController extends BaseController implements Initializable, IController {
     @FXML private Text loginError;
@@ -45,7 +45,7 @@ public class LoginController extends BaseController implements Initializable, IC
         if (user != null) {
         	System.out.println("Login successfully!");
         	// Initialize array to pass optional argument
-        	switchScreen(Screen.HOME, "Stock Tracker", "../../../main/java/view/Home.fxml");
+        	switchScreen(Screen.HOME, "Stock Tracker", ResourceLocator.HOME_VIEW);
         	loginError.setVisible(false);
         	// Save current username to file if user selects remember me
         	// Otherwise, empty file's content
@@ -63,13 +63,13 @@ public class LoginController extends BaseController implements Initializable, IC
     @FXML private void createNewAccount(MouseEvent e) {
     	System.out.println("Create new account.");
     	// Switch to Registration View
-    	switchScreen(Screen.REGISTER, CommonDefine.REGISTRATION_TITLE, "../../../main/java/view/UserRegistration.fxml");
+    	switchScreen(Screen.REGISTER, CommonDefine.REGISTRATION_TITLE, ResourceLocator.USER_REGISTRATION_VIEW);
     }
     
     @FXML private void resetPassword(MouseEvent e) {
     	System.out.println("Reset password.");
     	// Switch to Reset Password View
-    	switchScreen(Screen.RESET_PASSWORD, CommonDefine.RESET_PASSWORD_TITLE, "../../../main/java/view/ResetPassword.fxml");
+    	switchScreen(Screen.RESET_PASSWORD, CommonDefine.RESET_PASSWORD_TITLE, ResourceLocator.RESET_PASSWORD_VIEW);
     }
     
 	@Override

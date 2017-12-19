@@ -1,12 +1,8 @@
 package main.java.control;
 
-import java.io.IOException;
-import java.sql.Date;
-
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,8 +17,12 @@ import main.java.common.CommonDefine;
 import main.java.model.Account;
 import main.java.model.User;
 import main.java.utility.PhoneNumberFormatter;
+import main.java.utility.ResourceLocator;
 import main.java.utility.Screen;
 import main.java.utility.ValidationUtil;
+
+import java.io.IOException;
+import java.sql.Date;
 
 public class RegistrationController extends BaseController implements IController {
 	// TextField objects for user information
@@ -83,12 +83,12 @@ public class RegistrationController extends BaseController implements IControlle
 			userManager.add(user);
 			// Register successfully. Switch to Login page
 			Thread.sleep(2000);
-			switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, "../../../main/java/view/Login.fxml");
+			switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, ResourceLocator.LOGIN_VIEW);
 		}
 	}
 	
 	@FXML private void back(MouseEvent e) {
-		switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, "../../../main/java/view/Login.fxml");
+		switchScreen(Screen.LOGIN, CommonDefine.LOGIN_TITLE, ResourceLocator.LOGIN_VIEW);
 	}
 	
 	private boolean validateUserInput() {

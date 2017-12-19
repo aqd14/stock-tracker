@@ -1,15 +1,14 @@
 package main.java.dao;
 
-import java.util.List;
-
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-
 import main.java.model.Stock;
 import main.java.model.User;
 import main.java.model.UserStock;
 import main.java.model.UserStockId;
 import main.java.utility.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
+import java.util.List;
 
 public class UserStockManager<T> extends BaseManager<T> {
 	

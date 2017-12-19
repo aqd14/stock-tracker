@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<VBox fx:id="mainVB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="307.0" prefWidth="366.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.SellStockController">
+   <children>
+      <Label fx:id="stockSymbolLB" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="361.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Label>
+      <HBox prefHeight="38.0" prefWidth="361.0">
+         <children>
+            <Label prefHeight="18.0" prefWidth="82.0" text="SHARES" textFill="#797a7c">
+               <HBox.margin>
+                  <Insets left="5.0" top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="stockAmountTF" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="246.0">
+               <HBox.margin>
+                  <Insets left="25.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </JFXTextField>
+         </children>
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </HBox>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Separator>
+      <HBox prefHeight="38.0" prefWidth="361.0">
+         <children>
+            <Label prefHeight="18.0" prefWidth="93.0" text="MKT PRICE" textFill="#797a7c">
+               <HBox.margin>
+                  <Insets left="5.0" top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="marketPriceTF" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="246.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
+            </JFXTextField>
+         </children>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Separator>
+      <HBox prefHeight="96.0" prefWidth="368.0">
+         <children>
+            <Label prefHeight="18.0" prefWidth="93.0" text="EST COST" textFill="#797a7c">
+               <HBox.margin>
+                  <Insets left="5.0" top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="estimateCostTF" alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="246.0">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
+            </JFXTextField>
+         </children>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="59.0" prefWidth="366.0">
+         <children>
+            <JFXButton fx:id="backBT" buttonType="RAISED" prefHeight="34.0" prefWidth="96.0" styleClass="back_button" text="Back" textFill="#fcfafa">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton fx:id="sellStockBT" buttonType="RAISED" prefHeight="34.0" prefWidth="96.0" styleClass="sell_button" text="Sell" textFill="#fcfafa">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="120.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+      </HBox>
+   </children>
+	<stylesheets>
+		<URL value="@../css/style.css" />
+	</stylesheets>
+</VBox>

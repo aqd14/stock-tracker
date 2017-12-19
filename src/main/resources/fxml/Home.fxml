@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+<StackPane fx:id="homeSP" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.control.HomeController">
+   <children>
+      <AnchorPane fx:id="homeAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="928.0">
+         <children>
+            <VBox layoutX="-4.0" layoutY="-1.0" prefHeight="584.0" prefWidth="932.0">
+               <children>
+                  <VBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox prefHeight="99.0" prefWidth="1061.0" style="-fx-background-color: #490c0f;">
+                           <children>
+                              <MenuBar prefHeight="29.0" prefWidth="932.0">
+                                 <menus>
+                                    <Menu mnemonicParsing="true" text="_File">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
+                                       </items>
+                                    </Menu>
+                                    <Menu mnemonicParsing="true" text="_Settings">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" onAction="#openPorfolio" text="My Porfolio" />
+                                          <SeparatorMenuItem mnemonicParsing="false" />
+                                          <MenuItem mnemonicParsing="false" onAction="#openAccountSettings" text="Account Settings" />
+                                       </items>
+                                    </Menu>
+                                    <Menu mnemonicParsing="true" text="_Help">
+                                       <items>
+                                          <MenuItem mnemonicParsing="false" text="About" />
+                                       </items>
+                                    </Menu>
+                                 </menus>
+                              </MenuBar>
+                           </children>
+                        </HBox>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="138.0" fitWidth="369.0" layoutX="7.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/msstate-maroon.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="485.0" prefWidth="939.0">
+                     <children>
+                        <HBox>
+                           <children>
+                              <StackPane prefHeight="40.0" prefWidth="678.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="40.0" prefWidth="266.0" text="STOCK INFORMATION" underline="true" StackPane.alignment="CENTER_LEFT">
+                                       <font>
+                                          <Font name="Georgia" size="16.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets left="10.0" top="10.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <ImageView fx:id="addStock" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <StackPane.margin>
+                                          <Insets left="320.0" />
+                                       </StackPane.margin>
+                                       <image>
+                                          <Image url="@../images/file_add.png" />
+                                       </image>
+                                    </ImageView>
+                                    <StackPane maxWidth="277.0" prefHeight="48.0" prefWidth="277.0" StackPane.alignment="CENTER_RIGHT">
+                                       <children>
+                                          <JFXTextField fx:id="searchTF" prefWidth="222.0" promptText="Search for stock codes, companies" />
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                        <JFXTreeTableView fx:id="stockTableView" prefHeight="428.0" prefWidth="926.0">
+							<placeholder>
+								<Label text="" />
+							</placeholder>
+                           <columns>
+                              <TreeTableColumn fx:id="stockCodeCol" editable="false" prefWidth="160" resizable="false" text="Stock Code" />
+                              <TreeTableColumn fx:id="companyCol" editable="false" prefWidth="230" resizable="false" text="Company" />
+                              <TreeTableColumn fx:id="priceCol" editable="false" prefWidth="120" resizable="false" text="Price" />
+                              <TreeTableColumn fx:id="lastPriceCol" editable="false" prefWidth="140" resizable="false" text="Last Price" />
+                              <TreeTableColumn fx:id="priceChangeCol" editable="false" prefWidth="120" resizable="false" text="Change" />
+                              <TreeTableColumn fx:id="percentChangeCol" editable="false" prefWidth="140" resizable="false" text="\% Change" />
+                              <!-- <JFXTreeTableColumn fx:id="stockBuyCol" editable="true" prefWidth="120" resizable="false" text="Stock Buy" /> -->
+                           </columns>
+                           <VBox.margin>
+                              <Insets left="2.0" top="15.0" />
+                           </VBox.margin>
+                        </JFXTreeTableView>
+                     </children>
+                     <padding>
+                        <Insets left="4.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+         	<stylesheets>
+          	<URL value="@../css/home.css" />
+      	</stylesheets>
+      </AnchorPane>
+      <JFXSpinner fx:id="spinner">
+         <StackPane.margin>
+            <Insets top="200.0" />
+         </StackPane.margin></JFXSpinner>
+   </children>
+</StackPane>

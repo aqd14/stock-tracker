@@ -1,12 +1,7 @@
 package main.java.control;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -22,6 +17,10 @@ import main.java.utility.CurrencyFormatter;
 import main.java.utility.PhoneNumberFormatter;
 import main.java.utility.Utils;
 import main.java.utility.ValidationUtil;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class SettingsController extends BaseController implements Initializable, Subject {
 	// User information fields

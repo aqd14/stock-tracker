@@ -1,10 +1,9 @@
 package main.java.dao;
 
+import main.java.model.Account;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
-
-import main.java.model.Account;
 
 /**
  * Home object for domain model class Account.

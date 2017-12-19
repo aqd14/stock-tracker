@@ -1,11 +1,6 @@
 package main.java.utility;
 
-import java.time.LocalDate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.jfoenix.controls.JFXDatePicker;
-
 import javafx.css.PseudoClass;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -13,6 +8,10 @@ import javafx.scene.text.Text;
 import main.java.common.CommonDefine;
 import main.java.dao.UserManager;
 import main.java.model.User;
+
+import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ValidationUtil {
 	
@@ -51,8 +50,8 @@ public class ValidationUtil {
 			displayErrorMessage(firstNameError, CommonDefine.EMPTY_FIELD_ERR);
 			firstNameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
-		} 
-		
+		}
+
 		if (!isValidName(firstNameTF.getText())) {
 			displayErrorMessage(firstNameError, CommonDefine.INVALID_NAME_ERR);
 			firstNameTF.pseudoClassStateChanged(errorClass, true);
@@ -75,14 +74,14 @@ public class ValidationUtil {
 			displayErrorMessage(lastNameError, CommonDefine.EMPTY_FIELD_ERR);
 			lastNameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
-		} 
-		
+		}
+
 		if (!isValidName(lastNameTF.getText())) {
 			displayErrorMessage(lastNameError, CommonDefine.INVALID_NAME_ERR);
 			lastNameTF.pseudoClassStateChanged(errorClass, true);
 			return false;
 		}
-		
+
 		// Passed all phases, set error text invisible
 		hideErrorMessage(lastNameError);
 		lastNameTF.pseudoClassStateChanged(errorClass, false);
@@ -148,8 +147,8 @@ public class ValidationUtil {
 	
 	/**
 	 * Validate password when user registers new account, resets or changes password
-	 * @param passwordPF
-	 * @param passwordError
+	 * @param passwordPF password
+	 * @param passwordError	password error
 	 * @return
 	 */
 	public static boolean validateOriginalPassword(PasswordField passwordPF, Text passwordError) {

@@ -3,14 +3,8 @@
  */
 package main.java.control;
 
-import java.io.IOException;
-import java.math.RoundingMode;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -19,16 +13,22 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.java.common.CommonDefine;
 import main.java.model.TransactionWrapper;
 import main.java.utility.AlertFactory;
+import main.java.utility.ResourceLocator;
 import main.java.utility.Screen;
 import main.java.utility.Utils;
 import yahoofinance.YahooFinance;
+
+import java.io.IOException;
+import java.math.RoundingMode;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * @author doquocanh-macbook
@@ -92,12 +92,12 @@ public class SellStockController extends BaseController implements IController, 
 		// Set event handler for buttons
 		backBT.setOnAction(event -> {
 			sellStock = false;
-			switchScreen(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, "../view/Portfolio.fxml");
+			switchScreen(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, ResourceLocator.PORTFOLIO_VIEW);
 		});
 		
 		sellStockBT.setOnAction(event -> {
 			sellStock = true;
-			switchScreen(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, "../view/Portfolio.fxml");
+			switchScreen(Screen.PORFOLIO, CommonDefine.PORTFOLIO_TITLE, ResourceLocator.PORTFOLIO_VIEW);
 		});
 	}
 	
@@ -119,7 +119,7 @@ public class SellStockController extends BaseController implements IController, 
 	}
 	
 	/* (non-Javadoc)
-	 * @see main.java.control.IController#switchScreen(main.java.utility.Screen, java.lang.String, java.lang.String)
+	 * @see main.java.IController#switchScreen(main.java.Screen, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void switchScreen(Screen target, String title, String url) {
@@ -165,7 +165,7 @@ public class SellStockController extends BaseController implements IController, 
 	}
 
 	/* (non-Javadoc)
-	 * @see main.java.control.IController#makeNewStage(main.java.utility.Screen, java.lang.String, java.lang.String)
+	 * @see main.java.IController#makeNewStage(main.java.Screen, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void makeNewStage(Screen target, String title, String url) {

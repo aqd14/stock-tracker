@@ -3,15 +3,9 @@
  */
 package main.java.control;
 
-import java.math.BigDecimal;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -23,6 +17,11 @@ import main.java.model.UserStockId;
 import main.java.utility.AlertFactory;
 import main.java.utility.CurrencyFormatter;
 import main.java.utility.Utils;
+
+import java.math.BigDecimal;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * @author doquocanh-macbook
